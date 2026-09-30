@@ -1,0 +1,74 @@
+/* ================= Base : réinitialisation, typographie, boutons, états d'apparition ================= */
+*,*::before,*::after{box-sizing:border-box}
+html{overflow-x:hidden;overflow-x:clip;scroll-behavior:auto;-webkit-text-size-adjust:100%}
+body{
+  margin:0;overflow-x:hidden;overflow-x:clip;
+  background:var(--white);color:var(--ink-2);
+  font:400 17px/1.6 var(--f-body);
+  -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+}
+img,picture,canvas,svg{display:block;max-width:100%}
+img{height:auto}
+a{color:inherit;text-decoration:none}
+ul,ol{list-style:none;margin:0;padding:0}
+h1,h2,h3{margin:0;font-weight:inherit;color:var(--ink)}
+p{margin:0}
+main:focus{outline:none}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+::selection{background:var(--lilac-2);color:var(--ink)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.skip{position:fixed;left:16px;top:-64px;z-index:100;background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;transition:transform .3s var(--ease-out)}
+.skip:focus{transform:translateY(80px)}
+
+/* ---------- typographie ---------- */
+.display{
+  font:800 clamp(40px,5.6vw,84px)/.96 var(--f-display);
+  letter-spacing:-.045em;color:var(--ink);text-wrap:balance;
+}
+.display em,.studio__statement em{
+  font-family:var(--f-serif);font-style:italic;font-weight:400;
+  letter-spacing:-.01em;font-size:1.1em;line-height:0;padding-right:.04em;
+}
+.display--xl{font-size:clamp(44px,7.2vw,112px)}
+.eyebrow,.kicker,.frame__bar span,.timeline b,.footer__bottom,.footer__col h2,.launch__hint,.hero__meta{
+  font:500 12px/1.4 var(--f-mono);letter-spacing:.14em;text-transform:uppercase;
+}
+.kicker{color:var(--ink-3);margin:0 0 18px;display:flex;align-items:center;gap:10px}
+.kicker--center{justify-content:center}
+.ico{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.ico--lg{width:28px;height:28px;stroke-width:1.6}
+
+/* ---------- boutons ---------- */
+.btn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;
+  font:600 15px/1 var(--f-body);letter-spacing:-.005em;white-space:nowrap;
+  padding:15px 26px;border-radius:999px;
+  transition:background-color .3s,border-color .3s,color .3s,box-shadow .5s var(--ease-out);
+}
+.btn:active{transition-duration:.1s}
+.btn--accent{
+  background:var(--accent);color:#fff;
+  box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 10px 26px -10px var(--accent-a35),0 2px 6px -2px rgba(40,20,90,.3);
+}
+.btn--accent:hover{background:var(--accent-press);box-shadow:0 1px 0 rgba(255,255,255,.2) inset,0 16px 36px -12px rgba(91,33,230,.55),0 2px 6px -2px rgba(40,20,90,.3)}
+.btn--accent:active{background:var(--accent-press)}
+.btn--ghost{color:var(--ink);border:1px solid var(--line-strong);background:rgba(255,255,255,.6)}
+.btn--ghost:hover{border-color:var(--ink);background:#fff}
+.btn--lg{min-height:56px;padding:18px 32px;font-size:16px}
+.actions{display:flex;flex-wrap:wrap;gap:12px}
+.actions--center{justify-content:center}
+
+/* ---------- apparition au scroll (pilotée par ScrollTrigger.batch) ---------- */
+/* l'état caché n'existe que si le JS tourne ; le filet .no-motion affiche tout si le module de scroll échoue */
+.js .reveal{opacity:0;transform:translateY(32px)}
+.js.no-motion .reveal,.js.intro-skip .reveal{opacity:1;transform:none}
+
+/* sections lourdes hors écran : le navigateur ne les met en page qu'à l'approche */
+.services,.method,.studio,.faq{content-visibility:auto;contain-intrinsic-size:auto 900px}
+
+@media (pointer:coarse){.link,.footer__col a,.faq summary{min-height:44px}}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
+  .js .reveal{opacity:1;transform:none}
+}
