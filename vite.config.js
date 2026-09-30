@@ -32,7 +32,8 @@ export default defineConfig(({ mode }) => ({
     cssCodeSplit: true,
     assetsInlineLimit: 0,                // les images restent des fichiers (cache + srcset)
     modulePreload: { polyfill: false },
-    reportCompressedSize: true
+    reportCompressedSize: true,
+    chunkSizeWarningLimit: 600      // seul three.js (chargé à la demande, dans le worker) dépasse 500 Ko
   },
   worker: { format: 'es' },
   plugins: [

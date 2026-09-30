@@ -1,0 +1,93 @@
+/* ================= Hero : titre immense, une seule planète, beaucoup d'air ================= */
+.hero{
+  position:relative;isolation:isolate;overflow:hidden;
+  display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto auto;justify-items:center;
+  height:100vh;height:100svh;min-height:640px;
+  padding:clamp(96px,13vh,140px) var(--gutter) clamp(18px,3vh,30px);
+  text-align:center;
+  background:
+    radial-gradient(50% 40% at 50% 66%,var(--accent-a08),transparent 72%),
+    var(--grad-hero);
+}
+.hero__eyebrow{color:var(--ink-3)}
+.hero__title{
+  position:relative;z-index:2;margin-top:clamp(12px,2vh,22px);
+  font:800 clamp(44px,8vw,146px)/.9 var(--f-display);letter-spacing:-.04em;word-spacing:.06em;color:var(--ink);
+}
+/* chaque ligne est un masque : le texte monte depuis sous la ligne de base (marge pour les jambages) */
+.hero__title .line{display:block;overflow:hidden;padding:0 .06em .12em;margin-bottom:-.12em}
+.hero__title .line__inner{display:block}
+.hero__title em{
+  font-family:var(--f-serif);font-style:italic;font-weight:400;
+  color:var(--accent);letter-spacing:-.015em;font-size:1.12em;line-height:0;padding-right:.05em;
+}
+
+/* la scène occupe tout l'espace restant ; la planète garde toujours le format 2:1 du poster */
+.hero__stage{
+  position:relative;z-index:1;width:100%;min-height:0;
+  display:grid;place-items:center;container-type:size;
+  margin-top:clamp(-72px,-7vh,-24px);
+}
+.planet{position:relative;width:min(100cqw,200cqh,1500px);aspect-ratio:2/1}
+.planet__media,.planet__poster,.planet__canvas{position:absolute;inset:0;width:100%;height:100%}
+.planet__poster{object-fit:contain}
+.planet__canvas{opacity:0}
+.planet__glow{
+  position:absolute;inset:14% 28%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(91,33,230,.16),rgba(91,33,230,.05) 60%,transparent);
+}
+/* ombre de contact : un simple dégradé, pas d'ombre temps réel */
+.planet__shadow{
+  position:absolute;left:38%;width:24%;top:80%;height:8%;border-radius:50%;pointer-events:none;
+  background:radial-gradient(closest-side,rgba(52,26,120,.2),rgba(52,26,120,.06) 60%,transparent);
+}
+/* l'anneau qui se dessine pendant le préchargement */
+.planet__orbit{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.planet__orbit ellipse{fill:none;stroke:var(--accent);stroke-width:1.5;vector-effect:non-scaling-stroke;stroke-dasharray:1;stroke-dashoffset:0;opacity:.9}
+
+.hero__foot{
+  position:relative;z-index:2;width:100%;max-width:var(--max);
+  display:flex;justify-content:space-between;align-items:flex-end;gap:24px;text-align:left;
+  margin-top:clamp(-120px,-9vh,-36px);
+}
+.hero__lead{max-width:36ch;color:var(--ink-2);font-size:clamp(15px,1.15vw,18px);line-height:1.55}
+.hero__actions{display:flex;flex-wrap:wrap;gap:12px}
+.hero__meta{
+  width:100%;max-width:var(--max);margin-top:22px;
+  display:flex;justify-content:space-between;align-items:flex-end;color:var(--ink-3);font-size:11px;
+}
+.cue{display:inline-flex;align-items:flex-end;gap:10px}
+.cue i{width:1px;height:22px;background:var(--ink);transform-origin:top;animation:drip 2.4s var(--ease-io) infinite;animation-delay:-.6s}
+@keyframes drip{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+
+/* ---------- états de départ de l'intro (seulement si le JS va la jouer) ---------- */
+.intro .hero__title .line__inner{transform:translateY(112%)}
+.intro .planet__media,.intro .hero__eyebrow,.intro .hero__lead,.intro .hero__actions > *,.intro .hero__meta,.intro .nav{opacity:0}
+.intro .planet__orbit ellipse{stroke-dashoffset:1}
+/* filet de sécurité : si l'intro ne démarre pas à temps, tout apparaît en douceur, sans attendre */
+.intro.intro-skip .hero__title .line__inner,.intro.intro-skip .planet__media,.intro.intro-skip .hero__eyebrow,
+.intro.intro-skip .hero__lead,.intro.intro-skip .hero__actions > *,.intro.intro-skip .hero__meta,.intro.intro-skip .nav{
+  opacity:1;transform:none;transition:opacity .6s var(--ease-out),transform .8s var(--ease-expo);
+}
+.intro.intro-skip .nav{transform:translate(-50%,0)}
+.intro.intro-skip .planet__orbit{opacity:0;transition:opacity .6s}
+
+/* ---------- mobile : titre, planète carrée, actions empilées ---------- */
+@media (max-width:767px){
+  .hero{height:auto;min-height:100svh;grid-template-rows:auto;padding-top:104px;padding-bottom:32px}
+  .hero__title{font-size:clamp(33px,10.1vw,64px);letter-spacing:-.04em}   /* 2 lignes nettes dès 320 px */
+  .hero__stage{container-type:normal;margin-top:-10%}
+  .hero__stage{width:100%}
+  .planet{width:min(112vw,560px);aspect-ratio:1/1;justify-self:center}   /* seule la planète déborde, centrée */
+  .planet__glow{inset:18% 14%}
+  .planet__shadow{left:30%;width:40%;top:74%}
+  .planet__orbit{display:none}
+  .hero__foot{flex-direction:column;align-items:stretch;margin-top:-6%;gap:20px}
+  .hero__actions .btn{flex:1 1 160px}
+  .hero__meta{display:none}
+}
+@media (max-height:560px) and (min-width:768px){.hero__meta{display:none}}
+@media (max-width:360px){
+  .hero__title{font-size:9.4vw}
+  .hero__eyebrow{letter-spacing:.08em;font-size:11px}
+}
