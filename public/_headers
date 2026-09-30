@@ -1,0 +1,7 @@
+# En-têtes de cache (format Netlify / Cloudflare Pages)
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+/
+  Cache-Control: public, max-age=0, must-revalidate
