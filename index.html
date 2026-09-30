@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Saturn Design Studio · Sites premium, plateformes web et employés IA à Dakar</title>
+  <meta name="description" content="Studio de design et web à Dakar. Sites premium, plateformes web et employés IA pour les marques africaines et internationales. Réponse dans la journée sur WhatsApp.">
+  <meta name="theme-color" content="#0b0a12">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='14' fill='%2315131f' stroke='%23f2f0f7' stroke-width='2'/%3E%3Cellipse cx='32' cy='32' rx='28' ry='8' fill='none' stroke='%238b5cf6' stroke-width='4' transform='rotate(-18 32 32)'/%3E%3C/svg%3E">
+  <!-- DEPLOY STEP: remplacer par l'URL en ligne absolue -->
+  <meta property="og:title" content="Saturn Design Studio">
+  <meta property="og:description" content="Nous construisons des mondes qui ont de la gravité. Studio de design et web à Dakar.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://saturn.example/">
+  <meta property="og:image" content="https://saturn.example/assets/img/og.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=Instrument+Serif:ital@1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/site.css">
+  <link rel="stylesheet" href="assets/css/nav.css">
+</head>
+<body>
+  <a class="skip" href="#main">Aller au contenu</a>
+
+  <!-- L'environnement fixe : nébuleuse lente + grain -->
+  <div class="env" aria-hidden="true"><div class="env__nebula"></div><div class="env__grain"></div></div>
+
+  <header class="nav" id="nav">
+    <div class="nav__bar">
+      <a href="#top" class="nav__home" aria-label="Saturn Design Studio, retour en haut">
+        <span class="nav__planet" aria-hidden="true">
+          <svg class="nav__progress" viewBox="0 0 48 48"><circle class="track" cx="24" cy="24" r="22.5"/><circle class="fill" cx="24" cy="24" r="22.5" pathLength="1"/></svg>
+          <svg class="nav__saturn" viewBox="0 0 32 32">
+            <g class="spin"><g transform="rotate(-20 16 16)">
+              <ellipse class="ring ring--back" cx="16" cy="16" rx="14" ry="4.4"/>
+              <circle class="body" cx="16" cy="16" r="7"/>
+              <path class="ring" d="M2 16A14 4.4 0 0 0 30 16"/>
+            </g></g>
+          </svg>
+        </span>
+        <span class="nav__word" aria-hidden="true"><span><img src="assets/img/logo.png" alt="" width="413" height="126"></span></span>
+      </a>
+
+      <nav class="nav__links" aria-label="Navigation principale">
+        <span class="nav__glow" aria-hidden="true"></span>
+        <a href="#projets" data-id="projets">Projets</a>
+        <a href="#services" data-id="services">Services</a>
+        <a href="#methode" data-id="methode">Méthode</a>
+        <a href="#studio" data-id="studio">Studio</a>
+      </nav>
+
+      <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener" class="nav__cta" aria-label="Écrire sur WhatsApp">
+        <span class="nav__cta-inner"><svg class="ico ico--wa" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z"/><path d="M8.8 8.6c.2-.5.5-.5.8-.5h.5c.2 0 .4 0 .5.4l.7 1.6c.1.2 0 .4-.1.6l-.5.6c-.1.1-.2.3 0 .5.6 1 1.4 1.8 2.5 2.4.2.1.4.1.5 0l.6-.7c.2-.2.4-.2.6-.1l1.5.7c.3.1.4.3.4.5 0 .6-.3 1.3-.9 1.6-.6.3-1.5.4-3-.2-2.1-.9-3.6-2.8-4-3.5-.4-.7-.9-1.8-.5-2.9Z" class="fill"/></svg><span class="nav__cta-label">Écrire sur WhatsApp</span></span>
+      </a>
+
+      <button class="nav__menu" type="button" aria-expanded="false" aria-controls="navSheet">
+        <span class="nav__burger" aria-hidden="true"><i></i><i></i></span>
+        <span class="sr">Ouvrir le menu</span>
+      </button>
+    </div>
+
+    <div class="nav__sheet" id="navSheet" hidden>
+      <nav aria-label="Menu">
+        <a href="#projets"><b>01</b>Projets</a>
+        <a href="#services"><b>02</b>Services</a>
+        <a href="#methode"><b>03</b>Méthode</a>
+        <a href="#studio"><b>04</b>Studio</a>
+        <a href="#faq"><b>05</b>Questions</a>
+      </nav>
+      <div class="nav__sheet-foot">
+        <a href="mailto:saturndesingstudio@gmail.com">saturndesingstudio@gmail.com</a>
+        <a href="https://www.instagram.com/saturn_sn" target="_blank" rel="noopener">Instagram · @saturn_sn</a>
+      </div>
+    </div>
+  </header>
+  <div class="nav__scrim" id="navScrim" aria-hidden="true"></div>
+
+  <main id="main" tabindex="-1">
+
+    <!-- ============ HERO : l'alignement des mondes ============ -->
+    <section class="hero" id="top" aria-label="Introduction">
+      <div class="hero__stage">
+        <canvas class="hero__canvas" id="cosmos" aria-hidden="true"></canvas>
+        <div class="hero__vignette" aria-hidden="true"></div>
+
+        <div class="chips" aria-hidden="true">
+          <span class="chip" data-i="0"><b>01</b><em>DakarHouse</em></span>
+          <span class="chip" data-i="1"><b>02</b><em>iStore Tech</em></span>
+          <span class="chip" data-i="2"><b>03</b><em>Saturn Agents</em></span>
+          <span class="chip" data-i="3"><b>04</b><em>Teranga</em></span>
+        </div>
+
+        <!-- Bande 1 -->
+        <div class="band band--1" data-a="0" data-b="0.26" data-fx="rise">
+          <p class="eyebrow"><span class="pulse"></span>Studio de design et web · Dakar, SN <span class="sep">/</span> Depuis 2024</p>
+          <h1 class="display split">Nous construisons des mondes qui ont de la <em>gravité.</em></h1>
+          <p class="lead">Sites premium, plateformes web et employés IA pour les marques africaines et internationales. Conçus à Dakar, à la hauteur de n'importe quel marché.</p>
+        </div>
+
+        <!-- Bande 2 -->
+        <div class="band band--2" data-a="0.32" data-b="0.62" data-fx="align" data-spread="0.5">
+          <p class="display display--xl split">Quatre mondes.</p>
+          <p class="display display--xl split"><em>Un seul studio.</em></p>
+          <p class="lead">Chaque projet part de zéro, autour de l'entreprise qu'il sert.</p>
+        </div>
+
+        <!-- Bande 3 : l'arrivée -->
+        <div class="band band--3" data-a="0.70" data-b="1" data-fx="settle">
+          <p class="display display--md split">La prochaine planète, c'est <em>votre marque.</em></p>
+          <p class="lead stage-sub">Parlez-nous de votre projet. Réponse dans la journée sur WhatsApp.</p>
+          <div class="actions stage-cta">
+            <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener" class="btn btn--accent">Écrire sur WhatsApp</a>
+            <a href="#projets" class="btn btn--ghost">Voir les projets</a>
+          </div>
+        </div>
+
+        <!-- Hero statique : téléphones et mouvement réduit -->
+        <div class="hero__static">
+          <p class="eyebrow"><span class="pulse"></span>Studio de design et web · Dakar, SN</p>
+          <h1 class="display">Nous construisons des mondes qui ont de la <em>gravité.</em></h1>
+          <p class="lead">Sites premium, plateformes web et employés IA. Conçus à Dakar. Réponse dans la journée sur WhatsApp.</p>
+          <div class="actions">
+            <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener" class="btn btn--accent">Écrire sur WhatsApp</a>
+            <a href="#projets" class="btn btn--ghost">Voir les projets</a>
+          </div>
+        </div>
+
+        <div class="hero__meta" aria-hidden="true">
+          <span>14.6928° N · 17.4467° O</span>
+          <span class="cue">Descendez pour aligner les mondes <i></i></span>
+          <span>Dakar · <b class="clock">--:--</b> GMT</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ BANDEAU ============ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <span>Sites premium</span><i></i><span>Plateformes web</span><i></i><span>Employés IA</span><i></i>
+        <span>Sites premium</span><i></i><span>Plateformes web</span><i></i><span>Employés IA</span><i></i>
+        <span>Sites premium</span><i></i><span>Plateformes web</span><i></i><span>Employés IA</span><i></i>
+        <span>Sites premium</span><i></i><span>Plateformes web</span><i></i><span>Employés IA</span><i></i>
+      </div>
+    </div>
+
+    <!-- ============ PROJETS ============ -->
+    <section class="work light" id="projets" aria-labelledby="t-projets">
+      <header class="head reveal">
+        <p class="kicker">Réalisations 2026</p>
+        <h2 class="display display--lg" id="t-projets">Nos <em>réalisations</em></h2>
+        <p class="head__side">Des sites qui travaillent pour de vrais commerces de Dakar. Voici les quatre derniers.</p>
+      </header>
+
+      <article class="project reveal" style="--planet:#7c5cff">
+        <figure class="frame">
+          <div class="frame__bar"><i></i><i></i><i></i><span>dakarhouse.sn</span></div>
+          <img src="assets/img/dakarhouse.jpg" alt="Page d'accueil de DakarHouse : Trouvez votre chez-vous à Dakar" loading="lazy" width="1824" height="963">
+        </figure>
+        <div class="project__info">
+          <p class="kicker"><span class="orb"></span><b>01</b> Plateforme immobilière</p>
+          <h3>DakarHouse</h3>
+          <p>Une plateforme de location qui couvre 16 quartiers de Dakar. On cherche par quartier et par budget, on parle directement au propriétaire, sans frais cachés.</p>
+          <ul class="tags"><li>Design produit</li><li>Plateforme web</li><li>Annonces et filtres</li></ul>
+          <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener" class="link">Parler d'un projet similaire <span>→</span></a>
+        </div>
+      </article>
+
+      <article class="project project--flip reveal" style="--planet:#c9cbd3">
+        <figure class="frame">
+          <div class="frame__bar"><i></i><i></i><i></i><span>istoretech.sn</span></div>
+          <img src="assets/img/istore.jpg" alt="Page d'accueil d'iStore Tech : Ça commence par un téléphone" loading="lazy" width="1828" height="934">
+        </figure>
+        <div class="project__info">
+          <p class="kicker"><span class="orb"></span><b>02</b> Commerce en ligne</p>
+          <h3>iStore Tech</h3>
+          <p>Une boutique calme comme une galerie, pour un revendeur de téléphones à Dakar. Le produit flotte, le catalogue et la commande WhatsApp font la vente.</p>
+          <ul class="tags"><li>Direction artistique</li><li>E-commerce</li><li>Commande WhatsApp</li></ul>
+          <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener" class="link">Parler d'un projet similaire <span>→</span></a>
+        </div>
+      </article>
+
+      <article class="project reveal" style="--planet:#d946ef">
+        <figure class="frame">
+          <div class="frame__bar"><i></i><i></i><i></i><span>saturn.agency/agents</span></div>
+          <img src="assets/img/saturn-ai.jpg" alt="Studio Saturn Agents : Fatou, créatrice de contenu IA" loading="lazy" width="1828" height="958">
+        </figure>
+        <div class="project__info">
+          <p class="kicker"><span class="orb"></span><b>03</b> Plateforme IA</p>
+          <h3>Saturn Agents</h3>
+          <p>Notre propre équipe d'employés IA. Fatou, la créatrice de contenu, écrit carrousels, scripts de reels et publications dans le ton de la marque, à la demande.</p>
+          <ul class="tags"><li>Agents IA</li><li>n8n</li><li>Automatisation de contenu</li></ul>
+          <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener" class="link">Parler d'un projet similaire <span>→</span></a>
+        </div>
+      </article>
+
+      <article class="project project--flip reveal" style="--planet:#dc2626">
+        <figure class="frame frame--dark">
+          <div class="frame__bar"><i></i><i></i><i></i><span>teranga-parfums.sn</span></div>
+          <img src="assets/img/teranga.jpg" alt="Page d'accueil de Teranga : Almadies, Dakar" loading="lazy" width="1828" height="967">
+        </figure>
+        <div class="project__info">
+          <p class="kicker"><span class="orb"></span><b>04</b> Parfumerie de luxe</p>
+          <h3>Teranga</h3>
+          <p>Quarante parfums, choisis un par un. Un salon cinématographique pour une maison de parfum des Almadies, entre pierre, lumière et ombre.</p>
+          <ul class="tags"><li>Univers de marque</li><li>Éditorial</li><li>Boutique</li></ul>
+          <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener" class="link">Parler d'un projet similaire <span>→</span></a>
+        </div>
+      </article>
+    </section>
+
+    <!-- ============ SERVICES ============ -->
+    <section class="services dark" id="services" aria-labelledby="t-services">
+      <svg class="orbits" viewBox="0 0 800 800" aria-hidden="true">
+        <circle cx="400" cy="400" r="390" pathLength="1"/>
+        <circle cx="400" cy="400" r="290" pathLength="1"/>
+        <circle cx="400" cy="400" r="190" pathLength="1" class="accent"/>
+      </svg>
+      <header class="head reveal">
+        <p class="kicker">Ce qu'on fait</p>
+        <h2 class="display display--lg" id="t-services">Trois <em>orbites</em></h2>
+        <p class="head__side">Tout ce qu'on fabrique va dans le même sens : une marque qui paraît évidente, et des systèmes qui continuent de travailler après notre départ.</p>
+      </header>
+
+      <div class="service reveal">
+        <span class="service__n">01</span>
+        <h3>Sites premium</h3>
+        <p>Des sites éditoriaux et cinématographiques qui font de votre marque le choix évident, du premier scroll à l'appel réservé.</p>
+        <ul class="tags tags--dark"><li>Direction artistique</li><li>UI/UX</li><li>Développement</li><li>Animation</li></ul>
+      </div>
+      <div class="service reveal">
+        <span class="service__n">02</span>
+        <h3>Plateformes web</h3>
+        <p>Places de marché, catalogues et espaces clients avec une vraie logique derrière, construits pour grandir avec l'entreprise.</p>
+        <ul class="tags tags--dark"><li>Design produit</li><li>Tableaux de bord</li><li>Paiements</li><li>E-commerce</li></ul>
+      </div>
+      <div class="service reveal">
+        <span class="service__n">03</span>
+        <h3>Employés IA</h3>
+        <p>Des agents et automatisations qui écrivent, répondent, qualifient et font des rapports, branchés sur les outils que votre équipe utilise déjà.</p>
+        <ul class="tags tags--dark"><li>n8n</li><li>Agents IA</li><li>RAG</li><li>Bots WhatsApp</li></ul>
+      </div>
+    </section>
+
+    <!-- ============ MÉTHODE ============ -->
+    <section class="method light" id="methode" aria-labelledby="t-methode">
+      <header class="method__head reveal">
+        <p class="kicker">Notre méthode</p>
+        <h2 class="display display--lg" id="t-methode">Un site vitrine premium en <em>2 à 3 semaines.</em> Et c'est écrit.</h2>
+      </header>
+
+      <ol class="timeline" id="timeline">
+        <svg class="timeline__line" viewBox="0 0 1000 4" preserveAspectRatio="none" aria-hidden="true"><line x1="0" y1="2" x2="1000" y2="2" pathLength="1"/></svg>
+        <li><span class="dot"></span><b>01</b><h3>L'appel</h3><p>30 minutes pour comprendre votre entreprise et vos clients.</p></li>
+        <li><span class="dot"></span><b>02</b><h3>La direction</h3><p>Une direction artistique rien que pour vous, validée avant de construire.</p></li>
+        <li><span class="dot"></span><b>03</b><h3>La construction</h3><p>On conçoit et on code. Vous suivez l'avancée à chaque étape.</p></li>
+        <li><span class="dot"></span><b>04</b><h3>La mise en ligne</h3><p>Votre site part en ligne, et on reste là.</p></li>
+      </ol>
+
+      <div class="promises">
+        <div class="promise reveal">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="21" width="28" height="19" rx="4"/><path d="M16 21v-5a8 8 0 0 1 16 0"/><circle cx="24" cy="30" r="2.5" class="fill"/></svg>
+          <h3>Tout est à vous</h3>
+          <p>Code source, accès et nom de domaine à votre nom, remis à la livraison.</p>
+        </div>
+        <div class="promise reveal">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="11" width="30" height="28" rx="4"/><path d="M9 19h30M17 7v8M31 7v8"/><path d="M17 28l5 5 9-10"/></svg>
+          <h3>Un délai écrit</h3>
+          <p>Le planning est fixé au départ, et on le tient.</p>
+        </div>
+        <div class="promise reveal">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 8a16 16 0 0 0-13.9 24L8 40l8.2-2.1A16 16 0 1 0 24 8Z"/><path d="M24 17v8l5 3"/></svg>
+          <h3>Réponse dans la journée</h3>
+          <p>Sur WhatsApp, là où vous êtes déjà.</p>
+        </div>
+        <div class="promise reveal">
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="7"/><ellipse cx="24" cy="24" rx="18" ry="6" transform="rotate(-20 24 24)"/></svg>
+          <h3>On reste après</h3>
+          <p>Corrections et accompagnement après la mise en ligne.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STUDIO ============ -->
+    <section class="studio dark" id="studio" aria-labelledby="t-studio">
+      <p class="kicker reveal" id="t-studio">Le studio</p>
+      <p class="studio__statement reveal">Une petite équipe à Dakar avec une règle simple : chaque pixel doit porter son propre <em>poids</em>. On conçoit, on construit, on automatise, et on reste proches des gens qui s'en servent.</p>
+      <div class="studio__grid">
+        <div class="reveal"><b>/01</b><h3>Construit de zéro</h3><p>Aucun modèle. Chaque identité part de l'entreprise, pas d'un thème.</p></div>
+        <div class="reveal"><b>/02</b><h3>Un design qui se livre</h3><p>Ceux qui le dessinent le codent aussi. Rien ne se perd entre les deux.</p></div>
+        <div class="reveal"><b>/03</b><h3>Local, global</h3><p>Ancrés à Dakar, au travail avec des marques en Afrique et au-delà.</p></div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="faq light" id="faq" aria-labelledby="t-faq">
+      <header class="faq__head reveal">
+        <p class="kicker">Avant de nous écrire</p>
+        <h2 class="display display--lg" id="t-faq">Vos <em>questions</em></h2>
+        <p>Une autre question ? Posez-la sur WhatsApp, on répond dans la journée.</p>
+      </header>
+      <div class="faq__list">
+        <details class="reveal">
+          <summary>Combien coûte un site ?<i aria-hidden="true"></i></summary>
+          <div><p>Chaque projet est chiffré après un appel de 30 minutes. Vous recevez un devis écrit et détaillé avant que quoi que ce soit ne commence.</p></div>
+        </details>
+        <details class="reveal">
+          <summary>Combien de temps faut-il ?<i aria-hidden="true"></i></summary>
+          <div><p>2 à 3 semaines pour un site vitrine premium. Les plateformes et les employés IA sont planifiés au cas par cas. Dans tous les cas, le planning est écrit dès le départ.</p></div>
+        </details>
+        <details class="reveal">
+          <summary>À qui appartient le site à la fin ?<i aria-hidden="true"></i></summary>
+          <div><p>À vous. Le code source, les accès et le nom de domaine sont à votre nom et vous sont remis à la livraison.</p></div>
+        </details>
+        <details class="reveal">
+          <summary>Vous travaillez hors du Sénégal ?<i aria-hidden="true"></i></summary>
+          <div><p>Oui. Le studio est à Dakar et travaille avec des marques en Afrique et au-delà. Tout se fait à distance, sur WhatsApp et en visio.</p></div>
+        </details>
+        <details class="reveal">
+          <summary>Et après la mise en ligne ?<i aria-hidden="true"></i></summary>
+          <div><p>On reste là. Corrections, ajustements et accompagnement après la livraison. Vous nous écrivez, on s'en occupe.</p></div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ APPEL FINAL + MOMENT INTERACTIF ============ -->
+    <section class="cta dark" id="contact" aria-labelledby="t-cta">
+      <p class="kicker kicker--center reveal">Prochaine fenêtre de lancement : ouverte</p>
+      <h2 class="display display--xl reveal" id="t-cta">Mettez votre marque <em>en orbite.</em></h2>
+
+      <div class="launch reveal" id="launch">
+        <svg class="launch__orbit" viewBox="0 0 400 160" aria-hidden="true">
+          <ellipse cx="200" cy="80" rx="180" ry="52" class="track"/>
+          <ellipse cx="200" cy="80" rx="180" ry="52" class="trail" pathLength="1"/>
+        </svg>
+        <div class="launch__saturn" aria-hidden="true"></div>
+        <div class="launch__moon" aria-hidden="true"></div>
+        <button class="launch__btn" type="button" id="launchBtn" aria-describedby="launchHint">
+          <span class="launch__label">Maintenir pour lancer</span>
+        </button>
+        <div class="launch__foot">
+          <p class="launch__hint" id="launchHint">Maintenez le bouton pour mettre votre planète en orbite.</p>
+          <p class="launch__done" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <div class="actions actions--center reveal">
+        <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener" class="btn btn--accent btn--lg" id="finalCta">Écrire sur WhatsApp</a>
+        <a href="mailto:saturndesingstudio@gmail.com" class="btn btn--ghost btn--lg">saturndesingstudio@gmail.com</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <img src="assets/img/logo.png" alt="Saturn Design Studio" width="413" height="126" loading="lazy">
+        <p>Studio de design et web à Dakar. Sites premium, plateformes web et employés IA.</p>
+      </div>
+      <div class="footer__col">
+        <h3>Contact</h3>
+        <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z"/></svg>WhatsApp
+        </a>
+        <a href="mailto:saturndesingstudio@gmail.com">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>saturndesingstudio@gmail.com
+        </a>
+      </div>
+      <div class="footer__col">
+        <h3>Réseaux</h3>
+        <a href="https://www.instagram.com/saturn_sn" target="_blank" rel="noopener">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1" class="fill"/></svg>Instagram · @saturn_sn
+        </a>
+      </div>
+      <div class="footer__col">
+        <h3>Navigation</h3>
+        <a href="#projets">Projets</a>
+        <a href="#services">Services</a>
+        <a href="#methode">Méthode</a>
+        <a href="#faq">Questions</a>
+      </div>
+    </div>
+
+    <div class="footer__word" aria-hidden="true">
+      <span>SATURN</span>
+      <svg viewBox="0 0 1200 300" preserveAspectRatio="none"><ellipse cx="600" cy="150" rx="590" ry="70" pathLength="1"/></svg>
+    </div>
+
+    <div class="footer__bottom">
+      <span>© 2026 Saturn Design Studio</span>
+      <span>Fait à Dakar · <b class="clock">--:--</b> GMT</span>
+      <a href="#top" class="totop">Retour en haut ↑</a>
+    </div>
+  </footer>
+
+  <script src="assets/js/cosmos.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script src="assets/js/nav.js"></script>
+</body>
+</html>
