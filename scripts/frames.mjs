@@ -9,7 +9,9 @@ import { join } from 'node:path';
 const [,, url, profile = 'desktop', ...rest] = process.argv;
 const flag = f => rest.includes(f);
 const traceOut = flag('--trace') ? rest[rest.indexOf('--trace') + 1] : null;
-const P = profile === 'mobilecpu'
+const P = profile === 'desktopcpu'
+  ? { w: 1440, h: 900, dpr: 1, mobile: false, cpu: 4, net: null }
+  : profile === 'mobilecpu'
   ? { w: 390, h: 844, dpr: 3, mobile: true, cpu: 4, net: null }
   : profile === 'mobile'
   ? { w: 390, h: 844, dpr: 3, mobile: true, cpu: 4, net: { latency: 150, downloadThroughput: 1.6e6 / 8, uploadThroughput: 750e3 / 8 } }
