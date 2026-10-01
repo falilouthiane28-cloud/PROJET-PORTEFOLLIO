@@ -1,7 +1,5 @@
-// La barre de navigation : ressorts interruptibles, pastille glissante, jauge de lecture, menu mobile.
-// Tout tourne sur gsap.ticker (une seule boucle d'images pour tout le site) et n'anime que transform/opacity.
-
-export function initNav(gsap) {
+/* La barre de navigation : ressorts interruptibles, pastille glissante, jauge de lecture. */
+(function () {
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
   const RM = matchMedia('(prefers-reduced-motion: reduce)');
@@ -16,10 +14,8 @@ export function initNav(gsap) {
   const menuBtn = $('.nav__menu', nav);
   const sheet = $('#navSheet');
   const scrim = $('#navScrim');
-  const progress = $('.nav__progress', nav);
-  const GLOW_W = 100;                          // largeur de base de la pastille, mise à l'échelle en scaleX
 
-  /* ---------- ressort à la Apple : amortissement + réponse, repart toujours de la valeur affichée ---------- */
+  /* ---------- un ressort à la Apple : amortissement + réponse, repart de la valeur actuelle ---------- */
   function Spring(value, { damping = 1, response = 0.35 } = {}) {
     const w = (2 * Math.PI) / response;
     return {
@@ -33,29 +29,30 @@ export function initNav(gsap) {
       set(t, jump) { this.t = t; if (jump) { this.x = t; this.v = 0; } }
     };
   }
-  // la pastille glisse avec un léger rebond (le geste du pointeur porte de l'élan) ; la pilule revient sans rebond
+
+  // la pastille : glisse avec un léger rebond (le geste du pointeur porte de l'élan)
   const gx = Spring(0, { damping: 0.82, response: 0.38 });
-  const gw = Spring(80, { damping: 0.9, response: 0.38 });
+  const gw = Spring(60, { damping: 0.9, response: 0.38 });
+  // la pilule blanche : attirée par le curseur, revient sans rebond
   const bx = Spring(0, { damping: 1, response: 0.4 }), by = Spring(0, { damping: 1, response: 0.4 });
-  const springs = [gx, gw, bx, by];
 
-  let animating = false, glowOn = null, glowTarget = null, current = null;
-  const cache = { gx: null, gs: null, bx: null, by: null };
+  let rafId = null, last = 0, glowOn = null, glowTarget = null, current = null;
+  const cache = { gx: null, gw: null, bx: null, by: null };
 
-  function step(time, deltaTime) {
-    const dt = Math.min(1 / 30, deltaTime / 1000);
+  function frame(now) {
+    const dt = Math.min(1 / 30, (now - (last || now)) / 1000); last = now;
     let busy = false;
-    for (const s of springs) busy = s.step(dt) || busy;
+    for (const s of [gx, gw, bx, by]) busy = s.step(dt) || busy;
     write();
-    if (!busy) { gsap.ticker.remove(step); animating = false; }
+    if (busy) rafId = requestAnimationFrame(frame); else { rafId = null; last = 0; }
   }
   function wake() {
-    if (RM.matches) { springs.forEach(s => s.set(s.t, true)); write(); return; }
-    if (!animating) { animating = true; gsap.ticker.add(step); }
+    if (RM.matches) { [gx, gw, bx, by].forEach(s => s.set(s.t, true)); write(); return; }
+    if (rafId === null) rafId = requestAnimationFrame(frame);
   }
   function write() {
-    const x = Math.round(gx.x * 10) / 10, s = Math.round(gw.x / GLOW_W * 1000) / 1000;
-    if (x !== cache.gx || s !== cache.gs) { glow.style.transform = `translate3d(${x}px,0,0) scaleX(${s})`; cache.gx = x; cache.gs = s; }
+    const x = Math.round(gx.x * 10) / 10, w = Math.round(gw.x * 10) / 10;
+    if (x !== cache.gx || w !== cache.gw) { glow.style.transform = `translate3d(${x}px,0,0)`; glow.style.width = w + 'px'; cache.gx = x; cache.gw = w; }
     const X = Math.round(bx.x * 10) / 10, Y = Math.round(by.x * 10) / 10;
     if (X !== cache.bx || Y !== cache.by) {
       cta.style.setProperty('--bx', X + 'px'); cta.style.setProperty('--by', Y + 'px');
@@ -65,26 +62,38 @@ export function initNav(gsap) {
   }
 
   /* ---------- la pastille suit le survol, puis se repose sur la section en cours ---------- */
-  function setGlow(on) { if (on !== glowOn) { linksBox.classList.toggle('has-glow', on); glowOn = on; } }
   function moveGlowTo(a, jump) {
     if (!a) { setGlow(false); return; }
-    // lecture groupée des positions (une seule mesure par déplacement)
     const box = linksBox.getBoundingClientRect(), r = a.getBoundingClientRect();
     const first = glowOn !== true;
     gx.set(r.left - box.left, jump || first); gw.set(r.width, jump || first);
     setGlow(true); glowTarget = a; wake();
   }
+  function setGlow(on) { if (on !== glowOn) { linksBox.classList.toggle('has-glow', on); glowOn = on; } }
   links.forEach(a => {
     a.addEventListener('pointerenter', () => moveGlowTo(a));
     a.addEventListener('focus', () => moveGlowTo(a));
   });
-  // filet : si l'entrée a été manquée (curseur déjà posé au chargement), le premier mouvement suffit
+  // filet de sécurité : si l'entrée a été manquée (curseur déjà posé au chargement), le premier mouvement suffit
   linksBox.addEventListener('pointermove', e => {
     const a = e.target.closest('a');
     if (a && (a !== glowTarget || !glowOn)) moveGlowTo(a);
   });
   linksBox.addEventListener('pointerleave', () => moveGlowTo(current));
   linksBox.addEventListener('focusout', e => { if (!linksBox.contains(e.relatedTarget)) moveGlowTo(current); });
+
+  /* ---------- section en cours ---------- */
+  const sections = links.map(a => document.getElementById(a.dataset.id));
+  function spy() {
+    const mid = innerHeight * 0.45;
+    let found = null;
+    sections.forEach((s, i) => { const r = s.getBoundingClientRect(); if (r.top <= mid && r.bottom > mid) found = links[i]; });
+    if (found === current) return;
+    if (current) current.classList.remove('is-current');
+    current = found;
+    if (current) current.classList.add('is-current');
+    if (!linksBox.matches(':hover') && !linksBox.contains(document.activeElement)) moveGlowTo(current);
+  }
 
   /* ---------- la pilule blanche attirée par le curseur ---------- */
   cta.addEventListener('pointermove', e => {
@@ -95,69 +104,49 @@ export function initNav(gsap) {
   });
   cta.addEventListener('pointerleave', () => { bx.set(0); by.set(0); wake(); });
 
-  /* ---------- section en cours ---------- */
-  // un observateur suit la section qui traverse le milieu de l'écran : aucune mesure de mise en page à chaque image
-  const sections = links.map(a => document.getElementById(a.dataset.id));
-  const inView = new Set();
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => (e.isIntersecting ? inView.add(e.target) : inView.delete(e.target)));
-    spy();
-  }, { rootMargin: '-45% 0px -54% 0px' });
-  sections.forEach(s => io.observe(s));
-  function spy() {
-    const i = sections.findIndex(s => inView.has(s));
-    const found = i >= 0 ? links[i] : null;
-    if (found === current) return;
-    if (current) current.classList.remove('is-current');
-    current = found;
-    if (current) current.classList.add('is-current');
-    if (!linksBox.matches(':hover') && !linksBox.contains(document.activeElement)) moveGlowTo(current);
-  }
-
-  /* ---------- scroll : jauge, repli du mot, retrait en descendant (lu sur le ticker, sans écouteur de scroll) ---------- */
-  let lastY = -1, hidden = false, condensed = null, read = -1, maxScroll = 1;
-  // hauteur de page mise en cache, mise à jour hors de la boucle d'images
-  const measure = () => { maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
-  new ResizeObserver(measure).observe(document.body);
-  function onTick() {
+  /* ---------- scroll : jauge, repli du mot, retrait en descendant ---------- */
+  const progress = $('.nav__progress', nav);
+  let lastY = scrollY, hidden = false, condensed = null, read = -1, queued = false;
+  function onScroll() {
+    queued = false;
     const y = scrollY;
-    if (y === lastY) return;
-    const dy = lastY < 0 ? 0 : y - lastY;
-    const max = maxScroll;
+    const max = document.documentElement.scrollHeight - innerHeight;
     const r = max > 0 ? Math.round(Math.min(1, y / max) * 1000) / 1000 : 0;
     if (r !== read) { progress.style.setProperty('--read', r); read = r; }
     const c = y > 80;
-    if (c !== condensed) {
-      nav.classList.toggle('is-condensed', c); condensed = c;
-      if (glowTarget && glowOn) gsap.delayedCall(0.75, () => moveGlowTo(glowTarget, true));   // après le repli du mot
-    }
+    if (c !== condensed) { nav.classList.toggle('is-condensed', c); condensed = c; if (current || glowOn) requestAnimationFrame(() => moveGlowTo(glowTarget, true)); }
+    const dy = y - lastY;
     if (!nav.classList.contains('is-open')) {
       if (dy > 8 && y > 480 && !hidden && !nav.contains(document.activeElement)) { nav.classList.add('is-hidden'); hidden = true; }
       else if ((dy < -8 || y < 480) && hidden) { nav.classList.remove('is-hidden'); hidden = false; }
     }
     lastY = y;
+    spy();
   }
-  gsap.ticker.add(onTick);
+  addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(onScroll); } }, { passive: true });
   nav.addEventListener('focusin', () => { if (hidden) { nav.classList.remove('is-hidden'); hidden = false; } });
+  // la largeur des liens change quand le mot se replie : on recale la pastille après la transition
+  $('.nav__word', nav).addEventListener('transitionend', () => { if (glowTarget) moveGlowTo(glowTarget, true); });
   addEventListener('resize', () => { if (glowTarget && glowOn) moveGlowTo(glowTarget, true); if (DESK.matches) closeMenu(false); });
+  onScroll();
 
   /* ---------- menu mobile : se déplie depuis la barre, se replie par le même chemin ---------- */
   let closeTimer = null;
-  const label = menuBtn.querySelector('.sr');
   function openMenu() {
     clearTimeout(closeTimer);
     sheet.hidden = false;
-    void sheet.offsetHeight;                     // une seule lecture forcée, pour partir de l'état fermé
-    nav.classList.add('is-open'); scrim.classList.add('is-on');
     menuBtn.setAttribute('aria-expanded', 'true');
-    label.textContent = 'Fermer le menu';
-    const first = sheet.querySelector('a'); if (first) first.focus({ preventScroll: true });
+    menuBtn.querySelector('.sr').textContent = 'Fermer le menu';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      nav.classList.add('is-open'); scrim.classList.add('is-on');
+      const first = sheet.querySelector('a'); if (first) first.focus({ preventScroll: true });
+    }));
   }
   function closeMenu(restoreFocus = true) {
     if (!nav.classList.contains('is-open')) return;
     nav.classList.remove('is-open'); scrim.classList.remove('is-on');
     menuBtn.setAttribute('aria-expanded', 'false');
-    label.textContent = 'Ouvrir le menu';
+    menuBtn.querySelector('.sr').textContent = 'Ouvrir le menu';
     closeTimer = setTimeout(() => { sheet.hidden = true; }, RM.matches ? 0 : 450);
     if (restoreFocus) menuBtn.focus({ preventScroll: true });
   }
@@ -167,11 +156,11 @@ export function initNav(gsap) {
   document.addEventListener('keydown', e => {
     if (!nav.classList.contains('is-open')) return;
     if (e.key === 'Escape') { e.preventDefault(); closeMenu(); return; }
-    if (e.key === 'Tab') {                       // le focus reste dans le menu ouvert
+    if (e.key === 'Tab') {                                  // le focus reste dans le menu ouvert
       const f = [menuBtn, ...sheet.querySelectorAll('a')];
       const i = f.indexOf(document.activeElement);
       if (e.shiftKey && i <= 0) { e.preventDefault(); f[f.length - 1].focus(); }
       else if (!e.shiftKey && i === f.length - 1) { e.preventDefault(); f[0].focus(); }
     }
   });
-}
+})();
