@@ -1,0 +1,9 @@
+/* Jetons de mouvement côté CSS (mêmes valeurs que src/motion/tokens.js, vérifié par test/unit/tokens.test.mjs)
+   et styles des effets ajoutés. Ne change rien au rendu au repos : seulement les entrées et les interactions. */
+:root{
+  --dur-press:.1s;
+  --dur-micro: 0.3s;
+  --dur-base:.6s;
+  --dur-reveal: 1.1s;
+  --ease-quint:cubic-bezier(0.22, 1, 0.36, 1);
+}
