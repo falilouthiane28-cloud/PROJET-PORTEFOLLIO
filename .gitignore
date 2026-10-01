@@ -1,6 +1,8 @@
 node_modules/
 dist/
-.claude/
+.claude/settings.local.json
+.claude/launch.json
+.claude/.cache/
 *.log
 perf/base/
 perf/audit/

@@ -1,0 +1,10 @@
+#!/bin/sh
+# Pre-commit : lint, tests unitaires et budget du bundle. Bloque le commit en cas d'échec.
+# Activé par `npm install` (script prepare : git config core.hooksPath .githooks).
+set -e
+echo "pre-commit : lint"
+node node_modules/eslint/bin/eslint.js .
+echo "pre-commit : tests unitaires"
+node --test "test/unit/*.test.mjs" > /dev/null
+echo "pre-commit : build + budget du bundle"
+node scripts/check-budget.mjs --build
