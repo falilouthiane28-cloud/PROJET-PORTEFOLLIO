@@ -25,7 +25,11 @@ export function init(root = document) {
     },
     onToggle(self) {
       if (self.isActive && !active) { gsap.ticker.add(tick); active = true; }
-      else if (!self.isActive && active) { gsap.ticker.remove(tick); active = false; }
+      else if (!self.isActive && active) {
+        // hors écran : la boucle s'arrête, on repart à l'allure normale (sinon il repartirait trop vite au retour)
+        gsap.ticker.remove(tick); active = false;
+        target = rate = Math.sign(target) || 1; anim.updatePlaybackRate(target);
+      }
     }
   });
   return () => { st.kill(); gsap.ticker.remove(tick); anim.updatePlaybackRate(1); };
