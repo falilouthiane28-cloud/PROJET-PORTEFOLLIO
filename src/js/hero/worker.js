@@ -51,7 +51,7 @@ self.onmessage = ({ data: m }) => {
       if (!ctx) { postMessage({ type: 'fail', reason: 'contexte 2D indisponible' }); return; }
       scene = createScene({ W, H, particles: quality.particles });
       applySize();
-      visible = true; start();
+      visible = m.visible !== false; start();
       break;
     case 'resize': W = m.width; H = m.height; if (scene) applySize(); break;
     case 'input': input = m; break;

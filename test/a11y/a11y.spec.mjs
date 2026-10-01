@@ -64,3 +64,16 @@ test('FAQ : s’ouvre et se ferme au clavier', async ({ page }) => {
   await page.keyboard.press('Enter');
   await expect.poll(() => page.locator('.faq details').first().evaluate(d => d.open), { timeout: 3000 }).toBe(false);
 });
+
+test('souris : cliquer sur du texte ne fait pas défiler la page (focus sur <main>)', async ({ page }) => {
+  await page.goto('/');
+  await introDone(page);
+  for (let i = 0; i < 25; i++) { await page.mouse.wheel(0, 300); await page.waitForTimeout(50); }
+  await page.waitForTimeout(1500);
+  const p = page.locator('.project__info p').nth(1);
+  await p.scrollIntoViewIfNeeded(); await page.waitForTimeout(1200);
+  const before = await page.evaluate(() => Math.round(scrollY));
+  await p.click();
+  await page.waitForTimeout(1200);
+  expect(Math.abs(await page.evaluate(() => Math.round(scrollY)) - before)).toBeLessThan(3);
+});

@@ -104,7 +104,8 @@ export function initHero() {
   // son animation), puis on ne défile que si l'élément reste mal placé. Les bandes du hero ont leur règle (plus bas).
   function lenisFocus(e) {
     const el = e.target;
-    if (!lenis || !(el instanceof Element) || el.closest('.band, .nav')) return;
+    // clavier uniquement : un clic sur du texte donne le focus à <main> (tabindex=-1) et ne doit rien faire défiler
+    if (!lenis || !(el instanceof Element) || el.closest('.band, .nav') || el.getAttribute('tabindex') === '-1' || !el.matches(':focus-visible')) return;
     lenis.scrollTo(scrollY, { immediate: true, force: true });
     const r = el.getBoundingClientRect();
     if (r.top < 90 || r.bottom > innerHeight - 40) lenis.scrollTo(scrollY + r.top - Math.round(innerHeight * 0.3));
@@ -139,7 +140,7 @@ export function initHero() {
 
   /* ---------- étiquettes : à la position finale de chaque monde, elles apparaissent quand il s'aligne ---------- */
   function placeChips(p) {
-    // lecture des tailles avant toute écriture de l'image : la mise en page n'est calculée qu'une fois
+    // hors boucle (mode statique, bascule) : lecture ponctuelle si la boucle ne l'a pas encore faite
     if (chipSizeDirty) { chipSize = chips.map(c => [c.offsetWidth, c.offsetHeight]); chipSizeDirty = false; }
     const Rs = L.R * scaleAt(p);
     const showChips = isStatic || info.tier === 'live';
@@ -202,6 +203,8 @@ export function initHero() {
     if (Math.abs(st.py * 10 - st.oy) < 0.01) st.oy = st.py * 10;
 
     const p = st.shown;
+    // lectures d'abord (tailles des étiquettes après un redimensionnement), écritures ensuite : un seul layout
+    if (chipSizeDirty) { chipSize = chips.map(c => [c.offsetWidth, c.offsetHeight]); chipSizeDirty = false; }
     // secours : l'utilisateur descend avant que la découpe ait eu son temps libre → juste avant la bande 2 (0,32)
     if (!splitDone && st.target > 0.12) splitBands();
     updateBands(p);
@@ -256,14 +259,17 @@ export function initHero() {
     canvasUsed = true;
     if ('transferControlToOffscreen' in canvas) {
       worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
+      const w = worker;                               // un message tardif d'un worker déjà démonté est ignoré
       worker.onmessage = ({ data: m }) => {
+        if (w !== worker) return;
         if (m.type === 'ready') crossfade();
         else if (m.type === 'stats') info.stats = m;
         else if (m.type === 'fail') { info.tier = 'poster'; teardown(); }
       };
-      worker.onerror = () => { info.tier = 'poster'; teardown(); };
+      worker.onerror = () => { if (w !== worker) return; info.tier = 'poster'; teardown(); };
       const off = canvas.transferControlToOffscreen();
-      worker.postMessage({ type: 'init', canvas: off, ...opts }, [off]);
+      // visibilité réelle : si l'utilisateur a déjà quitté le hero, le worker ne dessine pas hors écran
+      worker.postMessage({ type: 'init', canvas: off, visible: visible && !document.hidden, ...opts }, [off]);
       sent = null;
       info.mode = 'worker';
     } else {
@@ -334,8 +340,8 @@ export function initHero() {
 
   /* ---------- clavier : un lien d'une bande encore invisible reçoit le focus → on fait défiler jusqu'à sa bande ---------- */
   // (sinon le focus tombe sur un bouton à opacité 0 : WCAG 2.4.7 et 2.4.11)
-  bands.forEach(b => b.el.addEventListener('focusin', () => {
-    if (isStatic || !heroST) return;
+  bands.forEach(b => b.el.addEventListener('focusin', e => {
+    if (isStatic || !heroST || !e.target.matches(':focus-visible')) return;
     const heroOnScreen = scrollY >= heroST.start - 1 && scrollY <= heroST.end + 1;
     if (heroOnScreen && b.op > 0.9) return;                    // bande déjà visible : rien à faire
     const p = b.first ? 0 : b.last ? 1 : (b.a + b.b) / 2;
@@ -350,17 +356,19 @@ export function initHero() {
       st.px = (e.clientX / innerWidth) * 2 - 1;
       st.py = (e.clientY / innerHeight) * 2 - 1;
     }, { passive: true });
+    // bouton magnétique : la propriété CSS `translate` (via --mx/--my, voir motion.css) et non `transform`,
+    // sinon la transition CSS de .btn ralentissait chaque écriture et le survol d'origine (translateY) était écrasé
     const btn = $('.band--3 .btn--accent');
     if (btn) {
-      let mx = null, my = null;
+      btn.classList.add('mv-magnet');
+      const mx = gsap.quickTo(btn, '--mx', { duration: 0.5, ease: 'power3' }), my = gsap.quickTo(btn, '--my', { duration: 0.5, ease: 'power3' });
       btn.addEventListener('pointermove', e => {
         if (e.pointerType !== 'mouse') return;
-        if (!mx) { mx = gsap.quickTo(btn, 'x', { duration: 0.5, ease: 'power3' }); my = gsap.quickTo(btn, 'y', { duration: 0.5, ease: 'power3' }); }
         const r = btn.getBoundingClientRect();
         mx(clamp((e.clientX - (r.left + r.width / 2)) * 0.25, -10, 10));
         my(clamp((e.clientY - (r.top + r.height / 2)) * 0.3, -8, 8));
       });
-      btn.addEventListener('pointerleave', () => { if (mx) { mx(0); my(0); } });
+      btn.addEventListener('pointerleave', () => { mx(0); my(0); });
     }
   }
 
