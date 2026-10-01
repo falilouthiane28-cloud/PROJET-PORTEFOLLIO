@@ -9,6 +9,7 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import { deviceTier, readTierSignals } from './tier.js';
 import { createScene, layoutFor, PLANETS, align, scaleAt, project, smooth, TILT, E } from './scene.js';
 
 const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
@@ -58,15 +59,6 @@ function split(el, seed, fx, spread) {
   } else {
     words.forEach((w, i) => w.style.setProperty('--th', (i / Math.max(1, words.length) * 0.5).toFixed(3)));
   }
-}
-
-// appareil modeste ou économie de données : pas d'animation continue (poster + même chorégraphie)
-function weakDevice() {
-  const forced = new URLSearchParams(location.search).get('niveau');   // tests : ?niveau=poster ou ?niveau=live
-  if (forced) return forced === 'poster';
-  const c = navigator.connection || {};
-  const mem = navigator.deviceMemory, cores = navigator.hardwareConcurrency;
-  return !!c.saveData || (mem && mem < 4) || (cores && cores < 4);
 }
 
 export function initHero() {
@@ -304,7 +296,7 @@ export function initHero() {
       measure(); drawStatic(); placeChips(1);
       gsap.set(posterEl, { clearProps: 'opacity' });
     } else {
-      info.tier = weakDevice() ? 'poster' : 'live';
+      info.tier = deviceTier(readTierSignals());
       bands.forEach(b => { b.op = b.k = -1; b.live = null; });
       measure(); createScroll();
       gsap.set(posterEl, { opacity: 1 });
