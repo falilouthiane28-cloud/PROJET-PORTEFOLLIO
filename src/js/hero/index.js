@@ -83,9 +83,14 @@ export function initHero() {
   const info = (window.__hero = { mode: null, tier: null, stats: null, introDoneAt: null });
   let canvas = $('#cosmos');
 
-  /* ---------- texte des bandes ---------- */
-  let seed = 11;
-  $$('.band').forEach(b => $$('.split', b).forEach(el => split(el, seed++, b.dataset.fx, parseFloat(b.dataset.spread || '0.5'))));
+  /* ---------- texte des bandes : découpe des bandes 2 et 3 (invisibles au départ) reportée après l'intro ---------- */
+  let splitDone = false;
+  const splitBands = () => {
+    if (splitDone) return;
+    splitDone = true;
+    let seed = 11;
+    $$('.band').forEach(b => $$('.split', b).forEach(el => split(el, seed++, b.dataset.fx, parseFloat(b.dataset.spread || '0.5'))));
+  };
   const bands = $$('.band').map((el, i, all) => ({
     el, a: +el.dataset.a, b: +el.dataset.b, first: i === 0, last: i === all.length - 1,
     ramp: el.dataset.ramp ? +el.dataset.ramp : null, op: -1, k: -1, live: null, y: null
@@ -339,18 +344,19 @@ export function initHero() {
   const intro = playIntro();
   // le rendu animé démarre après l'intro (il ne lui vole aucune image), ou dès le premier geste de scroll
   const requestLive = () => {
+    splitBands();                                   // au premier geste de scroll, les bandes doivent être prêtes
     if (liveRequested) return;
     liveRequested = true;
     const idle = cb => ('requestIdleCallback' in window ? requestIdleCallback(cb, { timeout: 1500 }) : setTimeout(cb, 200));
     idle(startLive);
   };
-  intro.done.then(requestLive);
+  intro.done.then(() => { splitBands(); requestLive(); });
   ['wheel', 'touchstart', 'keydown'].forEach(t => addEventListener(t, requestLive, { once: true, passive: true }));
 
   function playIntro() {
-    const heroParts = isStatic
-      ? ['.hero__static .eyebrow', '.hero__static .lead', '.hero__static .actions']
-      : ['.band--1 .eyebrow', '.band--1 .lead'];
+    // mobile : le paragraphe et les boutons restent visibles dès le premier rendu. Le titre étant masqué mot
+    // à mot, le paragraphe devient le plus grand bloc de texte, donc l'élément LCP : il ne doit pas attendre le JS.
+    const heroParts = isStatic ? ['.hero__static .eyebrow'] : ['.band--1 .eyebrow', '.band--1 .lead'];
     const nav = $('#nav'), veil = $('.hero__veil');
     if (!html.classList.contains('intro') || html.classList.contains('intro-skip')) {
       html.classList.remove('intro');
@@ -363,7 +369,10 @@ export function initHero() {
     const targets = [...heroParts, '.hero__meta', nav, veil];
     gsap.set(targets, { willChange: 'transform, opacity' });
 
+    // créée en pause : elle démarre deux images plus tard, une fois l'initialisation du hero terminée
+    // (sinon sa première image tombe pendant cette tâche et saute)
     const tl = gsap.timeline({
+      paused: true,
       defaults: { ease: 'expo.out' },
       onComplete() {
         // on rend la main au CSS et on retire les will-change
@@ -387,6 +396,10 @@ export function initHero() {
     // revue au ralenti : ?ralenti=4 joue l'intro 4 fois plus lentement
     const slow = +new URLSearchParams(location.search).get('ralenti');
     if (slow > 1) tl.timeScale(1 / slow);
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      info.introStartAt = Math.round(performance.now());   // repère pour les mesures
+      tl.play(0);
+    }));
     return { done };
   }
 }

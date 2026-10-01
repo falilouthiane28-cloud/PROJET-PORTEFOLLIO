@@ -96,7 +96,7 @@ const res = await evalJS(`(() => {
   const first = f.find(t => t > 0) || 0;
   let gl = 'n/a'; try { const c = document.createElement('canvas').getContext('webgl'); const x = c && c.getExtension('WEBGL_debug_renderer_info'); gl = c ? (x ? c.getParameter(x.UNMASKED_RENDERER_WEBGL) : 'webgl') : 'none'; } catch (e) { gl = 'error'; }
   return {
-    intro: win(first + 300, split), scroll: win(split, split + ${scrollMs}),
+    intro: win(first + 300, split), timeline: (window.__hero && window.__hero.introStartAt) ? win(window.__hero.introStartAt, window.__hero.introDoneAt || split) : null, scroll: win(split, split + ${scrollMs}),
     lcp: __m.lcp.at(-1), lcpAll: __m.lcp.map(x => x.join('|')).join('  '), cls: +__m.cls.toFixed(3), longTasks: __m.long.length, longList: __m.long.map(x => x.join('+')).join(' '), introEndAt: Math.round(split), introDoneAt: window.__introDoneAt || null, planetAt: window.__planet && window.__planet.startAt, longMs: __m.long.reduce((s, x) => s + x[1], 0),
     overflowX: document.documentElement.scrollWidth - innerWidth, webgl: gl,
     tier: document.documentElement.dataset.tier || '-', scrollY: Math.round(scrollY)

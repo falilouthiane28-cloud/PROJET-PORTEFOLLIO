@@ -39,11 +39,11 @@ html.lenis,html.lenis body{height:auto}
 /* ---------- états de départ de l'intro (posés seulement si le JS va la jouer) ---------- */
 .intro .hero__veil{opacity:1}
 .intro .band--1 .eyebrow,.intro .band--1 .lead,
-.intro .hero__static .eyebrow,.intro .hero__static .lead,.intro .hero__static .actions,
+.intro .hero__static .eyebrow,
 .intro .hero__meta,.intro .nav{opacity:0}
 /* filet de sécurité : si l'intro ne démarre pas à temps, tout apparaît en douceur */
 .intro.intro-skip .band--1 .eyebrow,.intro.intro-skip .band--1 .lead,
-.intro.intro-skip .hero__static .eyebrow,.intro.intro-skip .hero__static .lead,.intro.intro-skip .hero__static .actions,
+.intro.intro-skip .hero__static .eyebrow,
 .intro.intro-skip .hero__meta,.intro.intro-skip .nav{opacity:1;transition:opacity .6s cubic-bezier(.22,1,.36,1)}
 .intro.intro-skip .hero__veil{opacity:0;transition:opacity .8s cubic-bezier(.22,1,.36,1)}
 
