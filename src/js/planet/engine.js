@@ -16,6 +16,8 @@ export async function createEngine(canvas, o, emit, { external = false } = {}) {
     powerPreference: 'high-performance', stencil: false
   });
   renderer.setClearColor(0x000000, 0);
+  // pas de lecture synchrone des journaux de shaders : compilation plus rapide, console propre
+  renderer.debug.checkShaderErrors = false;
   renderer.toneMapping = NeutralToneMapping;     // garde les blancs nacrés et le violet fidèles
   renderer.toneMappingExposure = 1.0;
 

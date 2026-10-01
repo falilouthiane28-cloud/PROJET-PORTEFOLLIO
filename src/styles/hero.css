@@ -15,7 +15,7 @@
   font:800 clamp(44px,8vw,146px)/.9 var(--f-display);letter-spacing:-.04em;word-spacing:.06em;color:var(--ink);
 }
 /* chaque ligne est un masque : le texte monte depuis sous la ligne de base (marge pour les jambages) */
-.hero__title .line{display:block;overflow:hidden;padding:0 .06em .12em;margin-bottom:-.12em}
+.hero__title .line{display:block;overflow:hidden;padding:0 .06em .12em;margin-bottom:-.12em;white-space:nowrap}  /* une ligne = un masque : la hauteur ne change pas quand la police arrive */
 .hero__title .line__inner{display:block}
 .hero__title em{
   font-family:var(--f-serif);font-style:italic;font-weight:400;

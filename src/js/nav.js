@@ -96,11 +96,17 @@ export function initNav(gsap) {
   cta.addEventListener('pointerleave', () => { bx.set(0); by.set(0); wake(); });
 
   /* ---------- section en cours ---------- */
+  // un observateur suit la section qui traverse le milieu de l'écran : aucune mesure de mise en page à chaque image
   const sections = links.map(a => document.getElementById(a.dataset.id));
+  const inView = new Set();
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => (e.isIntersecting ? inView.add(e.target) : inView.delete(e.target)));
+    spy();
+  }, { rootMargin: '-45% 0px -54% 0px' });
+  sections.forEach(s => io.observe(s));
   function spy() {
-    const mid = innerHeight * 0.45;
-    let found = null;
-    sections.forEach((s, i) => { const r = s.getBoundingClientRect(); if (r.top <= mid && r.bottom > mid) found = links[i]; });
+    const i = sections.findIndex(s => inView.has(s));
+    const found = i >= 0 ? links[i] : null;
     if (found === current) return;
     if (current) current.classList.remove('is-current');
     current = found;
@@ -109,12 +115,15 @@ export function initNav(gsap) {
   }
 
   /* ---------- scroll : jauge, repli du mot, retrait en descendant (lu sur le ticker, sans écouteur de scroll) ---------- */
-  let lastY = -1, hidden = false, condensed = null, read = -1, spyAt = 0;
-  function onTick(time) {
+  let lastY = -1, hidden = false, condensed = null, read = -1, maxScroll = 1;
+  // hauteur de page mise en cache, mise à jour hors de la boucle d'images
+  const measure = () => { maxScroll = Math.max(1, document.documentElement.scrollHeight - innerHeight); };
+  new ResizeObserver(measure).observe(document.body);
+  function onTick() {
     const y = scrollY;
     if (y === lastY) return;
     const dy = lastY < 0 ? 0 : y - lastY;
-    const max = document.documentElement.scrollHeight - innerHeight;
+    const max = maxScroll;
     const r = max > 0 ? Math.round(Math.min(1, y / max) * 1000) / 1000 : 0;
     if (r !== read) { progress.style.setProperty('--read', r); read = r; }
     const c = y > 80;
@@ -127,7 +136,6 @@ export function initNav(gsap) {
       else if ((dy < -8 || y < 480) && hidden) { nav.classList.remove('is-hidden'); hidden = false; }
     }
     lastY = y;
-    if (time - spyAt > 0.1) { spyAt = time; spy(); }       // ~10 Hz suffit pour la section en cours
   }
   gsap.ticker.add(onTick);
   nav.addEventListener('focusin', () => { if (hidden) { nav.classList.remove('is-hidden'); hidden = false; } });

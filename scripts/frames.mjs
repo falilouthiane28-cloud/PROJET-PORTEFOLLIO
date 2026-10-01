@@ -46,6 +46,8 @@ if (P.cpu > 1) await send('Emulation.setCPUThrottlingRate', { rate: P.cpu });
 if (P.net) await send('Network.emulateNetworkConditions', { offline: false, ...P.net });
 
 // enregistreur injecté avant tout script de la page (mesure uniquement)
+const cssIdx = rest.indexOf('--css');
+if (cssIdx >= 0) await send('Page.addScriptToEvaluateOnNewDocument', { source: `(() => { const s = document.createElement('style'); s.textContent = ${JSON.stringify(rest[cssIdx + 1] || '')}; document.documentElement.appendChild(s); })();` });
 await send('Page.addScriptToEvaluateOnNewDocument', { source: `
   window.__m = { frames: [], long: [], lcp: [], cls: 0, t0: performance.now() };
   (function loop(t){ __m.frames.push(t); requestAnimationFrame(loop); })(performance.now());
