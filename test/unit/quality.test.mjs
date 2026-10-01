@@ -35,9 +35,9 @@ test('attend 60 images et 1,5 s entre deux changements', () => {
 });
 test('remonte une marche à la fois quand la marge revient', () => {
   const q = createQuality({ dpr: 1 });
-  let [, t] = feed(q, 1200, 30, 0);                          // descend jusqu'à la dernière marche
+  const [, t] = feed(q, 1200, 30, 0);                        // descend jusqu'à la dernière marche
   assert.equal(q.level, PARTICLE_STEPS.length - 1);
-  let ch; [ch, t] = feed(q, 3000, 12, t);                    // 83 i/s pendant 36 s
+  const [ch] = feed(q, 3000, 12, t);                         // 83 i/s pendant 36 s
   assert.equal(ch[0], 'particles');
   assert.equal(q.level, 0);
   assert.ok(q.dpr > 1 && q.dpr <= 1.75);
