@@ -16,8 +16,11 @@ export function initScroll() {
   /* ---------- Lenis, branché sur le ticker GSAP (pas de seconde boucle) ---------- */
   let lenis = null;
   const lenisRaf = t => lenis.raf(t * 1000);
+  // Lenis seulement à la souris / au trackpad : au doigt il ne lisse rien (défilement natif)
+  // mais écouterait chaque touchmove et doublerait les mises à jour de ScrollTrigger
+  const FINE = matchMedia('(hover: hover) and (pointer: fine)');
   function startLenis() {
-    if (lenis || RM.matches) return;
+    if (lenis || RM.matches || !FINE.matches) return;
     // syncTouch:false (défaut) : sur mobile le défilement reste natif, le moins coûteux sur Android
     lenis = new Lenis({ autoRaf: false, lerp: 0.1, anchors: { offset: -96 } });
     lenis.on('scroll', ScrollTrigger.update);
@@ -95,11 +98,8 @@ export function initScroll() {
   /* ---------- le bandeau ne tourne que visible ---------- */
   ScrollTrigger.create({ trigger: '.marquee', start: 'top bottom', end: 'bottom top', toggleClass: { targets: '.marquee', className: 'on' } });
 
-  /* ---------- recalcul quand la mise en page change (polices, sections affichées à la demande) ---------- */
+  /* ---------- recalcul quand les polices sont là (jamais pendant un geste de scroll) ---------- */
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
-  let t = null;
-  const ro = new ResizeObserver(() => { clearTimeout(t); t = setTimeout(() => ScrollTrigger.refresh(), 200); });
-  ro.observe(document.querySelector('main'));
 
   initCursor(gsap);
   initLaunch(gsap);

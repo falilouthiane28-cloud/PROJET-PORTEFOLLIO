@@ -35,7 +35,7 @@
       var h = d.documentElement;
       h.classList.add('js');
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-      h.classList.add('intro');
+      h.classList.add('intro', 'title-rise');   // le titre monte en CSS dès le premier rendu (LCP sans attendre le JS)
       setTimeout(function () { if (!window.__introStarted) h.classList.add('intro-skip'); }, 1400);
     })(document);
   </script>
@@ -101,7 +101,7 @@
 
     <!-- ============ HERO ============ -->
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <p class="eyebrow hero__eyebrow">Studio de design et web · Dakar, Sénégal</p>
+      <p class="eyebrow hero__eyebrow">Studio de design et web · Dakar</p>
       <h1 class="hero__title" id="hero-title">
         <span class="line"><span class="line__inner">Des mondes qui ont</span></span>
         <span class="line"><span class="line__inner">de la <em>gravité.</em></span></span>

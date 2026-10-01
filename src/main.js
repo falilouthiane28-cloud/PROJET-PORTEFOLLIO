@@ -19,10 +19,14 @@ initClock();
 const intro = playIntro(gsap);
 initNav(gsap);
 
-// vague 2 : scroll fluide (Lenis + ScrollTrigger), apparitions, curseur, moment interactif
-import('./js/scroll.js')
+// vague 2 : scroll fluide (Lenis + ScrollTrigger), apparitions, curseur, moment interactif.
+// Chargée à la fin de l'intro (pour ne pas lui voler d'images), ou dès le premier geste de scroll.
+let wave2 = null;
+const loadWave2 = () => wave2 || (wave2 = import('./js/scroll.js')
   .then(m => m.initScroll())
-  .catch(() => html.classList.add('no-motion'));     // filet : tout reste visible si le module échoue
+  .catch(() => html.classList.add('no-motion')));    // filet : tout reste visible si le module échoue
+['wheel', 'touchstart', 'keydown', 'scroll'].forEach(t => addEventListener(t, loadWave2, { once: true, passive: true }));
+intro.done.then(loadWave2);
 
 // vague 3 : la planète 3D, après l'intro et l'événement load, pendant un moment de repos
 const loaded = document.readyState === 'complete'

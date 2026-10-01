@@ -5,7 +5,8 @@
 
 export function playIntro(gsap) {
   const html = document.documentElement;
-  const heroParts = ['.hero__title .line__inner', '.hero__eyebrow', '.hero__lead', '.hero__actions > *', '.hero__meta'];
+  // le titre n'est pas ici : il monte en CSS dès le premier rendu (voir hero.css, .title-rise)
+  const heroParts = ['.hero__eyebrow', '.hero__lead', '.hero__actions > *', '.hero__meta'];
 
   // pas d'intro : mouvement réduit, pas de classe .intro, ou filet déjà déclenché (JS arrivé trop tard)
   if (!html.classList.contains('intro') || html.classList.contains('intro-skip')) {
@@ -32,6 +33,7 @@ export function playIntro(gsap) {
       // on rend la main au CSS (survols, classes de la nav) et on retire les will-change
       gsap.set([nav, ...heroParts], { clearProps: 'transform,opacity,willChange' });
       gsap.set(media, { clearProps: 'willChange' });
+      window.__introDoneAt = Math.round(performance.now());   // repère pour les mesures
       resolveDone();
     }
   });
@@ -41,8 +43,6 @@ export function playIntro(gsap) {
   tl.fromTo('.planet__orbit ellipse', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.1, ease: 'expo.inOut' }, 0)
     .fromTo(media, { opacity: 0, scale: 0.9, rotation: -5, yPercent: 4 },
       { opacity: 1, scale: 1, rotation: 0, yPercent: 0, duration: 1.7 }, 0.3)
-    // y:0 explicite : sinon GSAP lit le translateY(112%) du CSS comme un décalage en px et l'ajoute au yPercent
-    .fromTo('.hero__title .line__inner', { y: 0, yPercent: 112 }, { y: 0, yPercent: 0, duration: 1.1, stagger: 0.09 }, 0.12)
     .fromTo('.hero__eyebrow', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 1 }, 0.55)
     .fromTo('.hero__lead', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 1.1 }, 0.95)
     .fromTo('.hero__actions > *', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 1.1, stagger: 0.08 }, 1.1)

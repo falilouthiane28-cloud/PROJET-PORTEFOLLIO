@@ -64,7 +64,9 @@ main:focus{outline:none}
 .js.no-motion .reveal,.js.intro-skip .reveal{opacity:1;transform:none}
 
 /* sections lourdes hors écran : le navigateur ne les met en page qu'à l'approche */
-.services,.method,.studio,.faq{content-visibility:auto;contain-intrinsic-size:auto 900px}
+/* content-visibility seulement sur la FAQ (pas d'animation liée au scroll dedans) : sur les sections animées,
+   leur hauteur réelle arrivant en plein geste obligeait ScrollTrigger à tout recalculer (saccade mesurée) */
+.faq{content-visibility:auto;contain-intrinsic-size:auto 900px}
 
 @media (pointer:coarse){.link,.footer__col a,.faq summary{min-height:44px}}
 
@@ -72,3 +74,4 @@ main:focus{outline:none}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important}
   .js .reveal{opacity:1;transform:none}
 }
+
