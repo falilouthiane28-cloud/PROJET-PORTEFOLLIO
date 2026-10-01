@@ -7,6 +7,7 @@ import { $$ } from '../util.js';
 export function init(root = document) {
   const rows = $$('.service', root);
   rows.forEach(r => r.classList.add('mv-spot'));
+  const active = new Set();                         // le cancel() de hover n'appelle pas les fins de survol en cours
   const stop = hover(rows, el => {
     let rect = el.getBoundingClientRect();
     const move = e => {
@@ -17,11 +18,14 @@ export function init(root = document) {
     el.addEventListener('pointermove', move, { passive: true });
     addEventListener('scroll', remeasure, { passive: true });
     el.classList.add('is-lit');
-    return () => {
+    const end = () => {
+      active.delete(end);
       el.classList.remove('is-lit');
       el.removeEventListener('pointermove', move);
       removeEventListener('scroll', remeasure);
     };
+    active.add(end);
+    return end;
   });
-  return () => { stop(); rows.forEach(r => { r.classList.remove('mv-spot', 'is-lit'); r.style.removeProperty('--sx'); r.style.removeProperty('--sy'); }); };
+  return () => { [...active].forEach(f => f()); stop(); rows.forEach(r => { r.classList.remove('mv-spot', 'is-lit'); r.style.removeProperty('--sx'); r.style.removeProperty('--sy'); }); };
 }

@@ -11,7 +11,7 @@ import { $$, belowFold } from '../util.js';
 
 export function init(root = document) {
   const triggers = [];
-  const splits = [];
+  const splits = [], tweens = [];
   for (const el of $$('main h2.display', root).filter(belowFold)) {
     let split = null;
     triggers.push(ScrollTrigger.create({
@@ -26,15 +26,16 @@ export function init(root = document) {
       trigger: el, start: 'top 88%', once: true,
       onEnter() {
         if (!split) return;
-        gsap.to(split.lines, {
+        tweens.push(gsap.to(split.lines, {
           yPercent: 0, duration: DUR.line, ease: GSAP_EASE.outQuint, stagger: STAGGER.line, delay: 0.08,
           onComplete() { split.revert(); }
-        });
+        }));
       }
     }));
   }
   return () => {
     triggers.forEach(t => t.kill());
+    tweens.forEach(t => t.kill());
     splits.forEach(s => s.revert());
   };
 }

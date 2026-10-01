@@ -11,9 +11,11 @@ export function init(root = document) {
   const c = cleanup();
   for (const d of $$('.faq details', root)) {
     const summary = d.querySelector('summary'), body = d.querySelector(':scope > div');
+    if (!summary || !body) continue;
     let closing = null;
     c.add(on(summary, 'click', e => {
-      if (!d.open || closing) return;
+      if (closing) { e.preventDefault(); return; }    // deuxième clic pendant le repli : on laisse finir
+      if (!d.open) return;
       e.preventDefault();
       closing = animate(body, { opacity: [1, 0], transform: ['translateY(0px)', 'translateY(-6px)'] }, { duration: 0.22, ease: bezier(EASE.in) });
       // motion/mini écrit les valeurs finales en style inline : on les retire, sinon la réponse

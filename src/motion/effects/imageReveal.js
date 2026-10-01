@@ -6,7 +6,7 @@ import { gsap } from 'gsap';
 import { $$, belowFold } from '../util.js';
 
 export function init(root = document) {
-  const tweens = $$('.project .frame', root).filter(belowFold).map(frame => {
+  const tweens = $$('.project .frame', root).filter(belowFold).filter(f => f.querySelector('picture')).map(frame => {
     const pic = frame.querySelector('picture');
     return gsap.fromTo(pic,
       { clipPath: 'inset(9% 7% 9% 7% round 14px)', scale: 1.08 },

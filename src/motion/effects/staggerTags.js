@@ -14,12 +14,14 @@ export function init(root = document) {
   const all = groups.flatMap(g => [...g.children]);
   all.forEach(li => { li.style.opacity = '0'; });
   const reset = lis => lis.forEach(li => { li.style.opacity = ''; li.style.transform = ''; });
-  c.add(() => reset(all));
+  const running = new Set();
+  c.add(() => { running.forEach(a => a.cancel()); reset(all); });
   c.add(inView(groups, group => {
     const lis = [...group.children];
     const a = animate(lis, { opacity: [0, 1], transform: ['translateY(10px)', 'translateY(0px)'] },
       { duration: 0.6, ease: bezier(EASE.out), delay: stagger(0.06, { startDelay: 0.3 }) });
-    a.then(() => { reset(lis); a.cancel(); });
+    running.add(a);
+    a.then(() => { running.delete(a); reset(lis); a.cancel(); });
   }, { amount: 0.6 }));
   return c.run;
 }
