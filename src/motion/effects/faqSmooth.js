@@ -16,7 +16,9 @@ export function init(root = document) {
       if (!d.open || closing) return;
       e.preventDefault();
       closing = animate(body, { opacity: [1, 0], transform: ['translateY(0px)', 'translateY(-6px)'] }, { duration: 0.22, ease: bezier(EASE.in) });
-      closing.then(() => { d.open = false; closing.cancel(); closing = null; });
+      // motion/mini écrit les valeurs finales en style inline : on les retire, sinon la réponse
+      // resterait invisible à la prochaine ouverture
+      closing.then(() => { d.open = false; closing.cancel(); body.style.opacity = ''; body.style.transform = ''; closing = null; });
     }));
   }
   return c.run;
