@@ -220,8 +220,12 @@ export function initHero() {
     canvas.replaceWith(c);
     canvas = c;
   }
+  let canvasUsed = false;   // contexte 2D pris ou contrôle transféré : le canvas n'est plus transférable
   function teardown() {
-    if (worker) { worker.postMessage({ type: 'dispose' }); worker = null; freshCanvas(); }
+    if (worker) { worker.postMessage({ type: 'dispose' }); worker = null; }
+    // un canvas qui a déjà servi (worker, ou dessin statique avant une rotation vers le mode animé)
+    // ferait échouer transferControlToOffscreen : on repart d'un canvas neuf
+    if (canvasUsed) { freshCanvas(); canvasUsed = false; }
     mainScene = mainCtx = null;
     sceneReady = false;
   }
@@ -230,6 +234,7 @@ export function initHero() {
   function drawStatic() {
     const dpr = Math.min(2, window.devicePixelRatio || 1);
     canvas.width = Math.round(L.W * dpr); canvas.height = Math.round(L.H * dpr);
+    canvasUsed = true;
     const ctx = canvas.getContext('2d');
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     const sc = createScene({ W: L.W, H: L.H, particles: L.W < 720 ? 1300 : 2800 });
@@ -241,6 +246,7 @@ export function initHero() {
     if (worker || mainScene || isStatic || info.tier !== 'live') return;
     gsap.set(canvas, { opacity: 0 });
     const opts = { width: L.W, height: L.H, dpr: window.devicePixelRatio || 1, dprCap: 1.75 };
+    canvasUsed = true;
     if ('transferControlToOffscreen' in canvas) {
       worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
       worker.onmessage = ({ data: m }) => {
