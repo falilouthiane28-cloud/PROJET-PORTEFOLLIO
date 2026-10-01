@@ -1,0 +1,61 @@
+/* ================= Hero : couches et états de l'animation =================
+   Ajouts au design d'origine (site.css n'est pas modifié). Au repos, le rendu est identique ;
+   on n'ajoute que le poster, le voile, l'anneau qui se dessine et les états de départ de l'intro. */
+
+/* Lenis gère le défilement doux à la souris : on coupe le scroll-behavior CSS d'origine pour ne pas le doubler */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+
+/* repères de la scène : valeurs CSS par défaut (écran large), recalées au pixel près par le JS */
+.hero__stage{--cx:70vw;--cy:40vh;--R:min(10.5vw,15vh)}
+.hero__scene{position:absolute;inset:0;pointer-events:none}
+
+/* le poster : rendu exact de la scène au départ, posé au même endroit que le dessin.
+   Il ne s'anime jamais (Chrome ne compte une image animée comme LCP qu'à la fin de son animation). */
+.hero__poster{position:absolute;left:calc(var(--cx) - 4.9*var(--R));top:calc(var(--cy) - 3.4*var(--R));width:calc(9.8*var(--R));height:calc(6.8*var(--R))}
+.hero__poster img{display:block;width:100%;height:100%}
+
+/* l'anneau qui se dessine au chargement (préchargement), sur l'anneau de Saturne */
+.hero__orbit{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.hero__orbit ellipse{fill:none;stroke:var(--accent-hover);stroke-width:1.2;stroke-dasharray:1;stroke-dashoffset:1;vector-effect:non-scaling-stroke}
+
+/* le voile : la scène émerge de la nuit pendant l'intro */
+.hero__veil{
+  position:absolute;inset:0;opacity:0;transform-origin:var(--cx) var(--cy);
+  background:radial-gradient(circle calc(var(--R)*5.4) at var(--cx) var(--cy),var(--canvas) 0,var(--canvas) 52%,rgba(11,10,18,0) 100%);
+}
+
+/* titre : chaque mot monte de son masque, en CSS, dès le premier rendu (aucune attente du JS).
+   Les coupures de ligne restent celles du texte d'origine. */
+.hero__title .m{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.14em;margin-bottom:-.14em}
+.hero__title em .m{padding-right:.08em;margin-right:-.08em}
+.hero__title .m > span{display:inline-block}
+.title-rise .hero__title .m > span{animation:word-rise 1.05s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(.12s + var(--i) * .055s)}
+@keyframes word-rise{from{transform:translateY(108%)}to{transform:none}}
+
+/* la première bande est visible sans JS (élément LCP) ; le JS reprend son opacité ensuite */
+.band--1{opacity:1;--k:1}
+
+/* ---------- états de départ de l'intro (posés seulement si le JS va la jouer) ---------- */
+.intro .hero__veil{opacity:1}
+.intro .band--1 .eyebrow,.intro .band--1 .lead,
+.intro .hero__static .eyebrow,.intro .hero__static .lead,.intro .hero__static .actions,
+.intro .hero__meta,.intro .nav{opacity:0}
+/* filet de sécurité : si l'intro ne démarre pas à temps, tout apparaît en douceur */
+.intro.intro-skip .band--1 .eyebrow,.intro.intro-skip .band--1 .lead,
+.intro.intro-skip .hero__static .eyebrow,.intro.intro-skip .hero__static .lead,.intro.intro-skip .hero__static .actions,
+.intro.intro-skip .hero__meta,.intro.intro-skip .nav{opacity:1;transition:opacity .6s cubic-bezier(.22,1,.36,1)}
+.intro.intro-skip .hero__veil{opacity:0;transition:opacity .8s cubic-bezier(.22,1,.36,1)}
+
+/* ---------- hero statique (mêmes 5 conditions que le JS) : pas de poster, la scène est dessinée ---------- */
+@media (max-width: 720px), (orientation: portrait) and (max-width: 1024px), (orientation: portrait) and (pointer: coarse), (orientation: landscape) and (pointer: coarse) and (max-height: 560px), (prefers-reduced-motion: reduce){
+  .hero__poster{display:none}
+  .hero__scene{bottom:auto;height:62%}          /* même boîte que le canvas d'origine */
+  .hero__canvas{height:100%}
+}
+/* 320 px : les étiquettes chevauchaient la ligne « Studio de design et web » (audit H4) */
+@media (max-width:360px){.chips{display:none}}
+
+@media (prefers-reduced-motion: reduce){
+  .hero__veil,.hero__orbit{display:none}
+}

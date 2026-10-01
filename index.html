@@ -18,6 +18,21 @@
   <meta property="og:image" content="https://saturn.example/assets/img/og.jpg">
   <link rel="preload" href="/src/assets/fonts/archivo-var.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/src/assets/fonts/instrument-serif-italic.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- poster de la scène : seulement pour le hero animé (écran large) ; sur mobile la scène est dessinée par le JS -->
+  <link rel="preload" as="image" type="image/avif" fetchpriority="high" media="(min-width: 721px) and (orientation: landscape)"
+        imagesrcset="/src/assets/img/hero/scene-1300.avif 1300w, /src/assets/img/hero/scene-1960.avif 1960w"
+        imagesizes="calc(min(10.5vw, 15vh) * 9.8)">
+  <script>
+    // Prépare l'intro avant le premier rendu (sans JavaScript, tout reste visible).
+    // Si l'animation ne démarre pas à temps (réseau lent), le contenu s'affiche sans attendre.
+    (function (d) {
+      var h = d.documentElement;
+      h.classList.add('js');
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      h.classList.add('intro', 'title-rise');
+      setTimeout(function () { if (!window.__introStarted) h.classList.add('intro-skip'); }, 1400);
+    })(document);
+  </script>
 </head>
 <body>
   <a class="skip" href="#main">Aller au contenu</a>
@@ -80,20 +95,28 @@
     <!-- ============ HERO : l'alignement des mondes ============ -->
     <section class="hero" id="top" aria-label="Introduction">
       <div class="hero__stage">
-        <canvas class="hero__canvas" id="cosmos" aria-hidden="true"></canvas>
+        <!-- la scène : poster (image fixe, élément LCP), puis le canvas animé par un worker en fondu enchaîné -->
+        <div class="hero__scene" aria-hidden="true">
+          <picture class="hero__poster">
+            <source type="image/avif" srcset="/src/assets/img/hero/scene-1300.avif 1300w, /src/assets/img/hero/scene-1960.avif 1960w" sizes="calc(min(10.5vw, 15vh) * 9.8)">
+            <img src="/src/assets/img/hero/scene-1300.webp" srcset="/src/assets/img/hero/scene-1300.webp 1300w, /src/assets/img/hero/scene-1960.webp 1960w" sizes="calc(min(10.5vw, 15vh) * 9.8)" width="1300" height="902" alt="" fetchpriority="high">
+          </picture>
+          <canvas class="hero__canvas" id="cosmos"></canvas>
+          <svg class="hero__orbit" aria-hidden="true"><ellipse pathLength="1"/></svg>
+          <div class="hero__veil"></div>
+          <div class="chips">
+            <span class="chip" data-i="0"><b>01</b><em>DakarHouse</em></span>
+            <span class="chip" data-i="1"><b>02</b><em>iStore Tech</em></span>
+            <span class="chip" data-i="2"><b>03</b><em>Saturn Agents</em></span>
+            <span class="chip" data-i="3"><b>04</b><em>Teranga</em></span>
+          </div>
+        </div>
         <div class="hero__vignette" aria-hidden="true"></div>
 
-        <div class="chips" aria-hidden="true">
-          <span class="chip" data-i="0"><b>01</b><em>DakarHouse</em></span>
-          <span class="chip" data-i="1"><b>02</b><em>iStore Tech</em></span>
-          <span class="chip" data-i="2"><b>03</b><em>Saturn Agents</em></span>
-          <span class="chip" data-i="3"><b>04</b><em>Teranga</em></span>
-        </div>
-
         <!-- Bande 1 -->
-        <div class="band band--1" data-a="0" data-b="0.26" data-fx="rise">
+        <div class="band band--1" data-a="0" data-b="0.26">
           <p class="eyebrow"><span class="pulse"></span>Studio de design et web · Dakar, SN <span class="sep">/</span> Depuis 2024</p>
-          <h1 class="display split">Nous construisons des mondes qui ont de la <em>gravité.</em></h1>
+          <h1 class="display hero__title"><span class="m"><span style="--i:0">Nous</span></span> <span class="m"><span style="--i:1">construisons</span></span> <span class="m"><span style="--i:2">des</span></span> <span class="m"><span style="--i:3">mondes</span></span> <span class="m"><span style="--i:4">qui</span></span> <span class="m"><span style="--i:5">ont</span></span> <span class="m"><span style="--i:6">de</span></span> <span class="m"><span style="--i:7">la</span></span> <em><span class="m"><span style="--i:8">gravité.</span></span></em></h1>
           <p class="lead">Sites premium, plateformes web et employés IA pour les marques africaines et internationales. Conçus à Dakar, à la hauteur de n'importe quel marché.</p>
         </div>
 
@@ -117,7 +140,7 @@
         <!-- Hero statique : téléphones et mouvement réduit -->
         <div class="hero__static">
           <p class="eyebrow"><span class="pulse"></span>Studio de design et web · Dakar, SN</p>
-          <h1 class="display">Nous construisons des mondes qui ont de la <em>gravité.</em></h1>
+          <h1 class="display hero__title"><span class="m"><span style="--i:0">Nous</span></span> <span class="m"><span style="--i:1">construisons</span></span> <span class="m"><span style="--i:2">des</span></span> <span class="m"><span style="--i:3">mondes</span></span> <span class="m"><span style="--i:4">qui</span></span> <span class="m"><span style="--i:5">ont</span></span> <span class="m"><span style="--i:6">de</span></span> <span class="m"><span style="--i:7">la</span></span> <em><span class="m"><span style="--i:8">gravité.</span></span></em></h1>
           <p class="lead">Sites premium, plateformes web et employés IA. Conçus à Dakar. Réponse dans la journée sur WhatsApp.</p>
           <div class="actions">
             <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener" class="btn btn--accent">Écrire sur WhatsApp</a>
