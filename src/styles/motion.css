@@ -7,3 +7,18 @@
   --dur-reveal: 1.1s;
   --ease-quint:cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+/* ---------- lignes de titre (SplitText) : le masque n'existe que pendant l'entrée ---------- */
+.mv-line{will-change:transform}
+
+/* ---------- lueur des services (souris) : invisible au repos ---------- */
+.service.mv-spot{isolation:isolate}
+.service.mv-spot::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:0;
+  background:radial-gradient(520px circle at var(--sx,50%) var(--sy,50%),rgba(139,92,246,.13),transparent 62%);
+  transition:opacity var(--dur-base) var(--ease-out);
+}
+.service.mv-spot.is-lit::before{opacity:1}
+
+/* ---------- boutons magnétiques : `translate` se compose avec le transform du survol d'origine ---------- */
+.mv-magnet{translate:calc(var(--mx,0) * 1px) calc(var(--my,0) * 1px)}
