@@ -19,7 +19,8 @@ const P = profile === 'desktopcpu'
 
 const EDGE = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
 const port = 9400 + Math.floor(Math.random() * 400);
-const args = ['--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${mkdtempSync(join(tmpdir(), 'fr-'))}`,
+const profileDir = mkdtempSync(join(tmpdir(), 'fr-'));
+const args = ['--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${profileDir}`,
   '--no-first-run', '--hide-scrollbars', '--enable-gpu-rasterization', '--ignore-gpu-blocklist', '--use-angle=d3d11', 'about:blank'];
 if (flag('--no-webgl')) args.push('--disable-webgl', '--disable-3d-apis');
 const proc = spawn(EDGE, args, { stdio: 'ignore' });
@@ -103,4 +104,11 @@ const res = await evalJS(`(() => {
   };
 })()`);
 console.log(JSON.stringify({ profile, ...res, console: logs }, null, 1));
-ws.close(); proc.kill(); process.exit(0);
+ws.close();
+// sous Windows, Edge relance ses processus hors de l'arbre de proc : on ferme tous ceux qui utilisent
+// notre profil temporaire (sinon ils s'accumulaient, 147 trouvés, et faussaient les mesures suivantes)
+if (process.platform === 'win32') {
+  const dir = profileDir.split(/[\\/]/).pop();
+  spawn('powershell', ['-NoProfile', '-Command', `Get-CimInstance Win32_Process -Filter "Name='msedge.exe'" | Where-Object { $_.CommandLine -like '*${dir}*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }`], { stdio: 'ignore' })
+    .on('exit', () => process.exit(0));
+} else { proc.kill(); process.exit(0); }
