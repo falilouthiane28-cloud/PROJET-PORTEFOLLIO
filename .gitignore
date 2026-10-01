@@ -2,3 +2,7 @@ node_modules/
 dist/
 .claude/
 *.log
+perf/base/
+perf/audit/
+test-results/
+playwright-report/
