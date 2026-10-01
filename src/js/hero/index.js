@@ -96,8 +96,19 @@ export function initHero() {
     lenis = new Lenis({ autoRaf: false, lerp: 0.1, anchors: { offset: -84 } });
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add(lenisRaf);
+    document.addEventListener('focusin', lenisFocus);
   }
-  function stopLenis() { if (!lenis) return; gsap.ticker.remove(lenisRaf); lenis.destroy(); lenis = null; }
+  function stopLenis() { if (!lenis) return; gsap.ticker.remove(lenisRaf); document.removeEventListener('focusin', lenisFocus); lenis.destroy(); lenis = null; }
+  // clavier : le navigateur défile vers l'élément focalisé AVANT focusin, puis une animation Lenis encore en cours
+  // ramenait la page à son ancienne cible (focus hors écran). On aligne Lenis sur la position native (ce qui coupe
+  // son animation), puis on ne défile que si l'élément reste mal placé. Les bandes du hero ont leur règle (plus bas).
+  function lenisFocus(e) {
+    const el = e.target;
+    if (!lenis || !(el instanceof Element) || el.closest('.band, .nav')) return;
+    lenis.scrollTo(scrollY, { immediate: true, force: true });
+    const r = el.getBoundingClientRect();
+    if (r.top < 90 || r.bottom > innerHeight - 40) lenis.scrollTo(scrollY + r.top - Math.round(innerHeight * 0.3));
+  }
   startLenis();
 
   /* ---------- état partagé, lissé à chaque image ---------- */
@@ -316,6 +327,17 @@ export function initHero() {
     else if (mainScene) { const dpr = Math.min(window.devicePixelRatio || 1, 1.5); canvas.width = Math.round(L.W * dpr); canvas.height = Math.round(L.H * dpr); mainCtx.setTransform(dpr, 0, 0, dpr, 0, 0); mainScene.resize(L.W, L.H); }
   }).observe(stage);
   document.fonts?.ready.then(() => { measure(); ScrollTrigger.refresh(); });
+
+  /* ---------- clavier : un lien d'une bande encore invisible reçoit le focus → on fait défiler jusqu'à sa bande ---------- */
+  // (sinon le focus tombe sur un bouton à opacité 0 : WCAG 2.4.7 et 2.4.11)
+  bands.forEach(b => b.el.addEventListener('focusin', () => {
+    if (isStatic || !heroST) return;
+    const heroOnScreen = scrollY >= heroST.start - 1 && scrollY <= heroST.end + 1;
+    if (heroOnScreen && b.op > 0.9) return;                    // bande déjà visible : rien à faire
+    const p = b.first ? 0 : b.last ? 1 : (b.a + b.b) / 2;
+    const y = heroST.start + p * (heroST.end - heroST.start);
+    if (lenis) lenis.scrollTo(y, { immediate: RM.matches }); else scrollTo({ top: y, behavior: RM.matches ? 'auto' : 'smooth' });
+  }));
 
   /* ---------- pointeur : parallaxe lissée et bouton magnétique (souris seulement) ---------- */
   if (FINE.matches) {
