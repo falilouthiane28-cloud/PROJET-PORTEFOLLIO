@@ -78,7 +78,7 @@ export function initHero() {
   /* ---------- texte des bandes : découpe des bandes 2 et 3 (invisibles au départ) reportée après l'intro ---------- */
   let splitDone = false;
   const splitBands = () => {
-    if (splitDone) return;
+    if (splitDone || isStatic) return;              // hero statique : les bandes sont masquées, rien à découper
     splitDone = true;
     let seed = 11;
     $$('.band').forEach(b => $$('.split', b).forEach(el => split(el, seed++, b.dataset.fx, parseFloat(b.dataset.spread || '0.5'))));
@@ -114,7 +114,7 @@ export function initHero() {
   /* ---------- état partagé, lissé à chaque image ---------- */
   const st = { target: 0, shown: 0, vel: 0, px: 0, py: 0, ox: 0, oy: 0 };
   let L = { W: 1, H: 1, cx: 0, cy: 0, R: 1 };
-  let chipSize = [], chipCache = chips.map(() => ({ x: null, y: null, o: null }));
+  let chipSize = [], chipSizeDirty = true, chipCache = chips.map(() => ({ x: null, y: null, o: null }));
   let isStatic = null, metaGone = null, exitCache = null, sent = null;
   let worker = null, mainScene = null, mainCtx = null, sceneReady = false;
 
@@ -132,13 +132,15 @@ export function initHero() {
     orbit.setAttribute('rx', rx); orbit.setAttribute('ry', rx * E);
     orbit.setAttribute('transform', `rotate(${(TILT * 180 / Math.PI).toFixed(2)} ${L.cx} ${L.cy})`);
     chipBox.classList.toggle('is-tight', L.R * 1.7 < 165);
-    chipSize = chips.map(c => [c.offsetWidth, c.offsetHeight]);
+    chipSizeDirty = true;                         // relue au début de la prochaine image (pas de reflow forcé ici)
     chipCache.forEach(c => { c.x = null; c.o = null; });
     sent = null;
   }
 
   /* ---------- étiquettes : à la position finale de chaque monde, elles apparaissent quand il s'aligne ---------- */
   function placeChips(p) {
+    // lecture des tailles avant toute écriture de l'image : la mise en page n'est calculée qu'une fois
+    if (chipSizeDirty) { chipSize = chips.map(c => [c.offsetWidth, c.offsetHeight]); chipSizeDirty = false; }
     const Rs = L.R * scaleAt(p);
     const showChips = isStatic || info.tier === 'live';
     PLANETS.forEach((pl, i) => {
@@ -200,6 +202,8 @@ export function initHero() {
     if (Math.abs(st.py * 10 - st.oy) < 0.01) st.oy = st.py * 10;
 
     const p = st.shown;
+    // secours : l'utilisateur descend avant que la découpe ait eu son temps libre → juste avant la bande 2 (0,32)
+    if (!splitDone && st.target > 0.12) splitBands();
     updateBands(p);
     placeChips(p);
     updateExit(p);
@@ -363,14 +367,16 @@ export function initHero() {
   /* ---------- l'intro : une timeline maîtresse ---------- */
   const intro = playIntro();
   // le rendu animé démarre après l'intro (il ne lui vole aucune image), ou dès le premier geste de scroll
+  const idle = (cb, timeout) => ('requestIdleCallback' in window ? requestIdleCallback(cb, { timeout }) : setTimeout(cb, 200));
   const requestLive = () => {
-    splitBands();                                   // au premier geste de scroll, les bandes doivent être prêtes
+    intro.hurry();                                  // un geste pendant l'intro la termine en accéléré (interruptible)
     if (liveRequested) return;
     liveRequested = true;
-    const idle = cb => ('requestIdleCallback' in window ? requestIdleCallback(cb, { timeout: 1500 }) : setTimeout(cb, 200));
-    idle(startLive);
+    idle(startLive, 1500);
   };
-  intro.done.then(() => { splitBands(); requestLive(); });
+  // la découpe des bandes 2 et 3 (≈ 100 éléments DOM) se fait dans un temps libre après l'intro,
+  // jamais pendant le premier geste de scroll (c'était la cause des images perdues au premier scroll)
+  intro.done.then(() => { idle(splitBands, 3000); requestLive(); });
   ['wheel', 'touchstart', 'keydown'].forEach(t => addEventListener(t, requestLive, { once: true, passive: true }));
 
   function playIntro() {
@@ -381,7 +387,7 @@ export function initHero() {
     if (!html.classList.contains('intro') || html.classList.contains('intro-skip')) {
       html.classList.remove('intro');
       info.introDoneAt = Math.round(performance.now());
-      return { done: Promise.resolve() };
+      return { done: Promise.resolve(), hurry() {} };
     }
     window.__introStarted = true;
     let resolveDone;
@@ -420,6 +426,8 @@ export function initHero() {
       info.introStartAt = Math.round(performance.now());   // repère pour les mesures
       tl.play(0);
     }));
-    return { done };
+    // interruptible : on ne bloque jamais le geste, on accélère la fin (même chorégraphie, sans coupure)
+    const hurry = () => { if (tl.isActive() || tl.paused()) tl.timeScale(Math.max(tl.timeScale(), 3.5)); };
+    return { done, hurry };
   }
 }
