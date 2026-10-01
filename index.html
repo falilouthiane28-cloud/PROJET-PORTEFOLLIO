@@ -98,6 +98,8 @@
         <!-- la scène : poster (image fixe, élément LCP), puis le canvas animé par un worker en fondu enchaîné -->
         <div class="hero__scene" aria-hidden="true">
           <picture class="hero__poster">
+            <!-- hero statique (mêmes conditions que site.css) : le poster est masqué, on ne le télécharge pas (≈ 80 Ko en 4G) -->
+            <source media="(max-width: 720px), (orientation: portrait) and (max-width: 1024px), (orientation: portrait) and (pointer: coarse), (orientation: landscape) and (pointer: coarse) and (max-height: 560px), (prefers-reduced-motion: reduce)" srcset="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==">
             <source type="image/avif" srcset="/src/assets/img/hero/scene-1300.avif 1300w, /src/assets/img/hero/scene-1960.avif 1960w" sizes="calc(min(10.5vw, 15vh) * 9.8)">
             <img src="/src/assets/img/hero/scene-1300.webp" srcset="/src/assets/img/hero/scene-1300.webp 1300w, /src/assets/img/hero/scene-1960.webp 1960w" sizes="calc(min(10.5vw, 15vh) * 9.8)" width="1300" height="902" alt="" fetchpriority="high">
           </picture>
