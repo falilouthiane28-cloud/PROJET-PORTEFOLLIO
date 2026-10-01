@@ -1,0 +1,23 @@
+/* Polices du design d'origine, auto-hébergées (avant : Google Fonts, 2 origines tierces et une feuille
+   bloquante). Mêmes familles et mêmes axes, réduites au latin utilisé en français.
+   Archivo : un seul fichier variable, largeur 100 à 125 et graisse 400 à 800 (exactement la plage demandée avant). */
+@font-face{
+  font-family:"Archivo";
+  src:url("../assets/fonts/archivo-var.woff2") format("woff2");
+  font-weight:400 800;font-stretch:100% 125%;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"Instrument Serif";
+  src:url("../assets/fonts/instrument-serif-italic.woff2") format("woff2");
+  font-weight:400;font-style:italic;font-display:swap;
+}
+@font-face{
+  font-family:"JetBrains Mono";
+  src:url("../assets/fonts/jetbrains-mono-400.woff2") format("woff2");
+  font-weight:400;font-style:normal;font-display:swap;
+}
+@font-face{
+  font-family:"JetBrains Mono";
+  src:url("../assets/fonts/jetbrains-mono-500.woff2") format("woff2");
+  font-weight:500;font-style:normal;font-display:swap;
+}
