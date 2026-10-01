@@ -32,17 +32,15 @@ export function playIntro(gsap) {
     onComplete() {
       // on rend la main au CSS (survols, classes de la nav) et on retire les will-change
       gsap.set([nav, ...heroParts], { clearProps: 'transform,opacity,willChange' });
-      gsap.set(media, { clearProps: 'willChange' });
       window.__introDoneAt = Math.round(performance.now());   // repère pour les mesures
       resolveDone();
     }
   });
 
-  gsap.set([media, ...heroParts], { willChange: 'transform, opacity' });
+  gsap.set(heroParts, { willChange: 'transform, opacity' });
 
   tl.fromTo('.planet__orbit ellipse', { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.1, ease: 'expo.inOut' }, 0)
-    .fromTo(media, { opacity: 0, scale: 0.9, rotation: -5, yPercent: 4 },
-      { opacity: 1, scale: 1, rotation: 0, yPercent: 0, duration: 1.7 }, 0.3)
+    // (la planète et le titre apparaissent en CSS dès le premier rendu, voir hero.css : LCP sans attendre le JS)
     .fromTo('.hero__eyebrow', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 1 }, 0.55)
     .fromTo('.hero__lead', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 1.1 }, 0.95)
     .fromTo('.hero__actions > *', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 1.1, stagger: 0.08 }, 1.1)

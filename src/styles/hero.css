@@ -65,10 +65,16 @@
 .title-rise .hero__title .line__inner{animation:title-rise 1.1s cubic-bezier(.16,1,.3,1) .12s both}
 .title-rise .hero__title .line:nth-child(2) .line__inner{animation-delay:.21s}
 @keyframes title-rise{from{transform:translateY(112%)}to{transform:none}}
-.intro .planet__media,.intro .hero__eyebrow,.intro .hero__lead,.intro .hero__actions > *,.intro .hero__meta,.intro .nav{opacity:0}
+/* la planète émerge d'un voile lilas qui se dissout. L'image, elle, ne bouge pas : Chrome ne compte une image
+   animée (opacité ou transform) comme LCP qu'à la fin de son animation (mesuré : 2,5 s au lieu de 0,6 s) */
+.planet__veil{position:absolute;inset:-6%;z-index:3;pointer-events:none;border-radius:50%;opacity:0;
+  background:radial-gradient(closest-side,#f4f0ff 58%,rgba(244,240,255,.85) 72%,rgba(244,240,255,0))}
+.title-rise .planet__veil{animation:veil-out 1.6s cubic-bezier(.16,1,.3,1) .3s both}
+@keyframes veil-out{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(1.25)}}
+.intro .hero__eyebrow,.intro .hero__lead,.intro .hero__actions > *,.intro .hero__meta,.intro .nav{opacity:0}
 .intro .planet__orbit ellipse{stroke-dashoffset:1}
 /* filet de sécurité : si l'intro ne démarre pas à temps, tout apparaît en douceur, sans attendre */
-.intro.intro-skip .planet__media,.intro.intro-skip .hero__eyebrow,
+.intro.intro-skip .hero__eyebrow,
 .intro.intro-skip .hero__lead,.intro.intro-skip .hero__actions > *,.intro.intro-skip .hero__meta,.intro.intro-skip .nav{
   opacity:1;transform:none;transition:opacity .6s var(--ease-out),transform .8s var(--ease-expo);
 }
