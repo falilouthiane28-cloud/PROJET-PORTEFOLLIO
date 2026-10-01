@@ -51,7 +51,7 @@ if (blockIdx >= 0) await send('Network.setBlockedURLs', { urls: rest[blockIdx + 
 
 // enregistreur injecté avant tout script de la page (mesure uniquement)
 const cssIdx = rest.indexOf('--css');
-if (cssIdx >= 0) await send('Page.addScriptToEvaluateOnNewDocument', { source: `(() => { const s = document.createElement('style'); s.textContent = ${JSON.stringify(rest[cssIdx + 1] || '')}; document.documentElement.appendChild(s); })();` });
+if (cssIdx >= 0) await send('Page.addScriptToEvaluateOnNewDocument', { source: `(() => { const css = ${JSON.stringify(rest[cssIdx + 1] || '')}; const add = () => { const s = document.createElement('style'); s.textContent = css; document.head.appendChild(s); }; document.head ? add() : document.addEventListener('DOMContentLoaded', add); new MutationObserver((m, o) => { if (document.head) { add(); o.disconnect(); } }).observe(document.documentElement, { childList: true }); })();` });
 await send('Page.addScriptToEvaluateOnNewDocument', { source: `
   window.__m = { frames: [], long: [], lcp: [], cls: 0, t0: performance.now() };
   (function loop(t){ __m.frames.push(t); requestAnimationFrame(loop); })(performance.now());
