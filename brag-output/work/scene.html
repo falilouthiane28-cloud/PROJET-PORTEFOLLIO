@@ -1,0 +1,356 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Saturn · film</title>
+<link rel="stylesheet" href="/src/styles/fonts.css">
+<link rel="stylesheet" href="/src/styles/tokens.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1920px;height:1080px;overflow:hidden;background:#fff}
+body{font-family:var(--f-body);color:var(--ink);-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden;
+  background:radial-gradient(50% 40% at 50% 66%,var(--accent-a08),transparent 72%),var(--grad-hero)}
+.scene{position:absolute;inset:0}
+.mono{font:500 17px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+em{font-family:var(--f-serif);font-style:italic;font-weight:400;color:var(--accent);letter-spacing:-.015em;font-size:1.12em;line-height:0;padding-right:.05em}
+.line{display:block;overflow:hidden;padding:0 .06em .14em;margin-bottom:-.14em;white-space:nowrap}
+.line>span{display:block}
+
+/* particules */
+#dust{position:absolute;inset:0;pointer-events:none}
+#dust i{position:absolute;left:0;top:0;border-radius:50%;background:var(--accent)}
+
+/* ---------- 1. accroche ---------- */
+#s1 .eyebrow{position:absolute;top:118px;left:0;right:0;text-align:center}
+#title{position:absolute;top:150px;left:0;right:0;text-align:center;
+  font:800 150px/.9 var(--f-display);letter-spacing:-.04em;word-spacing:.06em;z-index:3}
+#planet{position:absolute;left:50%;top:680px;width:1700px;height:850px;margin:-425px 0 0 -850px;z-index:2}
+#planet img{position:absolute;inset:0;width:100%;height:100%}
+#planet svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#planet ellipse{fill:none;stroke:var(--accent);stroke-width:1.5;vector-effect:non-scaling-stroke;stroke-dasharray:1;opacity:.9}
+.glow{position:absolute;left:50%;top:50%;width:900px;height:900px;margin:-450px;border-radius:50%;
+  background:radial-gradient(circle,rgba(91,33,230,.16),transparent 62%)}
+#s1 .meta{position:absolute;bottom:44px;left:72px;right:72px;display:flex;justify-content:space-between}
+#pearl{position:absolute;inset:0;background:radial-gradient(60% 60% at 50% 45%,#fbf9ff,#e9e2fb 70%,#dccfff);opacity:0;z-index:5}
+
+/* ---------- 2. révélation ---------- */
+#s2{z-index:6}
+#word{position:absolute;left:0;right:0;top:300px;text-align:center;font:800 330px/1 var(--f-display);letter-spacing:-.06em;color:var(--ink)}
+#word .line{padding:0 .04em .06em}
+#wordRingF{clip-path:inset(52% 0 0 0)}
+.wr{position:absolute;left:50%;top:470px;width:1500px;height:330px;margin:-165px 0 0 -750px;overflow:visible}
+.wr ellipse{fill:none;stroke:var(--accent);stroke-width:2;vector-effect:non-scaling-stroke;stroke-dasharray:1}
+#s2 .sub{position:absolute;top:688px;left:0;right:0;text-align:center;font-size:22px;letter-spacing:.42em;color:var(--ink)}
+#s2 .sub b{color:var(--accent);font-weight:500}
+.marquee{position:absolute;left:0;right:0;bottom:0;height:150px;background:var(--lilac-1);border-top:1px solid var(--line);overflow:hidden}
+.marquee__track{position:absolute;top:0;left:0;height:100%;display:flex;align-items:center;gap:56px;white-space:nowrap}
+.marquee span{font:800 66px/1 var(--f-display);letter-spacing:-.04em}
+.marquee span.s{font:italic 400 78px/1 var(--f-serif);letter-spacing:-.01em;color:var(--accent)}
+.marquee i{width:12px;height:12px;border-radius:50%;background:var(--ink);flex:none}
+
+/* ---------- 3. projets ---------- */
+#s3{z-index:7;background:var(--grad-soft)}
+#orbits{position:absolute;left:50%;top:50%;width:1700px;height:1700px;margin:-850px;opacity:.5}
+#orbits circle{fill:none;stroke:var(--accent-a16);stroke-width:1.5}
+#orbits .moon{fill:var(--accent);stroke:none}
+.proj{position:absolute;inset:0}
+.frame{position:absolute;top:205px;width:1060px;border-radius:24px;overflow:hidden;background:#fff;border:1px solid var(--line);
+  box-shadow:var(--shadow-2);transform-origin:50% 100%}
+.proj:not(.flip) .frame{left:110px}
+.proj.flip .frame{right:110px}
+.frame__bar{display:flex;align-items:center;gap:9px;padding:16px 22px;border-bottom:1px solid var(--line);background:#fbfaff}
+.frame__bar i{width:13px;height:13px;border-radius:50%;background:#dedae6}
+.frame__bar span{margin-left:18px;font:500 16px/1 var(--f-mono);color:var(--ink-3);letter-spacing:.02em}
+.frame--dark .frame__bar{background:#141318;border-color:#26232f}
+.frame--dark .frame__bar i{background:#3a3644}
+.frame--dark .frame__bar span{color:#b3aec0}
+.frame .shot{height:520px;overflow:hidden}
+.frame img{display:block;width:100%;height:auto;transform-origin:50% 0}
+.info{position:absolute;top:300px;width:580px}
+.proj:not(.flip) .info{left:1250px}
+.proj.flip .info{left:110px}
+.info .count{display:block;margin-bottom:34px}
+.info .count b{color:var(--accent);font-weight:500}
+.info .kicker{font:500 17px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:22px}
+.info h3{font:800 86px/.95 var(--f-display);letter-spacing:-.05em;margin-bottom:30px}
+.info p{font:400 38px/1.25 var(--f-body);letter-spacing:-.015em;color:var(--ink-2)}
+.info .rule{height:2px;background:var(--ink);width:72px;margin-bottom:34px;transform-origin:0 50%}
+#bar{position:absolute;left:110px;right:110px;bottom:70px;display:flex;gap:14px}
+#bar i{flex:1;height:3px;background:var(--line);position:relative;overflow:hidden;border-radius:2px}
+#bar i b{position:absolute;inset:0;background:var(--accent);transform-origin:0 50%;transform:scaleX(0)}
+
+/* ---------- 4. promesse ---------- */
+#s4{z-index:8;background:var(--grad-deep)}
+#promise{position:absolute;top:220px;left:0;right:0;text-align:center;font:800 132px/.95 var(--f-display);letter-spacing:-.045em}
+#s4 .written{position:absolute;top:560px;left:0;right:0;text-align:center;font-size:22px;letter-spacing:.3em;color:var(--ink)}
+#tl{position:absolute;left:260px;right:260px;top:770px;height:160px}
+#tl .track{position:absolute;left:0;right:0;top:0;height:2px;background:rgba(10,10,10,.12)}
+#tl .fill{position:absolute;left:0;right:0;top:0;height:2px;background:var(--accent);transform-origin:0 50%;transform:scaleX(0)}
+#tl .step{position:absolute;top:-11px;width:300px;margin-left:-150px;text-align:center}
+#tl .dot{display:block;width:24px;height:24px;margin:0 auto 26px;border-radius:50%;background:#fff;border:2px solid var(--accent)}
+#tl .dot.on{background:var(--accent)}
+#tl b{display:block;font:500 15px/1 var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);margin-bottom:12px}
+#tl h4{font:800 34px/1 var(--f-display);letter-spacing:-.04em}
+
+/* ---------- 5. final ---------- */
+#s5{z-index:9;background:radial-gradient(50% 40% at 50% 60%,var(--accent-a08),transparent 72%),var(--grad-hero)}
+#s5 .logo{position:absolute;top:96px;left:0;right:0;text-align:center}
+#s5 .logo .w{font:800 120px/1 var(--f-display);letter-spacing:-.055em}
+#s5 .logo .mono{display:block;margin-top:14px;font-size:18px;letter-spacing:.42em;color:var(--ink)}
+#planet2{position:absolute;left:50%;top:560px;width:1240px;height:620px;margin:-310px 0 0 -620px}
+#planet2 img{position:absolute;inset:0;width:100%;height:100%}
+#cta{position:absolute;left:50%;top:860px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:26px}
+.btn{position:relative;display:inline-flex;align-items:center;gap:14px;height:84px;padding:0 46px;border-radius:999px;
+  font:600 28px/1 var(--f-body);letter-spacing:-.005em;white-space:nowrap;color:#fff;background:var(--accent);overflow:hidden;
+  box-shadow:0 1px 0 rgba(255,255,255,.18) inset,0 16px 36px -12px rgba(91,33,230,.55),0 2px 6px -2px rgba(40,20,90,.3)}
+.btn svg{width:30px;height:30px;fill:none;stroke:#fff;stroke-width:2;stroke-linejoin:round}
+.btn .ripple{position:absolute;left:50%;top:50%;width:520px;height:520px;margin:-260px;border-radius:50%;background:rgba(255,255,255,.3);transform:scale(0)}
+#s5 .handle{font-size:18px;color:var(--ink-2);letter-spacing:.14em}
+#toast{position:absolute;left:50%;top:880px;margin-left:250px;display:flex;align-items:center;gap:12px;padding:16px 24px;border-radius:16px;
+  background:#fff;box-shadow:var(--shadow-2);font:500 22px/1 var(--f-body);white-space:nowrap}
+#toast i{width:12px;height:12px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 5px rgba(34,197,94,.18)}
+#cursor{position:absolute;left:0;top:0;z-index:20;pointer-events:none}
+#cursor .dot{position:absolute;width:14px;height:14px;margin:-7px;border-radius:50%;background:var(--accent)}
+#cursor .ring{position:absolute;width:60px;height:60px;margin:-30px;border-radius:50%;border:2px solid var(--accent-a35);background:var(--accent-a08)}
+
+/* vignette douce + grain très léger */
+#vig{position:absolute;inset:0;z-index:30;pointer-events:none;background:radial-gradient(120% 90% at 50% 50%,transparent 60%,rgba(60,20,160,.07))}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- 1. accroche : l'intro réelle du site -->
+  <div class="scene" id="s1">
+    <div id="dust"></div>
+    <p class="mono eyebrow">Studio de design et web · Dakar, Sénégal</p>
+    <h1 id="title">
+      <span class="line"><span>Des mondes qui ont</span></span>
+      <span class="line"><span>de la <em>gravité.</em></span></span>
+    </h1>
+    <div id="planet">
+      <div class="glow"></div>
+      <svg viewBox="0 0 200 100" preserveAspectRatio="none"><ellipse cx="100" cy="51" rx="71" ry="27" pathLength="1" transform="rotate(-9 100 51)"/></svg>
+      <img src="/src/assets/img/planet/planete-d-2200.webp" alt="">
+    </div>
+    <div class="meta mono"><span>14.6928° N · 17.4467° O</span><span>Dakar · 09:41 GMT</span></div>
+    <div id="pearl"></div>
+  </div>
+
+  <!-- 2. révélation -->
+  <div class="scene" id="s2">
+    <svg class="wr" id="wordRing" viewBox="0 0 1200 300" preserveAspectRatio="none"><ellipse cx="600" cy="150" rx="590" ry="70" pathLength="1" transform="rotate(-4 600 150)"/></svg>
+    <div id="word"><span class="line"><span>SATURN</span></span></div>
+    <svg class="wr" id="wordRingF" viewBox="0 0 1200 300" preserveAspectRatio="none"><ellipse cx="600" cy="150" rx="590" ry="70" pathLength="1" transform="rotate(-4 600 150)"/></svg>
+    <p class="mono sub">Design studio · <b>Dakar</b>, Sénégal</p>
+    <div class="marquee"><div class="marquee__track" id="mq"></div></div>
+  </div>
+
+  <!-- 3. projets -->
+  <div class="scene" id="s3">
+    <svg id="orbits" viewBox="0 0 800 800"><g id="orbg"><circle cx="400" cy="400" r="390"/><circle cx="400" cy="400" r="290"/><circle cx="400" cy="400" r="190"/><circle class="moon" cx="400" cy="10" r="6"/><circle class="moon" cx="690" cy="400" r="4"/></g></svg>
+    <div id="projs"></div>
+    <div id="bar"><i><b></b></i><i><b></b></i><i><b></b></i><i><b></b></i></div>
+  </div>
+
+  <!-- 4. promesse -->
+  <div class="scene" id="s4">
+    <h2 id="promise">
+      <span class="line"><span>Un site premium en</span></span>
+      <span class="line"><span><em>2 à 3 semaines.</em></span></span>
+    </h2>
+    <p class="mono written">Et c'est écrit.</p>
+    <div id="tl">
+      <div class="track"></div><div class="fill"></div>
+      <div class="step" style="left:0%"><span class="dot"></span><b>Étape 1</b><h4>L'appel</h4></div>
+      <div class="step" style="left:33.333%"><span class="dot"></span><b>Étape 2</b><h4>La direction</h4></div>
+      <div class="step" style="left:66.666%"><span class="dot"></span><b>Étape 3</b><h4>La construction</h4></div>
+      <div class="step" style="left:100%"><span class="dot"></span><b>Étape 4</b><h4>La mise en ligne</h4></div>
+    </div>
+  </div>
+
+  <!-- 5. final -->
+  <div class="scene" id="s5">
+    <div id="planet2"><div class="glow"></div><img src="/src/assets/img/planet/planete-d-2200.webp" alt=""></div>
+    <div class="logo"><span class="line w"><span>SATURN</span></span><span class="mono">Design studio</span></div>
+    <div id="cta">
+      <span class="btn" id="btn"><span class="ripple"></span><svg viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>Écrire sur WhatsApp</span>
+      <span class="mono handle">@saturn_sn · Fait à Dakar</span>
+    </div>
+    <div id="toast"><i></i>Réponse dans la journée</div>
+    <div id="cursor"><span class="ring"></span><span class="dot"></span></div>
+  </div>
+
+  <div id="vig"></div>
+</div>
+
+<script src="/node_modules/gsap/dist/gsap.min.js"></script>
+<script>
+const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+const BEAT = 0.6, BAR = 2.4;
+
+// ---------- données réelles du site ----------
+const P = [
+  { k:'Plateforme immobilière', n:'DakarHouse', p:'16 quartiers.<br>Zéro frais cachés.', url:'dakarhouse.sn', img:'dakarhouse' },
+  { k:'Commerce en ligne', n:'iStore Tech', p:'Une boutique calme<br>comme une galerie.', url:'istoretech.sn', img:'istore', flip:1 },
+  { k:'Plateforme IA', n:'Saturn Agents', p:'Fatou, créatrice<br>de contenu. En IA.', url:'saturn.agency/agents', img:'saturn-ai' },
+  { k:'Parfumerie de luxe', n:'Teranga', p:'Quarante parfums,<br>choisis un par un.', url:'teranga-parfums.sn', img:'teranga', flip:1, dark:1 },
+];
+$('#projs').innerHTML = P.map((d,i)=>`
+  <div class="proj${d.flip?' flip':''}" id="p${i}">
+    <figure class="frame${d.dark?' frame--dark':''}">
+      <div class="frame__bar"><i></i><i></i><i></i><span>${d.url}</span></div>
+      <div class="shot"><img src="/src/assets/img/work/${d.img}-1600.webp" alt=""></div>
+    </figure>
+    <div class="info">
+      <span class="mono count"><b>0${i+1}</b> / 04</span>
+      <div class="rule"></div>
+      <p class="kicker">${d.k} · 2026</p>
+      <h3><span class="line"><span>${d.n}</span></span></h3>
+      <p class="txt">${d.p}</p>
+    </div>
+  </div>`).join('');
+
+// bandeau
+const words = ['Sites premium','Plateformes web','Employés IA'];
+let mq=''; for(let r=0;r<4;r++) words.forEach((w,j)=> mq+=`<span class="${j===1?'s':''}">${w}</span><i></i>`);
+$('#mq').innerHTML = mq;
+
+// poussière déterministe autour de la planète
+let seed = 7; const rnd = () => (seed = (seed*16807)%2147483647)/2147483647;
+const dust = [];
+for(let i=0;i<70;i++){
+  const el = document.createElement('i'); const s = 2+rnd()*5;
+  el.style.width = el.style.height = s+'px';
+  $('#dust').appendChild(el);
+  dust.push({ el, a:rnd()*Math.PI*2, r:520+rnd()*420, sp:(0.04+rnd()*0.08)*(rnd()<.5?-1:1), o:.15+rnd()*.45, y:rnd()*60-30 });
+}
+
+// ---------- timeline maîtresse ----------
+const tl = gsap.timeline({ paused:true, defaults:{ ease:'expo.out' } });
+gsap.set(['#s2','#s3','#s4','#s5'], { autoAlpha:0 });
+
+/* 1. accroche (reprise de src/js/intro.js) 0 → 3.4, plongée 3.4 → 4.6 */
+tl.fromTo('#planet ellipse', { strokeDashoffset:1 }, { strokeDashoffset:0, duration:1.1, ease:'expo.inOut' }, 0)
+  .fromTo('#planet img', { opacity:0, scale:.9, rotation:-5, yPercent:4 }, { opacity:1, scale:1, rotation:0, yPercent:0, duration:1.7 }, .3)
+  .fromTo('#planet .glow', { opacity:0 }, { opacity:1, duration:1.6 }, .4)
+  .fromTo('#title .line>span', { yPercent:112 }, { yPercent:0, duration:1.1, stagger:.09 }, .12)
+  .fromTo('#s1 .eyebrow', { opacity:0, y:14 }, { opacity:1, y:0, duration:1 }, .55)
+  .fromTo('#s1 .meta', { opacity:0 }, { opacity:1, duration:1.1, ease:'power2.out' }, 1.0)
+  .fromTo('#dust', { opacity:0 }, { opacity:1, duration:1.5, ease:'power2.out' }, .6)
+  .to('#planet svg', { opacity:0, duration:1.2, ease:'power2.inOut' }, 1.6)
+  // dérive de caméra
+  .fromTo('#s1', { scale:1 }, { scale:1.035, duration:3.4, ease:'none' }, 0)
+  // plongée
+  .to('#title .line>span', { yPercent:-115, duration:.55, stagger:.06, ease:'power3.in' }, 3.4)
+  .to(['#s1 .eyebrow','#s1 .meta'], { opacity:0, y:-20, duration:.4, ease:'power2.in' }, 3.4)
+  .to('#dust', { scale:2.4, opacity:0, duration:1.0, ease:'expo.in' }, 3.5)
+  .to('#planet', { scale:7.5, yPercent:-10, duration:1.15, ease:'expo.in' }, 3.45)
+  .to('#pearl', { opacity:1, duration:.35, ease:'power1.in' }, 4.25)
+  .set('#s2', { autoAlpha:1 }, 4.6)
+  .set('#s1', { autoAlpha:0 }, 4.6);
+
+/* 2. révélation 4.6 → 7.0 */
+tl.fromTo('#s2', { backgroundColor:'#f3effe' }, { backgroundColor:'rgba(243,239,254,0)', duration:.8, ease:'power2.out' }, 4.6)
+  .fromTo('#word .line>span', { yPercent:105, scaleY:1.25 }, { yPercent:0, scaleY:1, duration:1.0 }, 4.6)
+  .fromTo('.wr ellipse', { strokeDashoffset:1 }, { strokeDashoffset:0, duration:1.1, ease:'expo.inOut' }, 4.65)
+  .fromTo('#s2 .sub', { opacity:0, letterSpacing:'.8em' }, { opacity:1, letterSpacing:'.42em', duration:1.1 }, 4.85)
+  .fromTo('.marquee', { yPercent:100 }, { yPercent:0, duration:.9 }, 5.0)
+  .fromTo('#word', { scale:1 }, { scale:1.04, duration:2.4, ease:'none' }, 4.6)
+  // sortie : rideau du lilas des projets qui monte
+  .to('#word .line>span', { yPercent:-105, duration:.4, ease:'power3.in' }, 6.6)
+  .to(['#s2 .sub','.wr'], { opacity:0, duration:.3, ease:'power2.in' }, 6.6)
+  .fromTo('#s3', { autoAlpha:1, clipPath:'inset(100% 0 0 0)' }, { clipPath:'inset(0% 0 0 0)', duration:.55, ease:'expo.inOut' }, 6.6)
+  .set('#s2', { autoAlpha:0 }, 7.2);
+
+/* 3. projets 7.0 → 16.6, une mesure chacun */
+gsap.set('.proj', { autoAlpha:0 });
+P.forEach((d,i)=>{
+  const t = 7.0 + i*BAR, el = `#p${i}`, dir = d.flip ? -1 : 1;
+  tl.set(el, { autoAlpha:1 }, t-.05)
+    .fromTo(`${el} .frame`, { y:220, rotationX:16, rotationZ:-2.5*dir, opacity:0, transformPerspective:1600 },
+      { y:0, rotationX:0, rotationZ:0, opacity:1, duration:1.0 }, t-.05)
+    .fromTo(`${el} img`, { scale:1.12 }, { scale:1, duration:1.4 }, t-.05)
+    .fromTo(`${el} img`, { y:0 }, { y:-18, duration:BAR, ease:'none' }, t)
+    .fromTo(`${el} .count`, { opacity:0, x:30*dir }, { opacity:1, x:0, duration:.7 }, t+.05)
+    .fromTo(`${el} .rule`, { scaleX:0 }, { scaleX:1, duration:.7 }, t+.08)
+    .fromTo(`${el} .kicker`, { opacity:0, y:16 }, { opacity:1, y:0, duration:.7 }, t+.1)
+    .fromTo(`${el} h3 .line>span`, { yPercent:110 }, { yPercent:0, duration:.8 }, t+.12)
+    .fromTo(`${el} .txt`, { opacity:0, y:22 }, { opacity:1, y:0, duration:.8 }, t+.22)
+    .fromTo(`#bar i:nth-child(${i+1}) b`, { scaleX:0 }, { scaleX:1, duration:BAR, ease:'none' }, t);
+  if (i < 3) {
+    tl.to(`${el} .frame`, { y:-160, opacity:0, rotationX:-8, duration:.38, ease:'power3.in' }, t+BAR-.36)
+      .to(`${el} .info > *`, { opacity:0, y:-24, duration:.3, stagger:.02, ease:'power2.in' }, t+BAR-.38)
+      .set(el, { autoAlpha:0 }, t+BAR);
+  }
+});
+tl.fromTo('#orbg', { rotation:0, svgOrigin:'400 400' }, { rotation:40, duration:10, ease:'none' }, 6.8);
+
+/* 4. promesse 16.6 → 19.0 */
+tl.fromTo('#s4', { autoAlpha:1, clipPath:'circle(0% at 50% 50%)' }, { clipPath:'circle(75% at 50% 50%)', duration:.6, ease:'expo.inOut' }, 16.25)
+  .fromTo('#promise .line>span', { yPercent:112 }, { yPercent:0, duration:1.0, stagger:.1 }, 16.55)
+  .fromTo('#s4 .written', { opacity:0, y:12 }, { opacity:1, y:0, duration:.8 }, 17.2)
+  .fromTo('#tl', { opacity:0 }, { opacity:1, duration:.4 }, 16.6)
+  .fromTo('#tl .fill', { scaleX:0 }, { scaleX:1, duration:1.8, ease:'power2.inOut' }, 16.6)
+  .set('#s3', { autoAlpha:0 }, 17.0);
+$$('#tl .step').forEach((s,i)=>{
+  const t = 16.6 + i*BEAT;
+  tl.fromTo(s, { opacity:0, y:18 }, { opacity:1, y:0, duration:.6 }, t)
+    .fromTo(s.querySelector('.dot'), { scale:.3 }, { scale:1, duration:.6, ease:'back.out(3)' }, t)
+    .set(s.querySelector('.dot'), { className:'dot on' }, t+.05);
+});
+tl.to(['#promise','#s4 .written','#tl'], { opacity:0, y:-30, duration:.35, ease:'power2.in', stagger:.03 }, 18.65);
+
+/* 5. final 19.0 → 23.0 */
+tl.set('#s5', { autoAlpha:1 }, 18.95)
+  .fromTo('#s5', { clipPath:'inset(0 0 100% 0)' }, { clipPath:'inset(0 0 0% 0)', duration:.5, ease:'expo.inOut' }, 18.85)
+  .set('#s4', { autoAlpha:0 }, 19.4)
+  .fromTo('#planet2 img', { opacity:0, scale:.75, rotation:-8, yPercent:10 }, { opacity:1, scale:1, rotation:0, yPercent:0, duration:1.8 }, 19.0)
+  .fromTo('#planet2 .glow', { opacity:0 }, { opacity:1, duration:1.5 }, 19.1)
+  .fromTo('#s5 .logo .w>span', { yPercent:110 }, { yPercent:0, duration:1.0 }, 19.1)
+  .fromTo('#s5 .logo .mono', { opacity:0, letterSpacing:'.8em' }, { opacity:1, letterSpacing:'.42em', duration:1.1 }, 19.3)
+  .fromTo('#btn', { opacity:0, y:30, scale:.9 }, { opacity:1, y:0, scale:1, duration:.9 }, 19.5)
+  .fromTo('#s5 .handle', { opacity:0 }, { opacity:1, duration:.8, ease:'power2.out' }, 19.75)
+  .fromTo('#planet2', { y:0 }, { y:-14, duration:4, ease:'sine.inOut' }, 19.0)
+  // curseur : entre, aimanté par le bouton, clic
+  .fromTo('#cursor', { x:1560, y:1120, opacity:0 }, { x:1230, y:960, opacity:1, duration:1.0, ease:'power3.out' }, 20.0)
+  .to('#cursor', { x:1132, y:930, duration:.45, ease:'power3.inOut' }, 20.95)
+  .to('#btn', { x:8, duration:.45, ease:'power3.inOut' }, 20.95)
+  .to('#cursor .ring', { scale:1.6, opacity:.5, duration:.45 }, 20.95)
+  .to('#btn', { scale:.95, duration:.09, ease:'power2.in' }, 21.4)
+  .to('#btn', { scale:1, duration:.6, ease:'elastic.out(1,.5)' }, 21.49)
+  .to('#cursor .dot', { scale:.6, duration:.09, yoyo:true, repeat:1 }, 21.4)
+  .fromTo('#btn .ripple', { scale:0, opacity:1 }, { scale:1, opacity:0, duration:.8, ease:'power2.out' }, 21.4)
+  .fromTo('#toast', { opacity:0, y:20, scale:.9 }, { opacity:1, y:0, scale:1, duration:.7, ease:'back.out(2)' }, 21.6);
+
+tl.set({}, {}, 23.0);
+
+// ---------- rendu : pure fonction du temps ----------
+function render(t){
+  tl.seek(t, false);
+  // bandeau
+  $('#mq').style.transform = `translateX(${-140 - t*160}px)`;
+  // poussière en orbite (ellipse inclinée comme l'anneau)
+  const cx = 960, cy = 640;
+  for (const d of dust){
+    const a = d.a + t*d.sp, x = Math.cos(a)*d.r, y = Math.sin(a)*d.r*.34 + d.y;
+    const rx = x*Math.cos(-.16) - y*Math.sin(-.16), ry = x*Math.sin(-.16) + y*Math.cos(-.16);
+    d.el.style.transform = `translate(${cx+rx}px,${cy+ry}px)`;
+    d.el.style.opacity = d.o * (Math.sin(a) > 0 ? 1 : .55);
+  }
+  // lente rotation de l'anneau final
+  $('#planet2 img').style.filter = `drop-shadow(0 30px 60px rgba(91,33,230,${.12+.04*Math.sin(t*2)}))`;
+}
+window.DURATION = 23.0;
+window.seek = async t => { render(t); await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))); };
+window.ready = (async()=>{
+  await Promise.all(['800 40px "Inter Tight"','400 40px Inter','600 40px Inter','italic 400 40px "Instrument Serif"','500 40px "JetBrains Mono"'].map(f=>document.fonts.load(f)));
+  await document.fonts.ready;
+  await Promise.all($$('img').map(i=>i.decode().catch(()=>{})));
+  render(0);
+  return true;
+})();
+</script>
+</body>
+</html>
