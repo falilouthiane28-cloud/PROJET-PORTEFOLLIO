@@ -4,7 +4,7 @@ import js from '@eslint/js';
 import globals from 'globals';
 
 export default [
-  { ignores: ['dist/**', 'node_modules/**', 'perf/**', 'reports/**', 'research_notes/**', '_conception/**', 'test-results/**', 'playwright-report/**'] },
+  { ignores: ['dist/**', 'dist-local/**', 'node_modules/**', 'perf/**', 'reports/**', 'research_notes/**', '_conception/**', 'test-results/**', 'playwright-report/**'] },
   js.configs.recommended,
   {
     files: ['src/**/*.js'],

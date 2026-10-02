@@ -14,6 +14,7 @@ Site vitrine en une page, en français, au design sombre « cosmique ». **Le de
 npm run dev            # serveur Vite
 npm run build          # dist/ + .br/.gz
 npm run preview        # sert dist/ comme un CDN sur :4181
+npm run build:file     # dist-local/index.html : s'ouvre en double-clic (file://), sans serveur
 npm test               # lint + unitaires + e2e + a11y + mouvement réduit
 npm run test:perf      # Lighthouse + budgets + i/s sous CPU ×4 (sur secteur)
 npm run lint

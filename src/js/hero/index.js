@@ -257,7 +257,8 @@ export function initHero() {
     gsap.set(canvas, { opacity: 0 });
     const opts = { width: L.W, height: L.H, dpr: window.devicePixelRatio || 1, dprCap: 1.75 };
     canvasUsed = true;
-    if ('transferControlToOffscreen' in canvas) {
+    // page ouverte en fichier local (file://) : les workers y sont interdits → même scène sur le thread principal
+    if ('transferControlToOffscreen' in canvas && location.protocol !== 'file:') {
       worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
       const w = worker;                               // un message tardif d'un worker déjà démonté est ignoré
       worker.onmessage = ({ data: m }) => {
