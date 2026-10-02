@@ -33,7 +33,7 @@
 - `28e50db` Le bandeau ne se fige plus après une remontée.
 - `dc490a1` Contraste des mots « éteints » du studio porté à ≈ 3,7:1.
 - `8d1102f` Démontage complet des effets ; un effet en erreur n'arrête plus les autres.
-- `voir git log` Un effet par tâche en temps libre ; titres déclenchés par IntersectionObserver (tâche de 504 ms découpée) ; outil `test/perf/lh-compare.mjs`.
+- `944ffa0` Un effet par tâche en temps libre ; titres déclenchés par IntersectionObserver (tâche de 504 ms découpée) ; outil `test/perf/lh-compare.mjs`.
 
 ### Structure et outillage
 
