@@ -22,19 +22,30 @@ const GROUPS = [
   [`${MOTION} and (hover: hover) and (pointer: fine)`, { spotlight, magnetic }]
 ];
 
+// un effet par tâche, chacun dans un temps libre : l'initialisation ne forme plus une seule tâche longue
+// (mesuré : 504 ms d'un bloc sur mobile Lighthouse, d'où un TBT de 189-267 ms)
+const idle = cb => ('requestIdleCallback' in window ? requestIdleCallback(cb, { timeout: 1000 }) : setTimeout(cb, 16));
+const cancelIdle = h => ('cancelIdleCallback' in window ? cancelIdleCallback(h) : clearTimeout(h));
+
 export function initMotion() {
   gsap.registerPlugin(ScrollTrigger, SplitText);
   const mm = gsap.matchMedia();
   const live = (window.__motion = { effects: [] });
   for (const [query, effects] of GROUPS) {
     mm.add(query, () => {
-      const names = Object.keys(effects);
-      // un effet en erreur ne doit ni bloquer les autres ni empêcher le démontage de ceux déjà posés
-      const destroys = names.map(n => { try { return effects[n].init(document); } catch (e) { console.error('[mouvement]', n, e); } });
-      live.effects.push(...names);
+      const destroys = [], pending = new Set();
+      for (const [name, fx] of Object.entries(effects)) {
+        const h = idle(() => {
+          pending.delete(h);
+          // un effet en erreur ne doit ni bloquer les autres ni empêcher le démontage de ceux déjà posés
+          try { destroys.push(fx.init(document)); live.effects.push(name); } catch (e) { console.error('[mouvement]', name, e); }
+        });
+        pending.add(h);
+      }
       return () => {
+        pending.forEach(cancelIdle);
         destroys.reverse().forEach(d => { try { d && d(); } catch {} });
-        live.effects = live.effects.filter(n => !names.includes(n));
+        live.effects = live.effects.filter(n => !(n in effects));
       };
     });
   }

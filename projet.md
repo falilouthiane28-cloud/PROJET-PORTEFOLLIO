@@ -52,7 +52,8 @@ Le dépôt git est propre au projet, dans `PROJET-PORTFOLLIO/.git`.
 | Branche | Contenu |
 |---|---|
 | `main` | La refonte blanc/lilas (planète nacrée en 3D). **Le client ne l'a pas retenue**, gardée pour l'historique. |
-| `hero-animation-v2` | **Branche de travail actuelle.** Design d'origine restauré, puis hero réanimé. |
+| `hero-animation-v2` | Design d'origine restauré, puis hero réanimé. |
+| `motion-system-v1` | **Branche de travail actuelle.** Système de mouvement (8 effets), corrections, structure Claude Code, tests. Voir `docs/`. |
 
 Commits de repère :
 - `6e0680d` : état initial.
@@ -65,7 +66,9 @@ Commits de repère :
 - [x] Job 1 : design d'origine restauré à l'identique. Vérifié par captures à 390, 768 et 1440 px : moins de 1 % de pixels différents, venant des images réencodées et des éléments animés.
 - [x] Polices d'origine auto-hébergées (rendu identique), SEO invisible (canonical, locale, carte Twitter).
 - [x] Hero : scène dans un worker, poster d'abord, intro en timeline GSAP, scroll lissé, pointeur, bouton magnétique, qualité adaptative, niveaux statique / poster / animé.
-- [ ] **En cours, non commité :** l'intro démarre deux images après l'initialisation, pour supprimer l'à-coup de sa première image. L'intro y gagne, mais le premier scroll perd des images (le travail d'après-intro tombe pendant le scroll). À arbitrer, voir `memory.md`.
+- [x] Intro différée et premier scroll arbitrés (`motion-system-v1`, voir `docs/PERFORMANCE.md`).
+- [x] Système de mouvement, tests (e2e, régression visuelle, a11y, mouvement réduit, unitaires), structure `.claude/`.
+- [ ] Décision du client : pause du bandeau (WCAG 2.2.2, `docs/AUDIT.md` A24).
 - [ ] Vérification finale : Lighthouse ×3, mouvement réduit, captures 390/768/1440, revue au ralenti, tableau avant/après dans `HERO-BASELINE.md`.
 - [ ] Déploiement : choisir l'hébergeur, remplacer `saturn.example`, régénérer `og.jpg` et l'icône Apple dans le style sombre.
 

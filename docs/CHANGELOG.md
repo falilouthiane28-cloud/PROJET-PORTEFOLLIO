@@ -25,6 +25,16 @@
   - les styles de `motion.css`.
   - Ils devaient former des commits séparés. Après des tentatives bloquées par le pre-commit, les fichiers étaient restés indexés et sont partis ensemble. L'historique n'a pas été réécrit.
 
+### Phase 5 : revues indépendantes et mesures
+
+- `793edcf` et `8848d4f` Les effets attendent la fin de l'intro et un moment sans défilement : sur mobile, le premier scroll est revenu de 49–52 à 56–58 i/s.
+- `3a991ba` Le focus clavier seul déclenche un défilement (revue a11y). Le worker démarre avec sa visibilité réelle. Bouton magnétique du hero via `translate`.
+- `e4587a1` Préchargement du poster aligné sur les conditions du hero animé.
+- `28e50db` Le bandeau ne se fige plus après une remontée.
+- `dc490a1` Contraste des mots « éteints » du studio porté à ≈ 3,7:1.
+- `8d1102f` Démontage complet des effets ; un effet en erreur n'arrête plus les autres.
+- `voir git log` Un effet par tâche en temps libre ; titres déclenchés par IntersectionObserver (tâche de 504 ms découpée) ; outil `test/perf/lh-compare.mjs`.
+
 ### Structure et outillage
 
 - `c18a876` `tier.js` et `quality.js` deviennent des modules purs ; ajout d'ESLint.

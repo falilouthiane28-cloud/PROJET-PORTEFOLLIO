@@ -35,17 +35,18 @@
 - **Machine de mesure :** elle se dégrade après de longues séries (page vide tombée à 30 i/s). Toujours calibrer avant de mesurer et refaire si la page vide n'est pas à 60 i/s.
 - **Geste tactile simulé :** `Input.synthesizeScrollGesture` ne fait pas défiler en headless. Utiliser `Input.dispatchTouchEvent` (déjà fait dans `scripts/frames.mjs`).
 
-## Point ouvert (à reprendre)
+## Point ouvert (résolu sur `motion-system-v1`)
 
-Modification **non commitée** : l'intro démarre deux images après l'initialisation (`requestAnimationFrame` ×2, timeline créée en pause).
+L'intro différée de deux images est commitée (`4441531`). Les pistes 1 et 3 sont appliquées : pas de découpe en mode statique, découpe en temps libre après l'intro, mouvement initialisé après un moment calme. Le premier scroll mobile ×4 est à 56–58 i/s. Détails : `docs/PERFORMANCE.md`.
 
-- **Gain :** l'intro passe de 46–48 à 52–55 i/s (ordinateur ×4), et l'intro joue sur mobile (56–58 i/s).
-- **Perte :** le premier scroll passe de 57 à 45–47 i/s (ordinateur ×4), et de 58–59 à 53–55 sur mobile. Le travail d'après-intro (découpe des bandes 2 et 3, démarrage du worker) tombe pendant le premier geste.
+## Leçons de `motion-system-v1`
 
-Pistes :
-1. Ne pas découper les bandes en mode statique (elles sont masquées).
-2. Faire la découpe juste avant que chaque bande arrive.
-3. Démarrer le worker pendant un vrai temps mort, pas pendant un geste.
+- **Sur batterie, Windows bride le CPU :** Lighthouse est passé de 99 à 64–81 pour le même code. Vérifier le secteur avant toute mesure (`BatteryStatus` = 2).
+- **Processus Edge orphelins :** `proc.kill()` ne ferme pas les processus enfants d'Edge, et 147 s'étaient accumulés. `frames.mjs` les ferme maintenant par leur profil temporaire.
+- **Un geste peut tout bloquer :** un `getBoundingClientRect` dans un `focusin`, ou une animation Lenis en cours, suffit à ramener le focus clavier hors écran. Le test de parcours clavier l'a trouvé.
+- **`motion/mini` :** à la fin d'une animation, il écrit les valeurs finales en style inline. Il faut les retirer, sinon l'élément reste masqué.
+- **WAAPI :** une animation infinie lue à l'envers s'arrête à `currentTime` 0.
+- **ScrollTrigger :** chaque création mesure la page. Dix créations d'un bloc au chargement donnaient une tâche de 504 ms sur mobile. Utiliser des IntersectionObserver (`inView`) et un effet par tâche.
 
 ## Outils et mesure
 

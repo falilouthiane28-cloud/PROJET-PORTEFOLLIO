@@ -16,7 +16,8 @@ async function wheelDown(page, times, step = 300) { for (let i = 0; i < times; i
 test('ordinateur : les 8 effets démarrent, sans erreur', async ({ page }) => {
   const issues = watchConsole(page);
   await page.goto('/');
-  await page.waitForFunction(() => window.__motion?.effects?.length, null, { timeout: 15000 });
+  // les effets démarrent un par un, chacun dans un temps libre
+  await page.waitForFunction(() => window.__motion?.effects?.length === 8, null, { timeout: 15000 });
   expect((await page.evaluate(() => window.__motion.effects)).sort()).toEqual(
     ['faqSmooth', 'imageReveal', 'lineReveal', 'magnetic', 'marqueeVelocity', 'spotlight', 'staggerTags', 'wordHighlight']);
   expect(issues).toEqual([]);

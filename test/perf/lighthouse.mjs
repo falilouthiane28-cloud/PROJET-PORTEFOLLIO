@@ -7,7 +7,7 @@ import { budgets } from './budgets.mjs';
 
 const url = process.argv[2] || 'http://localhost:4181/';
 const runs = +(process.argv[3] || 3);
-const EDGE = 'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe';
+const EDGE = 'C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe';   // antislashs : chrome-launcher échoue avec des / sous Windows
 mkdirSync('perf/lh', { recursive: true });
 
 const battery = spawnSync('powershell', ['-NoProfile', '-Command', '(Get-CimInstance Win32_Battery).BatteryStatus'], { encoding: 'utf8' }).stdout.trim();

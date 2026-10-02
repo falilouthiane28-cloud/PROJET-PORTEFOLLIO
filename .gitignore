@@ -8,3 +8,6 @@ perf/base/
 perf/audit/
 test-results/
 playwright-report/
+perf/lh/
+perf/lh-avant/
+perf/lh-compare/

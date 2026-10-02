@@ -1,0 +1,36 @@
+AVANT desktop · intro 53/5 · timeline 56/2 · scroll 60/1 · LCP 644 · CLS 0.001 · long 2/274ms · tier - · overflow 0 · console 0
+AVANT desktopcpu · intro 31/8 · timeline 46/5 · scroll 48/39 · LCP 476 · CLS 0.001 · long 6/1434ms · tier - · overflow 0 · console 0
+AVANT mobile · intro 42/12 · timeline 54/5 · scroll 58/9 · LCP 1544 · CLS 0.002 · long 5/1619ms · tier - · overflow 0 · console 0
+APRES desktop · intro 56/4 · timeline 57/2 · scroll 59/3 · LCP 496 · CLS 0.001 · long 1/83ms · tier - · overflow 0 · console 0
+APRES desktopcpu · intro 30/7 · timeline 46/6 · scroll 47/37 · LCP 1712 · CLS 0.002 · long 6/1778ms · tier - · overflow 0 · console 0
+APRES mobile · intro 43/6 · timeline 53/3 · scroll 49/62 · LCP 1520 · CLS 0.003 · long 5/1794ms · tier - · overflow 0 · console 0
+AVANT desktop · intro 48/5 · timeline 55/2 · scroll 53/14 · LCP 356 · CLS 0.001 · long 1/110ms · tier - · overflow 0 · console 0
+AVANT desktopcpu · intro 35/8 · timeline 53/5 · scroll 43/58 · LCP 1096 · CLS 0 · long 4/1449ms · tier - · overflow 0 · console 0
+AVANT mobile · intro 45/7 · timeline 58/2 · scroll 54/38 · LCP 1560 · CLS 0.003 · long 6/1593ms · tier - · overflow 0 · console 0
+APRES desktop · intro 52/4 · timeline 53/3 · scroll 59/3 · LCP 504 · CLS 0.001 · long 1/168ms · tier - · overflow 0 · console 0
+APRES desktopcpu · intro 31/8 · timeline 48/5 · scroll 42/64 · LCP 1012 · CLS 0.001 · long 9/1809ms · tier - · overflow 0 · console 0
+APRES mobile · intro 42/9 · timeline 55/4 · scroll 50/51 · LCP 1540 · CLS 0.003 · long 5/1751ms · tier - · overflow 0 · console 0
+AVANT desktop · intro 52/4 · timeline 54/3 · scroll 59/3 · LCP 432 · CLS 0.001 · long 1/126ms · tier - · overflow 0 · console 0
+AVANT desktopcpu · intro 35/6 · timeline 52/3 · scroll 41/66 · LCP 1532 · CLS 0.001 · long 4/1306ms · tier - · overflow 0 · console 0
+AVANT mobile · intro 45/7 · timeline - · scroll 54/31 · LCP 1312 · CLS 0.003 · long 7/1587ms · tier - · overflow 0 · console 0
+APRES desktop · intro 54/3 · timeline 54/3 · scroll 59/3 · LCP 352 · CLS 0.001 · long 1/97ms · tier - · overflow 0 · console 0
+APRES desktopcpu · intro 22/10 · timeline 40/9 · scroll 46/41 · LCP 2036 · CLS 0.001 · long 6/2137ms · tier - · overflow 0 · console 0
+APRES mobile · intro 42/6 · timeline 53/3 · scroll 52/49 · LCP 1564 · CLS 0.003 · long 6/1937ms · tier - · overflow 0 · console 0
+AVANT mobile · intro 44/6 · timeline 58/3 · scroll 58/12 · LCP 1724 · CLS 0.003 · long 6/1750ms · tier - · overflow 0 · console 0
+APRES mobile · intro 39/15 · timeline 52/6 · scroll 57/22 · LCP 1420 · CLS 0.002 · long 6/1713ms · tier - · overflow 0 · console 0
+AVANT mobile · intro 44/5 · timeline - · scroll 57/15 · LCP 1668 · CLS 0.002 · long 5/1762ms · tier - · overflow 0 · console 0
+APRES mobile · intro 43/9 · timeline 54/6 · scroll 57/16 · LCP 1516 · CLS 0.002 · long 6/1808ms · tier - · overflow 0 · console 0
+AVANT mobile · intro 41/12 · timeline 54/7 · scroll 58/10 · LCP 1572 · CLS 0.002 · long 4/1788ms · tier - · overflow 0 · console 0
+APRES mobile · intro 43/8 · timeline 55/3 · scroll 52/24 · LCP 1448 · CLS 0.003 · long 6/1772ms · tier - · overflow 0 · console 2
+APRES    LOG error Failed to load resource: net::ERR_CONNECTION_REFUSED http://localhost:4181/assets/saturn-ai-1200-DxyvbW2R.avif
+APRES    LOG error Failed to load resource: net::ERR_CONNECTION_REFUSED http://localhost:4181/assets/teranga-1200-CTnJaM8f.avif
+AVANT mobile · intro 41/9 · timeline 57/5 · scroll 58/11 · LCP 1804 · CLS 0.002 · long 6/2016ms · tier - · overflow 0 · console 0
+APRES mobile · intro 40/17 · timeline 52/7 · scroll 57/20 · LCP 1552 · CLS 0.003 · long 6/1784ms · tier - · overflow 0 · console 0
+AVANT mobile · intro 43/8 · timeline 58/2 · scroll 58/13 · LCP 1616 · CLS 0.003 · long 5/1713ms · tier - · overflow 0 · console 0
+APRES mobile · intro 42/7 · timeline 54/4 · scroll 57/18 · LCP 1580 · CLS 0.003 · long 6/1947ms · tier - · overflow 0 · console 0
+AVANT mobile · intro 38/14 · timeline 48/9 · scroll 58/15 · LCP 1480 · CLS 0.003 · long 4/1680ms · tier - · overflow 0 · console 0
+APRES mobile · intro 45/8 · timeline 58/3 · scroll 58/12 · LCP 1392 · CLS 0.003 · long 6/1638ms · tier - · overflow 0 · console 0
+AVANT mobile · intro 42/13 · timeline - · scroll 56/14 · LCP 1380 · CLS 0.003 · long 5/1529ms · tier - · overflow 0 · console 0
+APRES mobile · intro 41/15 · timeline 55/3 · scroll 56/24 · LCP 1284 · CLS 0.003 · long 6/1611ms · tier - · overflow 0 · console 0
+AVANT mobile · intro 45/6 · timeline 59/2 · scroll 58/13 · LCP 1564 · CLS 0.003 · long 5/1537ms · tier - · overflow 0 · console 0
+APRES mobile · intro 44/8 · timeline 59/2 · scroll 56/22 · LCP 1340 · CLS 0.002 · long 7/1750ms · tier - · overflow 0 · console 0

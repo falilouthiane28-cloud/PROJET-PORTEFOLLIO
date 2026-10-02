@@ -34,7 +34,8 @@ On ajoute du mouvement **sans changer le design au repos**. Toute animation se t
 1. `index.html` : le CSS en ligne pose le titre du hero en masques mot à mot (élément LCP sans JS).
 2. `main.js` (JS initial, 57,9 Ko gzip) : `site.js`, `nav.js`, `initHero()`.
 3. Après l'intro du hero (≈ 2,5 s), en temps libre : découpe des bandes 2 et 3, puis démarrage du worker de la scène.
-4. Après l'événement `load`, en temps libre et une fois les polices prêtes : `import('./motion/index.js')` (9,2 Ko gzip), qui lance `initMotion()`.
+4. Après l'événement `load`, une fois les polices prêtes **et l'intro du hero terminée**, `import('./motion/index.js')` charge le système de mouvement (9,2 Ko gzip).
+5. Il attend ensuite 400 ms sans défilement, puis initialise **un effet par tâche en temps libre** : aucune tâche longue (mesuré). Les effets ne s'appliquent qu'à ce qui est encore sous l'écran.
 
 ## Catalogue
 
@@ -44,12 +45,12 @@ On ajoute du mouvement **sans changer le design au repos**. Toute animation se t
 | Hero : titre | Premier rendu (CSS) | Mots montant de leur masque | Visible tout de suite | `src/styles/site.css`, `hero.css` |
 | Hero : scène et bandes | Scroll lissé (lerp 0,12 indépendant de la fréquence) | Liée au scroll | Hero statique | `src/js/hero/` |
 | Hero : parallaxe du pointeur | Souris | Lerp 0,08 | — | `src/js/hero/index.js` |
-| Hero : bouton magnétique | Souris | `quickTo` 0,5 s, `power3` | — | `src/js/hero/index.js` |
-| Titres de section (h2) | Haut du titre à 88 % de l'écran (une fois) | 1,0 s, `quint.out`, décalage 0,08 | Non chargé | `src/motion/effects/lineReveal.js` |
-| Phrase du studio, mot à mot | Scroll, de « haut à 85 % » à « bas à 70 % » | Scrub 0,5 | Non chargé | `src/motion/effects/wordHighlight.js` |
+| Hero : bouton magnétique | Souris | `quickTo` 0,5 s, `power3`, via `translate` (garde le survol d'origine) | — | `src/js/hero/index.js` |
+| Titres de section (h2) | IntersectionObserver : découpe à l'entrée par le bas, montée à 88 % de l'écran (une fois) | 1,0 s, `quint.out`, décalage 0,08 | Non chargé | `src/motion/effects/lineReveal.js` |
+| Phrase du studio, mot à mot | Scroll, de « haut à 85 % » à « bas à 70 % » | Scrub 0,5. Départ à 0,42 d'opacité, soit ≈ 3,7:1 : un mot éteint reste lisible. | Non chargé | `src/motion/effects/wordHighlight.js` |
 | Captures des projets (masque et zoom) | Scroll, de « haut en bas d'écran » à « haut à 62 % » | Scrub 0,6, ≥ 1025 px | Non chargé | `src/motion/effects/imageReveal.js` |
 | Étiquettes en cascade | 60 % du groupe visible (une fois) | 0,6 s, `EASE.out`, décalage 0,06, délai 0,3 | Non chargé | `src/motion/effects/staggerTags.js` |
-| Vitesse du bandeau | Vitesse du scroll, quand le bandeau est à l'écran | Lerp 0,08, retour lerp 0,04, ×1 à ×4, sens du scroll | Bandeau à l'arrêt (CSS) | `src/motion/effects/marqueeVelocity.js` |
+| Vitesse du bandeau | Vitesse du scroll, quand le bandeau est à l'écran | Lerp 0,08, retour lerp 0,04, ×1 à ×4, jamais inversé (une animation infinie lue à l'envers s'arrête) | Bandeau à l'arrêt (CSS) | `src/motion/effects/marqueeVelocity.js` |
 | FAQ : fermeture | Clic, Entrée ou Espace | 0,22 s, `EASE.in` | Fermeture immédiate | `src/motion/effects/faqSmooth.js` |
 | FAQ : ouverture (d'origine) | Ouverture | 0,6 s, `--ease-out` | Immédiate | `src/styles/site.css` |
 | Lueur des services | Survol à la souris | Opacité 0,6 s | — | `src/motion/effects/spotlight.js` + `motion.css` |
