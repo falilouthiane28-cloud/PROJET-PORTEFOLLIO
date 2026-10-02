@@ -385,6 +385,7 @@ export function initHero() {
   // la découpe des bandes 2 et 3 (≈ 100 éléments DOM) se fait dans un temps libre après l'intro,
   // jamais pendant le premier geste de scroll (c'était la cause des images perdues au premier scroll)
   intro.done.then(() => { idle(splitBands, 3000); requestLive(); });
+  info.introDone = intro.done;                      // le système de mouvement attend la fin de l'intro
   ['wheel', 'touchstart', 'keydown'].forEach(t => addEventListener(t, requestLive, { once: true, passive: true }));
 
   function playIntro() {

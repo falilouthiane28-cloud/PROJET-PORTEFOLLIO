@@ -22,6 +22,8 @@ function whenQuiet(cb, ms = 400) {
   evs.forEach(e => addEventListener(e, bump, { passive: true }));
   function done() { evs.forEach(e => removeEventListener(e, bump)); idle(cb); }
 }
-const loadMotion = () => idle(() => document.fonts.ready.then(() => import('./motion/index.js'))
+// … et la fin de l'intro du hero : en 4G, le load arrive pendant l'intro et l'initialisation lui volait des images
+const loadMotion = () => idle(() => Promise.all([document.fonts.ready, window.__hero?.introDone])
+  .then(() => import('./motion/index.js'))
   .then(m => whenQuiet(() => m.initMotion())).catch(e => console.warn('[mouvement] non chargé', e)));
 if (document.readyState === 'complete') loadMotion(); else addEventListener('load', loadMotion, { once: true });
