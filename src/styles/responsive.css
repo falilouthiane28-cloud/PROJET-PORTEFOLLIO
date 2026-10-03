@@ -1,0 +1,10 @@
+/* Corrections responsives et ajouts de structure (liens vers les sites des clients).
+   Le design au repos ne change pas sur ordinateur. Recherche : reports/Hero mobile et responsive.md */
+
+/* ---------- projets : lien vers le site en ligne + lien de contact ---------- */
+.project__links{display:flex;flex-wrap:wrap;align-items:center;gap:8px 28px}
+.link--site span[aria-hidden]{display:inline-block;transition:transform var(--dur-micro) var(--ease-out)}
+.link--site:hover span[aria-hidden]{transform:translate(2px,-2px)}
+
+/* ---------- toucher : « Retour en haut » faisait 16 px de haut (audit, cibles de 44 px) ---------- */
+@media (pointer:coarse){.totop{display:inline-flex;align-items:center;min-height:44px}}

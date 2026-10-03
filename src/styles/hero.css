@@ -53,6 +53,23 @@ html.lenis,html.lenis body{height:auto}
   .hero__scene{bottom:auto;height:62%}          /* même boîte que le canvas d'origine */
   .hero__canvas{height:100%}
 }
+/* téléphone et tablette en portrait : la scène prend sa place dans le flux, entre la nav et le texte.
+   En position absolue (62 % du haut), elle chevauchait la ligne « Studio de design et web » dès que le texte
+   dépassait 38 % de l'écran (mesuré : 360×800, 360×640). Le paysage et l'ordinateur gardent la composition d'origine. */
+@media (max-width: 720px), (orientation: portrait) and (max-width: 1024px){
+  .hero__stage{padding-top:76px}
+  .hero__scene{position:relative;inset:auto;height:clamp(190px,30svh,300px);flex:none;margin:0 calc(var(--gutter) * -1) 4px}
+}
+/* sous 600 px, la ligne de coordonnées est masquée : le bas n'a plus besoin de ses 90 px */
+@media (max-width: 600px){.hero__stage{padding-bottom:40px}}
+/* téléphone en paysage (390 px de haut) : le titre à 72 px prenait toute la largeur et passait sur les mondes.
+   Texte à gauche, scène à droite, titre calé sur la hauteur. */
+@media (orientation: landscape) and (pointer: coarse) and (max-height: 560px){
+  .hero__stage{padding-top:96px;padding-bottom:40px}
+  .hero__scene{left:46%;right:0;top:0;height:100%}
+  .hero__static{max-width:50%}
+  .hero__static .display{font-size:clamp(28px,4.4vw,46px)}
+}
 /* 320 px : les étiquettes chevauchaient la ligne « Studio de design et web » (audit H4) */
 @media (max-width:360px){.chips{display:none}}
 
