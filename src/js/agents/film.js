@@ -1,6 +1,7 @@
 // Le film de 40 s, avec le son, dans un <dialog> natif.
 // showModal() fournit le piège du focus, Échap, l'arrière-plan inerte et le retour du focus au bouton.
-// On ajoute : la page figée (Lenis arrêté, défilement natif bloqué), la pause à la fermeture, la fermeture au clic
+// On ajoute : la page figée (Lenis arrêté, body fixé : sur iOS, overflow:hidden ne bloque pas le toucher), la pause
+// à la fermeture, la fermeture au clic
 // sur le fond. Les sources ne sont posées qu'à la première ouverture : aucun octet du film avant le clic.
 import av1Large from '../../assets/video/film-4x5-av1.mp4?url';
 import h264Large from '../../assets/video/film-4x5-h264.mp4?url';
@@ -27,18 +28,35 @@ export function initFilm() {
     const set = matchMedia('(max-aspect-ratio: 3/4)').matches ? SOURCES.haut : SOURCES.large;
     if (set === SOURCES.haut) { video.width = 720; video.height = 1280; dialog.classList.add('film--haut'); }
     for (const [src, type] of set) video.append(Object.assign(document.createElement('source'), { src, type }));
-    // sous-titres en Blob : fonctionne aussi en file:// (npm run build:file), où un .vtt externe serait refusé
+    // sous-titres de la bande-son, désactivés par défaut : le film n'a pas de dialogue (WAI : sous-titres non
+    // nécessaires pour une musique seule) ; ils restent dans le menu du lecteur. En Blob : marche aussi en file://.
     const track = Object.assign(document.createElement('track'), {
-      kind: 'captions', srclang: 'fr', label: 'Français', default: true,
+      kind: 'captions', srclang: 'fr', label: 'Français (bande-son)',
       src: URL.createObjectURL(new Blob([vtt], { type: 'text/vtt' }))
     });
     video.append(track);
     video.poster = affiche;
   }
 
+  // au toucher (iOS), overflow:hidden ne retient pas le défilement : on fixe le body à sa position, puis on la rend
+  const TOUCH = matchMedia('(pointer: coarse)');
+  let lockedY = null;
+  const lock = () => {
+    if (!TOUCH.matches) return;
+    lockedY = scrollY;
+    Object.assign(document.body.style, { position: 'fixed', top: `-${lockedY}px`, left: '0', right: '0' });
+  };
+  const unlock = () => {
+    if (lockedY === null) return;
+    Object.assign(document.body.style, { position: '', top: '', left: '', right: '' });
+    scrollTo({ top: lockedY, behavior: 'instant' });
+    lockedY = null;
+  };
+
   open.addEventListener('click', () => {
     prepare();
     dialog.showModal();
+    lock();
     document.documentElement.classList.add('has-modal');
     window.__hero?.scroll?.stop();
     dispatchEvent(new Event('film:open'));
@@ -51,9 +69,8 @@ export function initFilm() {
   dialog.addEventListener('close', () => {
     video.pause();
     document.documentElement.classList.remove('has-modal');
+    unlock();
     window.__hero?.scroll?.start();
     dispatchEvent(new Event('film:close'));
   });
-  // la piste est « default » ; certains navigateurs la laissent cachée tant qu'elle n'a pas été chargée
-  video.addEventListener('loadedmetadata', () => { const t = video.textTracks[0]; if (t && t.mode === 'disabled') t.mode = 'showing'; });
 }
