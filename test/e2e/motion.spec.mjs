@@ -13,13 +13,13 @@ test.beforeEach(async ({ page }) => {
 
 async function wheelDown(page, times, step = 300) { for (let i = 0; i < times; i++) { await page.mouse.wheel(0, step); await page.waitForTimeout(60); } }
 
-test('ordinateur : les 8 effets démarrent, sans erreur', async ({ page }) => {
+test('ordinateur : les 9 effets démarrent, sans erreur', async ({ page }) => {
   const issues = watchConsole(page);
   await page.goto('/');
   // les effets démarrent un par un, chacun dans un temps libre
-  await page.waitForFunction(() => window.__motion?.effects?.length === 8, null, { timeout: 15000 });
+  await page.waitForFunction(() => window.__motion?.effects?.length === 9, null, { timeout: 15000 });
   expect((await page.evaluate(() => window.__motion.effects)).sort()).toEqual(
-    ['faqSmooth', 'imageReveal', 'lineReveal', 'magnetic', 'marqueeVelocity', 'spotlight', 'staggerTags', 'wordHighlight']);
+    ['faqSmooth', 'imageReveal', 'lineReveal', 'magnetic', 'marqueeVelocity', 'missionFlow', 'spotlight', 'staggerTags', 'wordHighlight']);
   expect(issues).toEqual([]);
 });
 
@@ -27,9 +27,9 @@ test('titres : chaque h2 est découpé à l’arrivée puis rendu intact', async
   await page.goto('/');
   await introDone(page);
   await page.waitForFunction(() => window.__motion?.effects?.length);
-  await wheelDown(page, 45);
+  await wheelDown(page, 60);
   await page.waitForTimeout(2500);
-  expect([...await page.evaluate(() => [...window.__splits])].sort()).toEqual(['t-cta', 't-faq', 't-methode', 't-projets', 't-services']);
+  expect([...await page.evaluate(() => [...window.__splits])].sort()).toEqual(['t-agents', 't-cta', 't-faq', 't-methode', 't-projets', 't-services']);
   expect(await page.locator('.mv-line').count()).toBe(0);
   await expect(page.locator('#t-projets')).toHaveJSProperty('innerHTML', 'Nos <em>réalisations</em>');
 });

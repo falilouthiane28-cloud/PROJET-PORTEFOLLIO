@@ -55,7 +55,7 @@ test('hero : passage du mode statique au mode animé sans erreur (rotation, redi
 test('chaque lien de navigation mène à sa section', async ({ page }) => {
   await page.goto('/');
   await introDone(page);
-  for (const id of ['projets', 'services', 'methode', 'studio']) {
+  for (const id of ['agents', 'projets', 'services', 'methode', 'studio']) {
     const link = page.locator(`.nav a[href="#${id}"]`).first();
     await link.focus();                       // la nav, masquée après le défilement, réapparaît au focus
     await page.keyboard.press("Enter");
@@ -106,8 +106,9 @@ test('moment « mettre en orbite » : maintenir le bouton termine le lancement',
 });
 
 // ---------- régression visuelle : le design au repos ne doit pas changer ----------
-const SECTIONS = ['#top', '#projets', '#services', '#methode', '#studio', '#faq', '#contact', '.footer'];
-const MASK = ['.clock'];   // la scène est déterministe (graine fixe) et ?niveau=poster fige le hero ; seule l'heure change
+const SECTIONS = ['#top', '#agents', '.crew', '.mission', '#projets', '#services', '#methode', '#studio', '#faq', '#contact', '.footer'];
+// la scène est déterministe (graine fixe) et ?niveau=poster fige le hero ; restent l'heure et l'extrait vidéo en boucle
+const MASK = ['.clock', '.agents__screen'];
 for (const w of [390, 768, 1440]) {
   test(`régression visuelle à ${w} px`, async ({ page }) => {
     test.slow();

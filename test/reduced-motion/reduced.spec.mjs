@@ -40,3 +40,17 @@ test('le moment « orbite » s’achève sans animation', async ({ page }) => {
   await page.locator('#launchBtn').click();
   await expect(page.locator('#launch')).toHaveClass(/is-done/);
 });
+
+test('Saturn Agents : l’affiche reste, aucune vidéo téléchargée, pas de bouton pause, mission allumée', async ({ page }) => {
+  const videos = [];
+  page.on('request', r => { if (/\.mp4/.test(r.url())) videos.push(r.url()); });
+  await page.goto('/');
+  await page.locator('#agents').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(2500);
+  expect(videos).toEqual([]);
+  await expect(page.locator('.agents__poster img')).toBeVisible();
+  await expect(page.locator('.agents__pause')).toBeHidden();
+  await page.locator('.mission').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(600);
+  expect(Math.min(...await page.locator('.mission__step').evaluateAll(ls => ls.map(l => +getComputedStyle(l).opacity)))).toBe(1);
+});
