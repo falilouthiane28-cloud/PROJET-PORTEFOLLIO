@@ -121,3 +121,26 @@ En cours de route, une régression sur mobile a été mesurée puis corrigée. L
 | code-reviewer | Aucun point bloquant ; les points importants sont corrigés (voir `AUDIT.md`, A16 à A23). |
 | a11y-reviewer | 2 problèmes corrigés (A15, A18) ; la pause du bandeau (A24) attend une décision du client. |
 | perf-auditor | **Non terminé** : la session s'est arrêtée pendant ses mesures. À relancer sur secteur avec `npm run test:perf` et `node test/perf/lh-compare.mjs`. |
+
+## Section Saturn Agents (03/10/2026, branche `video-agents-v1`, sur secteur)
+
+Lighthouse mobile (Slow 4G, CPU ×4), 5 passages en alternance avec `motion-system-v1` (`node test/perf/lh-compare.mjs`), médiane [plage] :
+
+| | Perf | LCP | TBT | FCP | CLS | Poids |
+|---|---|---|---|---|---|---|
+| Avant (sans la section) | 96 [95–98] | 2 455 ms [2 363–2 512] | 88 ms [45–114] | 1 600 ms | 0 | 252 Ko |
+| Après | 95 [92–97] | 2 361 ms [2 259–2 436] | 166 ms [107–245] | 1 676 ms | 0 | 202 Ko |
+
+Budgets (`node test/perf/lighthouse.mjs`, 3 passages) : Perf 97 · A11y 100 · BP 100 · SEO 100 · CLS 0 · TBT 124 ms · 202 Ko. **LCP 2,32 s : au-dessus du budget de 2,0 s, déjà le cas avant la section (2,46 s).** Rapport : `perf/agents/lighthouse-mobile.html`.
+
+Ce qui a été mesuré et corrigé en chemin :
+
+| Version | Perf | LCP | TBT | Poids | Cause |
+|---|---|---|---|---|---|
+| Première version | 94 | 2 697 ms | 128 ms | 282 Ko | Style et mise en page 451 → 889 ms ; avatars téléchargés deux fois (AVIF + WebP) ; images de la section chargées tôt |
+| + `content-visibility`, avatars dédoublonnés | 92 | 2 393 ms | 222 ms | 202 Ko | Initialisation de la section dans la tâche du hero (+55 ms) |
+| + initialisation en temps libre | 95–96 | 2 339–2 361 ms | 116–166 ms | 202 Ko | — |
+
+Reste : le TBT dépasse la référence d'environ 50 à 80 ms (plages qui se recouvrent), sous le budget. JS initial : 59,8 Ko gzip (avant 58,1, `check-budget.mjs`). HTML avec CSS en ligne : 24,6 Ko gzip (+7,3 Ko).
+
+Vidéos (hors chargement initial) : boucle 0,79 Mo (AV1) / 1,07 Mo (H.264) ; film 4:5 7,0 / 10,8 Mo ; film 9:16 4,7 / 6,5 Mo.

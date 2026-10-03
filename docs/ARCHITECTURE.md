@@ -12,6 +12,7 @@ src/
     nav.css                barre de navigation
     hero.css               états du hero (intro, statique, poster)
     motion.css             jetons CSS et styles des effets ajoutés (invisibles au repos)
+    agents.css             section Saturn Agents et modale du film
   js/
     site.js                horloge, apparitions .reveal, traits dessinés, moment « orbite »
     nav.js                 nav : pastille, CTA magnétique, jauge, retrait au scroll, menu mobile
@@ -21,6 +22,10 @@ src/
       worker.js            rendu dans un worker (OffscreenCanvas)
       quality.js           qualité adaptative (fonction pure, testée)
       tier.js              niveau d'appareil (fonction pure, testée)
+    agents/                section Saturn Agents (voir docs/AGENTS.md)
+      loop.js              extrait vidéo en boucle : chargement différé, pause
+      film.js              film de 40 s dans un <dialog>, sous-titres
+      crew.js              onglets de l'équipe
   motion/
     tokens.js              jetons de mouvement (testés)
     util.js                outils des effets
@@ -43,6 +48,7 @@ docs/                      architecture, mouvement, performance, décisions, aud
 | 3 | `index-*.js` (57,9 Ko gzip) : GSAP, ScrollTrigger, Lenis, site, nav, hero. | Module différé |
 | 4 | Intro du hero : timeline GSAP, démarrée 2 images après l'initialisation. | — |
 | 5 | Après l'intro, en temps libre : découpe des bandes, puis worker de la scène, puis fondu enchaîné poster → canvas. | Hors thread principal |
+| 5 bis | En temps libre : `loop.js`, `film.js`, `crew.js`, une tâche chacune. La boucle vidéo attend `load` et la proximité de l'écran ; le film, le clic. | Aucun octet vidéo au chargement |
 | 6 | Après `load`, en temps libre : `motion-*.js` (9,2 Ko gzip, avec SplitText et le sous-ensemble Motion), puis `initMotion()`. | À la demande |
 
 ## Flux de données du hero

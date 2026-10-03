@@ -4,7 +4,7 @@ Règles : `.claude/rules/motion-system.md`. Décisions et sources : `docs/DECISI
 
 ## Principe
 
-On ajoute du mouvement **sans changer le design au repos**. Toute animation se termine sur l'état d'origine exact : SplitText est annulé (`revert`), les styles inline sont retirés, les masques reviennent à `inset(0)`. La régression visuelle (`test/e2e`, 3 largeurs × 8 sections) le vérifie.
+On ajoute du mouvement **sans changer le design au repos**. Toute animation se termine sur l'état d'origine exact : SplitText est annulé (`revert`), les styles inline sont retirés, les masques reviennent à `inset(0)`. La régression visuelle (`test/e2e`, 3 largeurs × 11 sections) le vérifie.
 
 ## Jetons (`src/motion/tokens.js`, `src/styles/motion.css`)
 
@@ -59,6 +59,11 @@ On ajoute du mouvement **sans changer le design au repos**. Toute animation se t
 | Traits dessinés (d'origine) | Scroll | — | Dessinés | `src/js/site.js` |
 | Nav : jauge, repli, retrait (d'origine) | Scroll | Ressorts | — | `src/js/nav.js` |
 | Moment « orbite » (d'origine) | Bouton maintenu | 1,6 s | Achevé tout de suite | `src/js/site.js` |
+| Agents : extrait en boucle | Section à moins de 200 px de l'écran, après `load` | Lecture vidéo, fondu d'opacité `DUR.base` à `playing` ; pause hors écran, onglet caché, modale ouverte, ou au bouton | Non chargé : affiche seule, sans bouton | `src/js/agents/loop.js` |
+| Agents : modale du film | Clic sur « Voir la vidéo » | Entrée 0,6 s (`DUR.base`, `--ease-out`), opacité et 16 px | Immédiate | `src/js/agents/film.js`, `agents.css` |
+| Équipe : changement d'agent | Clic, toucher, flèches | Fiche 0,6 s (opacité, 14 px), mascotte 1,1 s (opacité, 28 px, échelle 0,96), lueur 1,1 s | Immédiat | `src/js/agents/crew.js`, `agents.css` |
+| Équipe : impulsions et onde | En continu, seulement à l'écran (`.on`) | Impulsion 2,4 s `--ease-io` (`translate`) ; barres 1,1 s (`scaleY`) | Arrêtées | `agents.css` |
+| Mission | Arrivée à l'écran (une fois) | 3,4 s : remplissage `scaleX`/`scaleY` et point (`x`/`y`) linéaires ; étapes en opacité 0,3 s + échelle 0,86 → 1 (0,6 s, `expo.out`) tous les 0,62 s | Non chargé : tout allumé | `src/motion/effects/missionFlow.js` |
 
 ## Écarts assumés par rapport à la consigne
 

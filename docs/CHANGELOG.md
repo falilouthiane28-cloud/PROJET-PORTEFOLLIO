@@ -1,5 +1,33 @@
 # Journal des changements
 
+## `video-agents-v1` (03/10/2026)
+
+### Section Saturn Agents
+
+- `3e442aa` **Recherche :** le brief de la phase 1, validé par le client (`reports/Vidéo hero et équipe agents.md`).
+- `36070dd` **Médias :**
+  - boucle de 8,85 s (AV1 0,79 Mo, H.264 1,07 Mo) ;
+  - film de 40 s en 4:5 et en 9:16 ;
+  - sous-titres FR ;
+  - mascottes et affiches en AVIF et WebP.
+- `fedb92a` **Section :**
+  - extrait en boucle différé avec bouton pause ;
+  - film dans un `<dialog>` ;
+  - équipe en onglets ;
+  - lien « Agents » dans la nav.
+  - Voir `docs/AGENTS.md`.
+- `78cd883` **Mouvement :** la mission traverse l'équipe, une fois, sans scroll épinglé.
+- `6544ae6` **Tests :** 5 tests e2e et 1 en mouvement réduit. 9 nouvelles références visuelles, Projets et Studio mis à jour.
+
+### Mesures (Lighthouse mobile, 5 passages en alternance)
+
+| | Perf | LCP | TBT | Poids |
+|---|---|---|---|---|
+| Avant | 96 | 2,46 s | 88 ms | 252 Ko |
+| Après | 95 | 2,36 s | 166 ms | 202 Ko |
+
+Le TBT reste sous le budget de 200 ms. Détail dans `docs/PERFORMANCE.md`.
+
 ## `motion-system-v1` (01/10/2026)
 
 ### Corrections
