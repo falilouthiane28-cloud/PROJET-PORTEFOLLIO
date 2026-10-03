@@ -58,6 +58,7 @@
 
       <nav class="nav__links" aria-label="Navigation principale">
         <span class="nav__glow" aria-hidden="true"></span>
+        <a href="#agents" data-id="agents">Agents</a>
         <a href="#projets" data-id="projets">Projets</a>
         <a href="#services" data-id="services">Services</a>
         <a href="#methode" data-id="methode">Méthode</a>
@@ -76,11 +77,12 @@
 
     <div class="nav__sheet" id="navSheet" hidden>
       <nav aria-label="Menu">
-        <a href="#projets"><b>01</b>Projets</a>
-        <a href="#services"><b>02</b>Services</a>
-        <a href="#methode"><b>03</b>Méthode</a>
-        <a href="#studio"><b>04</b>Studio</a>
-        <a href="#faq"><b>05</b>Questions</a>
+        <a href="#agents"><b>01</b>Agents</a>
+        <a href="#projets"><b>02</b>Projets</a>
+        <a href="#services"><b>03</b>Services</a>
+        <a href="#methode"><b>04</b>Méthode</a>
+        <a href="#studio"><b>05</b>Studio</a>
+        <a href="#faq"><b>06</b>Questions</a>
       </nav>
       <div class="nav__sheet-foot">
         <a href="mailto:saturndesingstudio@gmail.com">saturndesingstudio@gmail.com</a>
@@ -167,6 +169,174 @@
         <span>Sites premium</span><i></i><span>Plateformes web</span><i></i><span>Employés IA</span><i></i>
       </div>
     </div>
+
+    <!-- ============ SATURN AGENTS : le film, l'équipe, une mission ============ -->
+    <section class="agents dark" id="agents" aria-labelledby="t-agents">
+
+      <!-- 1. présentation : extrait muet en boucle (chargé quand la section approche), film complet dans une modale -->
+      <div class="agents__intro">
+        <div class="agents__text reveal">
+          <p class="kicker"><span class="pulse"></span>Saturn Agents <span class="sep">·</span> 05 agents en ligne</p>
+          <h2 class="display display--lg" id="t-agents">Notre propre équipe d'<em>employés IA.</em></h2>
+          <p class="lead">Cinq agents qui écrivent, répondent, qualifient et font des rapports, branchés sur les outils que votre équipe utilise déjà.</p>
+          <div class="actions">
+            <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener" class="btn btn--accent">Écrire sur WhatsApp</a>
+            <button class="btn btn--ghost agents__play" type="button" id="filmOpen" aria-haspopup="dialog" aria-controls="film">
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>Voir la vidéo <span class="agents__dur">(40 s)</span>
+            </button>
+          </div>
+        </div>
+
+        <figure class="agents__film reveal">
+          <div class="agents__screen">
+          <picture class="agents__poster">
+            <source type="image/avif" srcset="/src/assets/img/agents/boucle-480.avif 480w, /src/assets/img/agents/boucle-720.avif 720w" sizes="(max-width: 1024px) calc(100vw - 32px), 520px">
+            <img src="/src/assets/img/agents/boucle-720.webp" srcset="/src/assets/img/agents/boucle-480.webp 480w, /src/assets/img/agents/boucle-720.webp 720w" sizes="(max-width: 1024px) calc(100vw - 32px), 520px" width="720" height="900" alt="Le chef d'équipe de Saturn Agents, casque noir et visière rouge, sous le titre Team Lead" loading="lazy" decoding="async">
+          </picture>
+          <!-- pas d'autoplay ni de préchargement : agents/loop.js lance la lecture près de l'écran, jamais en mouvement réduit -->
+          <video class="agents__video" muted loop playsinline preload="none" aria-hidden="true" tabindex="-1" width="720" height="900">
+            <source src="/src/assets/video/boucle-av1.mp4" type='video/mp4; codecs="av01.0.04M.08"'>
+            <source src="/src/assets/video/boucle-h264.mp4" type='video/mp4; codecs="avc1.64001F"'>
+          </video>
+          </div>
+          <!-- sous l'image : le film porte déjà ses propres textes dans les coins, rien ne doit les couvrir -->
+          <figcaption class="agents__cap">
+            <span><i aria-hidden="true"></i>Extrait du film · 9 s</span>
+            <button class="agents__pause" type="button" aria-pressed="false" hidden>
+              <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path class="i-pause" d="M9 6v12M15 6v12"/><path class="i-play fill" d="M8 5.5v13a1 1 0 0 0 1.5.86l10.6-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>
+              <span class="sr">Mettre l'extrait vidéo en pause</span>
+            </button>
+          </figcaption>
+        </figure>
+      </div>
+
+      <!-- 2. l'équipe : le chef au centre, quatre spécialistes autour ; onglets (clic, toucher ou flèches du clavier) -->
+      <div class="crew" data-agent="lead">
+        <div class="crew__glows" aria-hidden="true">
+          <span data-for="lead" style="--agent:#dc2626"></span><span data-for="analyst" style="--agent:#7c5cff"></span><span data-for="marketing" style="--agent:#d946ef"></span><span data-for="content" style="--agent:#c9cbd3"></span><span data-for="prospect" style="--agent:#a78bfa"></span>
+        </div>
+
+        <header class="head crew__head reveal">
+          <p class="kicker">L'équipe</p>
+          <h3 class="display display--md">Un chef d'équipe, <em>quatre spécialistes.</em></h3>
+          <p class="head__side">Le chef d'équipe répartit le travail. Chaque spécialiste rend compte, et le suivant reprend là où l'autre s'est arrêté.</p>
+        </header>
+
+        <div class="crew__body">
+          <div class="crew__hub reveal">
+            <svg class="crew__links" viewBox="0 0 600 440" aria-hidden="true">
+              <ellipse class="crew__orbit" cx="300" cy="220" rx="250" ry="150"/>
+              <g class="crew__link" data-to="analyst"><line x1="300" y1="220" x2="96" y2="97"/><circle cx="300" cy="220" r="3.5" style="--dx:-204px;--dy:-123px"/></g>
+              <g class="crew__link" data-to="marketing"><line x1="300" y1="220" x2="504" y2="97"/><circle cx="300" cy="220" r="3.5" style="--dx:204px;--dy:-123px"/></g>
+              <g class="crew__link" data-to="content"><line x1="300" y1="220" x2="504" y2="343"/><circle cx="300" cy="220" r="3.5" style="--dx:204px;--dy:123px"/></g>
+              <g class="crew__link" data-to="prospect"><line x1="300" y1="220" x2="96" y2="343"/><circle cx="300" cy="220" r="3.5" style="--dx:-204px;--dy:123px"/></g>
+            </svg>
+            <div class="crew__tabs" role="tablist" aria-label="Les cinq agents">
+              <button class="crew__tab crew__tab--lead" type="button" role="tab" id="tab-lead" aria-controls="agent-lead" aria-selected="true" style="--agent:#dc2626">
+                <picture><source type="image/avif" srcset="/src/assets/img/agents/avatar-lead-192.avif"><img src="/src/assets/img/agents/avatar-lead-192.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></picture>
+                <b>01</b><span class="crew__tab-name">Chef d'équipe</span>
+              </button>
+              <button class="crew__tab crew__tab--analyst" type="button" role="tab" id="tab-analyst" aria-controls="agent-analyst" aria-selected="false" tabindex="-1" style="--agent:#7c5cff">
+                <picture><source type="image/avif" srcset="/src/assets/img/agents/avatar-analyst-192.avif"><img src="/src/assets/img/agents/avatar-analyst-192.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></picture>
+                <b>02</b><span class="crew__tab-name">Analyse d'appels</span>
+              </button>
+              <button class="crew__tab crew__tab--marketing" type="button" role="tab" id="tab-marketing" aria-controls="agent-marketing" aria-selected="false" tabindex="-1" style="--agent:#d946ef">
+                <picture><source type="image/avif" srcset="/src/assets/img/agents/avatar-marketing-192.avif"><img src="/src/assets/img/agents/avatar-marketing-192.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></picture>
+                <b>03</b><span class="crew__tab-name">Marketing digital</span>
+              </button>
+              <button class="crew__tab crew__tab--content" type="button" role="tab" id="tab-content" aria-controls="agent-content" aria-selected="false" tabindex="-1" style="--agent:#c9cbd3">
+                <picture><source type="image/avif" srcset="/src/assets/img/agents/avatar-content-192.avif"><img src="/src/assets/img/agents/avatar-content-192.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></picture>
+                <b>04</b><span class="crew__tab-name">Création de contenu</span>
+              </button>
+              <button class="crew__tab crew__tab--prospect" type="button" role="tab" id="tab-prospect" aria-controls="agent-prospect" aria-selected="false" tabindex="-1" style="--agent:#a78bfa">
+                <picture><source type="image/avif" srcset="/src/assets/img/agents/avatar-prospect-192.avif"><img src="/src/assets/img/agents/avatar-prospect-192.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></picture>
+                <b>05</b><span class="crew__tab-name">Prospection client</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- sans JavaScript, les cinq fiches restent visibles l'une sous l'autre -->
+          <div class="crew__panels">
+            <div class="crew__panel" id="agent-lead" role="tabpanel" aria-labelledby="tab-lead" tabindex="0" style="--agent:#dc2626">
+              <figure class="crew__figure"><picture><source type="image/avif" srcset="/src/assets/img/agents/lead-440.avif 440w, /src/assets/img/agents/lead-760.avif 760w" sizes="(max-width: 900px) 62vw, 360px"><img src="/src/assets/img/agents/lead-440.webp" srcset="/src/assets/img/agents/lead-440.webp 440w, /src/assets/img/agents/lead-760.webp 760w" sizes="(max-width: 900px) 62vw, 360px" width="440" height="839" alt="Le chef d'équipe : casque noir, visière rouge lumineuse, costume noir" loading="lazy" decoding="async"></picture></figure>
+              <div class="crew__info">
+                <p class="crew__meta"><span class="crew__n">01</span>Agent 01/05 <span class="crew__status">En ligne</span></p>
+                <h4 class="crew__name">Team Lead <em>chef d'équipe</em></h4>
+                <p class="crew__line">Il répartit le travail entre les quatre spécialistes, branché sur les outils que votre équipe utilise déjà.</p>
+                <ul class="crew__tasks"><li>Reçoit la demande et la découpe en tâches</li><li>Confie chaque tâche au bon spécialiste</li><li>Vous rend compte, du début à la fin</li></ul>
+                <div class="crew__ui crew__ui--tools" aria-hidden="true"><span>WhatsApp</span><i></i><span>n8n</span><i></i><span>Vos outils</span></div>
+              </div>
+            </div>
+
+            <div class="crew__panel" id="agent-analyst" role="tabpanel" aria-labelledby="tab-analyst" tabindex="0" style="--agent:#7c5cff">
+              <figure class="crew__figure"><picture><source type="image/avif" srcset="/src/assets/img/agents/analyst-440.avif 440w, /src/assets/img/agents/analyst-760.avif 760w" sizes="(max-width: 900px) 62vw, 360px"><img src="/src/assets/img/agents/analyst-440.webp" srcset="/src/assets/img/agents/analyst-440.webp 440w, /src/assets/img/agents/analyst-760.webp 760w" sizes="(max-width: 900px) 62vw, 360px" width="440" height="726" alt="L'analyste d'appels : casque intégral noir et brillant, une main levée" loading="lazy" decoding="async"></picture></figure>
+              <div class="crew__info">
+                <p class="crew__meta"><span class="crew__n">02</span>Agent 02/05 <span class="crew__status">En ligne</span></p>
+                <h4 class="crew__name">Call Analyst <em>analyse d'appels</em></h4>
+                <p class="crew__line">Il répond aux appels, les transcrit et fait des rapports.</p>
+                <ul class="crew__tasks"><li>Répond aux appels entrants</li><li>Transcrit chaque échange</li><li>Écrit le rapport d'appel et le passe au marketing</li></ul>
+                <div class="crew__ui crew__ui--wave" aria-hidden="true"><span class="crew__bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span>Rapport d'appel · prêt ✓</span></div>
+              </div>
+            </div>
+
+            <div class="crew__panel" id="agent-marketing" role="tabpanel" aria-labelledby="tab-marketing" tabindex="0" style="--agent:#d946ef">
+              <figure class="crew__figure"><picture><source type="image/avif" srcset="/src/assets/img/agents/marketing-440.avif 440w, /src/assets/img/agents/marketing-760.avif 760w" sizes="(max-width: 900px) 62vw, 360px"><img src="/src/assets/img/agents/marketing-440.webp" srcset="/src/assets/img/agents/marketing-440.webp 440w, /src/assets/img/agents/marketing-760.webp 760w" sizes="(max-width: 900px) 62vw, 360px" width="440" height="671" alt="L'experte marketing : chapka noire, grandes lunettes, longs cheveux bruns" loading="lazy" decoding="async"></picture></figure>
+              <div class="crew__info">
+                <p class="crew__meta"><span class="crew__n">03</span>Agent 03/05 <span class="crew__status">En ligne</span></p>
+                <h4 class="crew__name">Digital Marketing <em>marketing digital</em></h4>
+                <p class="crew__line">Elle construit la stratégie et les campagnes, pour une marque qui paraît évidente.</p>
+                <ul class="crew__tasks"><li>Définit la stratégie à partir des rapports</li><li>Lance et suit les campagnes</li><li>Fait grandir la portée de la marque</li></ul>
+                <div class="crew__ui crew__ui--chart" aria-hidden="true"><span>Portée</span><svg viewBox="0 0 200 60" preserveAspectRatio="none"><path d="M2 52 L30 56 L58 44 L86 41 L114 32 L142 24 L170 15 L198 6"/><circle cx="198" cy="6" r="4"/></svg></div>
+              </div>
+            </div>
+
+            <div class="crew__panel" id="agent-content" role="tabpanel" aria-labelledby="tab-content" tabindex="0" style="--agent:#c9cbd3">
+              <figure class="crew__figure"><picture><source type="image/avif" srcset="/src/assets/img/agents/content-440.avif 440w, /src/assets/img/agents/content-760.avif 760w" sizes="(max-width: 900px) 62vw, 360px"><img src="/src/assets/img/agents/content-440.webp" srcset="/src/assets/img/agents/content-440.webp 440w, /src/assets/img/agents/content-760.webp 760w" sizes="(max-width: 900px) 62vw, 360px" width="440" height="598" alt="L'agent de contenu : cheveux blancs, chapka à badges, lunettes argentées" loading="lazy" decoding="async"></picture></figure>
+              <div class="crew__info">
+                <p class="crew__meta"><span class="crew__n">04</span>Agent 04/05 <span class="crew__status">En ligne</span></p>
+                <h4 class="crew__name">Content Creation <em>création de contenu</em></h4>
+                <p class="crew__line">Il écrit carrousels, scripts de reels et publications, dans le ton de la marque.</p>
+                <ul class="crew__tasks"><li>Carrousels prêts à publier</li><li>Scripts de reels</li><li>Publications, à la demande</li></ul>
+                <div class="crew__ui crew__ui--cards" aria-hidden="true"><span>Carrousel</span><span>Reel</span><span>Post</span></div>
+              </div>
+            </div>
+
+            <div class="crew__panel" id="agent-prospect" role="tabpanel" aria-labelledby="tab-prospect" tabindex="0" style="--agent:#a78bfa">
+              <figure class="crew__figure"><picture><source type="image/avif" srcset="/src/assets/img/agents/prospect-440.avif 440w, /src/assets/img/agents/prospect-760.avif 760w" sizes="(max-width: 900px) 62vw, 360px"><img src="/src/assets/img/agents/prospect-440.webp" srcset="/src/assets/img/agents/prospect-440.webp 440w, /src/assets/img/agents/prospect-760.webp 760w" sizes="(max-width: 900px) 62vw, 360px" width="440" height="849" alt="L'expert en prospection : bonnet ours à étoiles orange, masque brun, smoking" loading="lazy" decoding="async"></picture></figure>
+              <div class="crew__info">
+                <p class="crew__meta"><span class="crew__n">05</span>Agent 05/05 <span class="crew__status">En ligne</span></p>
+                <h4 class="crew__name">Client Prospecting <em>prospection client</em></h4>
+                <p class="crew__line">Il trouve vos prospects et les qualifie.</p>
+                <ul class="crew__tasks"><li>Trouve les prospects</li><li>Les qualifie un par un</li><li>Passe les prospects qualifiés à l'analyste d'appels</li></ul>
+                <div class="crew__ui crew__ui--leads" aria-hidden="true"><span><i></i>Prospect<b>Qualifié ✓</b></span><span><i></i>Prospect<b>Qualifié ✓</b></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. une mission qui traverse l'équipe : elle s'allume une fois, à l'arrivée (pas de défilement épinglé) -->
+      <div class="mission">
+        <header class="mission__head reveal">
+          <p class="kicker">Une mission, cinq agents</p>
+          <h3 class="display display--md">Un nouveau client, <em>de bout en bout.</em></h3>
+        </header>
+        <div class="mission__flow reveal">
+          <div class="mission__track" aria-hidden="true"><i class="mission__fill"></i><i class="mission__dot"></i></div>
+          <ol class="mission__steps">
+            <li class="mission__step" style="--agent:#a78bfa"><picture><source type="image/avif" srcset="/src/assets/img/agents/avatar-prospect-192.avif"><img src="/src/assets/img/agents/avatar-prospect-192.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></picture><b>05</b><h4>Prospection</h4><p>Trouve le prospect et le qualifie.</p></li>
+            <li class="mission__step" style="--agent:#7c5cff"><picture><source type="image/avif" srcset="/src/assets/img/agents/avatar-analyst-192.avif"><img src="/src/assets/img/agents/avatar-analyst-192.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></picture><b>02</b><h4>Analyse d'appels</h4><p>Répond à son appel et écrit le rapport.</p></li>
+            <li class="mission__step" style="--agent:#d946ef"><picture><source type="image/avif" srcset="/src/assets/img/agents/avatar-marketing-192.avif"><img src="/src/assets/img/agents/avatar-marketing-192.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></picture><b>03</b><h4>Marketing digital</h4><p>Construit la stratégie et la campagne.</p></li>
+            <li class="mission__step" style="--agent:#c9cbd3"><picture><source type="image/avif" srcset="/src/assets/img/agents/avatar-content-192.avif"><img src="/src/assets/img/agents/avatar-content-192.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></picture><b>04</b><h4>Création de contenu</h4><p>Écrit les publications, dans le ton de la marque.</p></li>
+            <li class="mission__step" style="--agent:#dc2626"><picture><source type="image/avif" srcset="/src/assets/img/agents/avatar-lead-192.avif"><img src="/src/assets/img/agents/avatar-lead-192.webp" width="192" height="192" alt="" loading="lazy" decoding="async"></picture><b>01</b><h4>Chef d'équipe</h4><p>Coordonne le tout et vous rend compte.</p></li>
+          </ol>
+        </div>
+        <div class="actions actions--center agents__cta reveal">
+          <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener" class="btn btn--accent btn--lg">Écrire sur WhatsApp</a>
+          <p>Parlez-nous de votre projet. Réponse dans la journée.</p>
+        </div>
+      </div>
+    </section>
 
     <!-- ============ PROJETS ============ -->
     <section class="work light" id="projets" aria-labelledby="t-projets">
@@ -429,6 +599,40 @@
       <a href="#top" class="totop">Retour en haut ↑</a>
     </div>
   </footer>
+
+  <!-- ============ LE FILM (40 s, avec le son) : <dialog> natif, sources ajoutées à la première ouverture ============ -->
+  <dialog class="film" id="film" aria-labelledby="filmTitle">
+    <div class="film__box">
+      <header class="film__head">
+        <h2 class="film__title" id="filmTitle">Saturn Agents, le film <span>40 s · sous-titres FR</span></h2>
+        <button class="film__close" type="button" id="filmClose">
+          <svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg><span class="sr">Fermer la vidéo</span>
+        </button>
+      </header>
+      <div class="film__screen">
+        <video class="film__video" controls playsinline preload="none" width="1080" height="1350"></video>
+      </div>
+      <div class="film__foot">
+        <p>Mettez votre marque <em>en orbite.</em></p>
+        <a href="https://wa.me/message/YXCZMZCCFQKDF1" target="_blank" rel="noopener" class="btn btn--accent btn--sm">Écrire sur WhatsApp</a>
+      </div>
+      <details class="film__desc">
+        <summary>Description du film, plan par plan</summary>
+        <ol>
+          <li><b>0 à 3 s.</b> Un flash, puis le titre « Votre équipe IA ne dort jamais. » arrive mot par mot.</li>
+          <li><b>3 à 8 s.</b> « On conçoit. On construit. On automatise. », puis les lignes se fondent dans l'anneau du logo Saturn Design Studio.</li>
+          <li><b>8 à 11 s.</b> Agent 01, Team Lead, chef d'équipe : casque noir à visière rouge. Les quatre autres agents tournent autour de lui. « Branché sur vos outils. »</li>
+          <li><b>11 à 14 s.</b> Agent 02, Call Analyst, analyse d'appels : casque intégral noir, une onde sonore le traverse. « Répond. Fait des rapports. », « Appel entrant », « Rapport d'appel · prêt ».</li>
+          <li><b>14 à 18 s.</b> Agent 03, Digital Marketing Expert : chapka et grandes lunettes, sur fond magenta. Une courbe de portée monte. « Une marque qui paraît évidente. »</li>
+          <li><b>18 à 21 s.</b> Agent 04, Content Creation : cheveux blancs et lunettes argentées. Un carrousel et des modèles de publications. « Écrit, dans le ton de la marque. »</li>
+          <li><b>21 à 24 s.</b> Agent 05, Client Prospecting Expert : bonnet ours à étoiles orange. Deux fiches « Qualifié ». « Qualifie vos prospects. »</li>
+          <li><b>24 à 32 s.</b> Ce qu'on fait : motion design IA, production vidéo, sites premium, plateformes web, automatisations IA, agents IA, chacun avec une maquette animée.</li>
+          <li><b>32 à 37 s.</b> Les cinq agents réunis sous « Saturn Agents ». « Notre propre équipe d'employés IA. 05 agents, en ligne. »</li>
+          <li><b>37 à 40 s.</b> « Mettez votre marque en orbite. », le logo et le bouton « Écrire sur WhatsApp ».</li>
+        </ol>
+      </details>
+    </div>
+  </dialog>
 
   <script type="module" src="/src/main.js"></script>
 </body>

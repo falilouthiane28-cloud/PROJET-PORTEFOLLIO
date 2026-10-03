@@ -105,12 +105,15 @@ export function initHero() {
   function lenisFocus(e) {
     const el = e.target;
     // clavier uniquement : un clic sur du texte donne le focus à <main> (tabindex=-1) et ne doit rien faire défiler
-    if (!lenis || !(el instanceof Element) || el.closest('.band, .nav') || el.getAttribute('tabindex') === '-1' || !el.matches(':focus-visible')) return;
+    // (dans une modale, la page est figée : scrollTo force:true passerait outre lenis.stop())
+    if (!lenis || !(el instanceof Element) || el.closest('.band, .nav, dialog') || el.getAttribute('tabindex') === '-1' || !el.matches(':focus-visible')) return;
     lenis.scrollTo(scrollY, { immediate: true, force: true });
     const r = el.getBoundingClientRect();
     if (r.top < 90 || r.bottom > innerHeight - 40) lenis.scrollTo(scrollY + r.top - Math.round(innerHeight * 0.3));
   }
   startLenis();
+  // la modale du film fige la page : Lenis s'arrête, puis reprend à la fermeture
+  info.scroll = { stop: () => lenis?.stop(), start: () => lenis?.start() };
 
   /* ---------- état partagé, lissé à chaque image ---------- */
   const st = { target: 0, shown: 0, vel: 0, px: 0, py: 0, ox: 0, oy: 0 };
