@@ -30,11 +30,11 @@ Recherche préalable : `reports/Vidéo hero et équipe agents.md`. Mesures : `do
 - **Bouton pause :** exigé par WCAG 2.2.2, car la boucle dure plus de 5 s. Il est sous l'image et non dessus, parce que le film a ses propres textes dans les coins. `aria-pressed` donne l'état, et la pause choisie est respectée.
 - **Le film :** `<dialog>` ouvert par `showModal()`. Le navigateur gère le piège du focus, Échap, l'arrière-plan inerte et le retour du focus au bouton.
   - **Ajouts :**
-    - Lenis arrêté (`window.__hero.scroll`) et défilement natif bloqué (`html.has-modal`) ;
+    - Lenis arrêté (`window.__hero.scroll`) et défilement natif bloqué (`html.has-modal`) ; au toucher, le `body` est en plus fixé à sa position, car sur iOS `overflow: hidden` ne retient pas le doigt ;
     - pause à la fermeture ;
     - fermeture au clic sur le fond.
   - **Chargement :** les sources ne sont posées qu'au premier clic : aucun octet du film avant. Écran en hauteur : version 9:16, sinon 4:5.
-  - **Sous-titres français :** activés par défaut. Ils décrivent la bande-son, car le film n'a pas de voix. Ils sont chargés en Blob, ce qui marche aussi en `file://`.
+  - **Sous-titres :** le film n'a pas de dialogue. La piste française qui décrit la bande-son reste disponible dans le menu du lecteur, mais elle est éteinte par défaut (D30). Le titre de la modale l'annonce : « sans dialogue, musique et bruitages ». Chargée en Blob, elle marche aussi en `file://`.
   - **Description plan par plan :** sous la vidéo, pour ce que l'image dit et que le son ne dit pas (WCAG 1.2.3 et 1.2.5).
 
 ### 2. L'équipe

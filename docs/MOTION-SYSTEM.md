@@ -44,6 +44,7 @@ On ajoute du mouvement **sans changer le design au repos**. Toute animation se t
 | **Hero : intro** | Chargement. Un geste l'accélère (×3,5). | 2,5 s. Orbite (1,1 s, `expo.inOut`), voile (1,7 s), sur-titre, texte, repères, nav (`expo.out`). | Hero statique, sans intro. | `src/js/hero/index.js` |
 | Hero : titre | Premier rendu (CSS) | Mots montant de leur masque | Visible tout de suite | `src/styles/site.css`, `hero.css` |
 | Hero : scène et bandes | Scroll lissé (lerp 0,12 indépendant de la fréquence) | Liée au scroll | Hero statique | `src/js/hero/` |
+| Hero du téléphone (portrait, paysage) | Après l'intro, en temps libre | Scène du worker à 30 i/s : l'anneau tourne, les étoiles scintillent, l'anneau accélère avec la vitesse du défilement (écouteur passif). Fondu 0,9 s par-dessus le dessin statique, retiré ensuite. Pause hors écran et onglet caché | Dessin statique, rien ne tourne | `src/js/hero/index.js` (`startAmbient`), `worker.js` |
 | Hero : parallaxe du pointeur | Souris | Lerp 0,08 | — | `src/js/hero/index.js` |
 | Hero : bouton magnétique | Souris | `quickTo` 0,5 s, `power3`, via `translate` (garde le survol d'origine) | — | `src/js/hero/index.js` |
 | Titres de section (h2) | IntersectionObserver : découpe à l'entrée par le bas, montée à 88 % de l'écran (une fois) | 1,0 s, `quint.out`, décalage 0,08 | Non chargé | `src/motion/effects/lineReveal.js` |

@@ -1,5 +1,17 @@
 # Journal des changements
 
+## `responsive-mobile-v1` (03/10/2026)
+
+- `6bc0b77` **Recherche :** `reports/Hero mobile et responsive.md`.
+- `ef53c33` **Hero du téléphone animé :** la scène tourne dans le worker à 30 i/s, sans épinglage, par-dessus le dessin statique.
+- `8ca1e1d` **Responsive :**
+  - le hero ne chevauche plus son texte, en portrait comme en paysage ;
+  - liens « Voir le site » vers les sites des clients ;
+  - « Retour en haut » à 44 px au toucher ;
+  - espaces insécables.
+- `4110faa` **Film :** sous-titres éteints par défaut, défilement bloqué au toucher (iOS).
+- `bbc9e49` **Tests :** hero du téléphone, liens, sous-titres. Références visuelles mises à jour.
+
 ## `video-agents-v1` (03/10/2026)
 
 ### Section Saturn Agents

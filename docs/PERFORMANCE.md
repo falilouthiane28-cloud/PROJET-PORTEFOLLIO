@@ -144,3 +144,20 @@ Ce qui a été mesuré et corrigé en chemin :
 Reste : le TBT dépasse la référence d'environ 50 à 80 ms (plages qui se recouvrent), sous le budget. JS initial : 59,8 Ko gzip (avant 58,1, `check-budget.mjs`). HTML avec CSS en ligne : 24,6 Ko gzip (+7,3 Ko).
 
 Vidéos (hors chargement initial) : boucle 0,79 Mo (AV1) / 1,07 Mo (H.264) ; film 4:5 7,0 / 10,8 Mo ; film 9:16 4,7 / 6,5 Mo.
+
+## Hero animé du téléphone (03/10/2026, branche `responsive-mobile-v1`, **sur batterie**)
+
+**Cadence :** Edge, profil tactile, scène dans le worker : 28 à 30 i/s, 900 particules, DPR 1,5, de 360×640 à 844×390. L'objectif est 30 i/s stables (D29). Le budget « ≥ 50 i/s » vaut pour le hero épinglé de l'ordinateur.
+
+**Lighthouse mobile, 5 passages en alternance avec `motion-system-v1` :**
+
+L'ordinateur était sur batterie : les valeurs absolues sont faussées, seule la comparaison compte.
+
+| | Perf | LCP | TBT |
+|---|---|---|---|
+| Avant | 80 | 2 634 ms | 570 ms |
+| Après | 81 | 2 650 ms | 494 ms |
+
+- Les deux versions sont équivalentes.
+- Une première version créait un ScrollTrigger dès le chargement, pour lire la vitesse du défilement. Cela forçait une mise en page et ajoutait environ 70 ms à la tâche du script. Un écouteur passif, branché seulement pendant l'animation, l'a remplacé.
+- **À refaire sur secteur :** `npm run test:perf`.
