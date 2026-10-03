@@ -14,10 +14,11 @@ import * as marqueeVelocity from './effects/marqueeVelocity.js';
 import * as faqSmooth from './effects/faqSmooth.js';
 import * as spotlight from './effects/spotlight.js';
 import * as magnetic from './effects/magnetic.js';
+import * as missionFlow from './effects/missionFlow.js';
 
 const MOTION = '(prefers-reduced-motion: no-preference)';
 const GROUPS = [
-  [MOTION, { lineReveal, wordHighlight, staggerTags, marqueeVelocity, faqSmooth }],
+  [MOTION, { lineReveal, wordHighlight, staggerTags, marqueeVelocity, faqSmooth, missionFlow }],
   [`${MOTION} and (min-width: 1025px)`, { imageReveal }],
   [`${MOTION} and (hover: hover) and (pointer: fine)`, { spotlight, magnetic }]
 ];
