@@ -1,19 +1,16 @@
-# Déploiement GitHub Pages : construit le site et le publie à chaque push sur la branche de travail.
-# Le site est servi sous /PROJET-PORTEFOLLIO/ : on construit avec ce chemin de base.
+# Déploiement GitHub Pages : construit le site et pousse le résultat sur la branche gh-pages.
 name: GitHub Pages
 on:
   push:
     branches: [motion-system-v1]
   workflow_dispatch:
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 concurrency:
   group: pages
   cancel-in-progress: true
 jobs:
-  build:
+  build-deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,14 +18,7 @@ jobs:
         with: { node-version: 24, cache: npm }
       - run: npm ci
       - run: npx vite build --base=/PROJET-PORTEFOLLIO/
-      - uses: actions/configure-pages@v5
-        with: { enablement: true }
-      - uses: actions/upload-pages-artifact@v3
-        with: { path: dist }
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: { name: github-pages, url: '${{ steps.deployment.outputs.page_url }}' }
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
