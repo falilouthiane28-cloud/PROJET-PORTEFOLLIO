@@ -192,7 +192,14 @@ export function initHero() {
 
   /* ---------- la boucle unique (gsap.ticker) ---------- */
   function tick(time, deltaMs) {
-    if (isStatic) return;                                       // hero statique : rien à animer en continu
+    if (isStatic) {
+      // hero du téléphone : pas d'épinglage ; seule la vitesse du défilement est transmise (l'anneau accélère)
+      if (!worker) return;
+      st.vel *= Math.pow(0.9, Math.min(100, deltaMs) / 16.667);
+      if (Math.abs(st.vel) < 1) st.vel = 0;
+      if (!sent || sent.vel !== st.vel) { sent = { p: 1, vel: st.vel, ox: 0, oy: 0 }; worker.postMessage({ type: 'input', ...sent }); }
+      return;
+    }
     const dt = Math.min(100, deltaMs);
     const k = 1 - Math.pow(1 - 0.12, dt / 16.667);              // lissage indépendant de la fréquence
     st.shown += (st.target - st.shown) * k;
@@ -236,6 +243,8 @@ export function initHero() {
   let canvasUsed = false;   // contexte 2D pris ou contrôle transféré : le canvas n'est plus transférable
   function teardown() {
     if (worker) { worker.postMessage({ type: 'dispose' }); worker = null; }
+    if (staticUnder) { staticUnder.remove(); staticUnder = null; }
+    removeEventListener('scroll', onAmbientScroll);
     // un canvas qui a déjà servi (worker, ou dessin statique avant une rotation vers le mode animé)
     // ferait échouer transferControlToOffscreen : on repart d'un canvas neuf
     if (canvasUsed) { freshCanvas(); canvasUsed = false; }
@@ -255,8 +264,45 @@ export function initHero() {
     sc.draw(ctx);
   }
 
+  // hero du téléphone animé : la même scène dans le worker, profil allégé (30 i/s, DPR ≤ 1,5, 900 particules au plus).
+  // Le dessin statique reste dessous (premier rendu, repli) ; le canvas animé, posé par-dessus, apparaît en fondu.
+  // Sans OffscreenCanvas (iOS < 17) ou en file:// : on garde le dessin statique, sans boucle sur le thread principal.
+  let staticUnder = null;
+  // vitesse du défilement (l'anneau accélère) : un écouteur passif, branché seulement pendant l'animation.
+  // (un ScrollTrigger créé au chargement forçait une mise en page : +70 ms sur la tâche du script, Lighthouse mobile)
+  let lastY = 0, lastT = 0;
+  const onAmbientScroll = () => {
+    const now = performance.now(), dt = now - lastT;
+    if (lastT && dt > 0 && dt < 200) st.vel = (scrollY - lastY) / dt * 1000;
+    lastY = scrollY; lastT = now;
+  };
+  function startAmbient() {
+    if (worker || RM.matches || info.tier !== 'live' || location.protocol === 'file:' || !('transferControlToOffscreen' in canvas)) return;
+    const c = canvas.cloneNode(false);
+    c.removeAttribute('style'); c.style.opacity = '0';
+    canvas.after(c);
+    staticUnder = canvas; canvas = c;
+    worker = new Worker(new URL('./worker.js', import.meta.url), { type: 'module' });
+    const w = worker;
+    worker.onmessage = ({ data: m }) => {
+      if (w !== worker) return;
+      if (m.type === 'ready') gsap.to(canvas, { opacity: 1, duration: 0.9, ease: 'power2.out', onComplete() { if (w === worker && staticUnder) { staticUnder.remove(); staticUnder = null; } } });
+      else if (m.type === 'stats') info.stats = m;
+      else if (m.type === 'fail') { info.tier = 'poster'; teardown(); drawStatic(); }
+    };
+    worker.onerror = () => { if (w !== worker) return; info.tier = 'poster'; teardown(); drawStatic(); };
+    const off = canvas.transferControlToOffscreen();
+    canvasUsed = true;
+    worker.postMessage({ type: 'init', canvas: off, visible: visible && !document.hidden, width: L.W, height: L.H, dpr: window.devicePixelRatio || 1, dprCap: 1.5, mobile: true }, [off]);
+    sent = null;
+    lastT = 0;
+    addEventListener('scroll', onAmbientScroll, { passive: true });
+    info.mode = 'ambient';
+  }
+
   function startLive() {
-    if (worker || mainScene || isStatic || info.tier !== 'live') return;
+    if (isStatic) { startAmbient(); return; }
+    if (worker || mainScene || info.tier !== 'live') return;
     gsap.set(canvas, { opacity: 0 });
     const opts = { width: L.W, height: L.H, dpr: window.devicePixelRatio || 1, dprCap: 1.75 };
     canvasUsed = true;
@@ -313,6 +359,7 @@ export function initHero() {
     isStatic = stat;
     info.mode = stat ? 'statique' : 'poster';
     teardown();
+    info.tier = deviceTier(readTierSignals());
     if (stat) {
       if (heroST) { heroST.kill(); heroST = null; }
       bands.forEach(b => { b.el.style.removeProperty('transform'); b.y = b.x = null; });
@@ -320,8 +367,8 @@ export function initHero() {
       st.target = st.shown = 1;
       measure(); drawStatic(); placeChips(1);
       gsap.set(posterEl, { clearProps: 'opacity' });
+      if (liveRequested) startAmbient();
     } else {
-      info.tier = deviceTier(readTierSignals());
       bands.forEach(b => { b.op = b.k = -1; b.live = null; });
       measure(); createScroll();
       gsap.set(posterEl, { opacity: 1 });
@@ -331,12 +378,19 @@ export function initHero() {
   }
   // (le mouvement réduit fait partie des conditions : l'activer en direct démonte aussi le rendu animé)
   MQLS.forEach(m => m.addEventListener('change', applyMode));
+  // téléphone : déjà en mode statique, la bascule ci-dessus ne voit pas le changement ; on coupe ou relance ici
+  RM.addEventListener('change', () => {
+    if (!isStatic) return;
+    if (RM.matches && worker) { teardown(); drawStatic(); placeChips(1); info.mode = 'statique'; }
+    else if (!RM.matches && liveRequested) startAmbient();
+  });
   applyMode();
   gsap.ticker.add(tick);
 
   new ResizeObserver(() => {
     measure();
-    if (isStatic) { drawStatic(); placeChips(1); }
+    if (isStatic && worker) { worker.postMessage({ type: 'resize', width: L.W, height: L.H }); placeChips(1); }
+    else if (isStatic) { drawStatic(); placeChips(1); }
     else if (worker) worker.postMessage({ type: 'resize', width: L.W, height: L.H });
     else if (mainScene) { const dpr = Math.min(window.devicePixelRatio || 1, 1.5); canvas.width = Math.round(L.W * dpr); canvas.height = Math.round(L.H * dpr); mainCtx.setTransform(dpr, 0, 0, dpr, 0, 0); mainScene.resize(L.W, L.H); }
   }).observe(stage);

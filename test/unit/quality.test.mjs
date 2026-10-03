@@ -42,3 +42,13 @@ test('remonte une marche à la fois quand la marge revient', () => {
   assert.equal(q.level, 0);
   assert.ok(q.dpr > 1 && q.dpr <= 1.75);
 });
+test('profil téléphone (30 i/s visées) : 33 ms entre images n’est pas une lenteur', async () => {
+  const { MOBILE_STEPS } = await import('../../src/js/hero/quality.js');
+  const q = createQuality({ dpr: 3, dprCap: 1.5, steps: MOBILE_STEPS, frameMs: 1000 / 30 });
+  assert.equal(q.dpr, 1.5);
+  assert.equal(q.particles, 900);
+  const [ch] = feed(q, 600, 33.4, 2000);
+  assert.deepEqual(ch, []);
+  const [ch2] = feed(q, 300, 50, 30000);                     // 20 i/s : on allège
+  assert.ok(ch2.length > 0);
+});

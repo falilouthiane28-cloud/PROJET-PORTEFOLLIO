@@ -3,13 +3,15 @@
 // Qualité adaptative : on mesure le temps entre images ; sous 50 i/s on baisse la densité de pixels,
 // puis le nombre de particules ; on remonte prudemment quand la marge revient.
 import { createScene } from './scene.js';
-import { createQuality } from './quality.js';
+import { createQuality, MOBILE_STEPS } from './quality.js';
 
 let canvas = null, ctx = null, scene = null;
 let dpr = 1, W = 1, H = 1;
 let running = false, visible = false, rafId = 0, last = 0, disposed = false, readySent = false;
 let input = { p: 0, vel: 0, ox: 0, oy: 0 };
 let quality = null, statsAt = 0, frames = 0;
+// téléphone : 30 i/s au plus (batterie, chauffe) ; on saute les rAF intermédiaires plutôt que de dessiner pour rien
+let minGap = 0;
 
 function applySize() {
   canvas.width = Math.round(W * dpr);
@@ -20,6 +22,7 @@ function applySize() {
 
 function frame(now) {
   if (!running) return;
+  if (last && now - last < minGap) { rafId = requestAnimationFrame(frame); return; }
   const dt = last ? Math.min(0.05, (now - last) / 1000) : 0;
   if (last) {
     const change = quality.sample(now - last, now);
@@ -45,7 +48,11 @@ self.onmessage = ({ data: m }) => {
   switch (m.type) {
     case 'init':
       canvas = m.canvas; W = m.width; H = m.height;
-      quality = createQuality({ dpr: m.dpr, dprCap: m.dprCap });
+      // profil téléphone (hero sans épinglage) : 30 i/s, moins de particules ; sinon celui du bureau
+      quality = m.mobile
+        ? createQuality({ dpr: m.dpr, dprCap: m.dprCap, steps: MOBILE_STEPS, frameMs: 1000 / 30 })
+        : createQuality({ dpr: m.dpr, dprCap: m.dprCap });
+      minGap = m.mobile ? 1000 / 30 - 4 : 0;
       dpr = quality.dpr;
       ctx = canvas.getContext('2d', { alpha: true });
       if (!ctx) { postMessage({ type: 'fail', reason: 'contexte 2D indisponible' }); return; }
