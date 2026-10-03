@@ -44,7 +44,7 @@ test('équipe : clic, puis flèches, Début et Fin ; une seule fiche visible ; l
   await expect(page.locator('.crew__panel:visible')).toHaveCount(1);
 });
 
-test('film : s’ouvre avec le son et les sous-titres, fige la page, se ferme avec Échap et rend le focus', async ({ page }) => {
+test('film : s’ouvre avec le son, sous-titres disponibles mais éteints (film sans dialogue), fige la page, se ferme avec Échap et rend le focus', async ({ page }) => {
   const issues = watchConsole(page);
   await page.goto('/');
   await settle(page, '#agents');
@@ -54,7 +54,7 @@ test('film : s’ouvre avec le son et les sous-titres, fige la page, se ferme av
   await expect(dialog).toBeVisible();
   await expect.poll(() => page.locator('.film__video').evaluate(v => v.currentTime), { timeout: 8000 }).toBeGreaterThan(0.3);
   expect(await page.locator('.film__video').evaluate(v => ({ muted: v.muted, track: v.textTracks[0]?.mode, lang: v.textTracks[0]?.language })))
-    .toEqual({ muted: false, track: 'showing', lang: 'fr' });
+    .toEqual({ muted: false, track: 'disabled', lang: 'fr' });
   expect(await page.locator('.agents__video').evaluate(v => v.paused)).toBe(true);   // un seul film à la fois
   await page.mouse.wheel(0, 800); await page.waitForTimeout(600);
   expect(Math.abs(await page.evaluate(() => scrollY) - y)).toBeLessThan(3);

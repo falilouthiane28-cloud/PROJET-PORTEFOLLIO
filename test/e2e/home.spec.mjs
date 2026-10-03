@@ -52,6 +52,33 @@ test('hero : passage du mode statique au mode animé sans erreur (rotation, redi
   expect(issues).toEqual([]);
 });
 
+test('hero du téléphone : la scène s’anime (worker, 30 i/s), sans erreur, et s’arrête en mouvement réduit', async ({ page }) => {
+  const issues = watchConsole(page);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/?niveau=live');
+  await introDone(page);
+  await page.waitForFunction(() => window.__hero.mode === 'ambient' && window.__hero.stats?.frames > 20, null, { timeout: 15000 });
+  const s = await page.evaluate(() => window.__hero.stats);
+  expect(s.fps).toBeGreaterThanOrEqual(24);
+  expect(s.fps).toBeLessThanOrEqual(32);
+  expect(s.particles).toBeLessThanOrEqual(900);
+  await expect.poll(() => page.locator('.hero__canvas').count()).toBe(1);   // le dessin statique est retiré après le fondu
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect.poll(() => page.evaluate(() => window.__hero.mode)).toBe('statique');
+  expect(issues).toEqual([]);
+});
+
+test('projets : liens vers les sites en ligne, nouvel onglet annoncé', async ({ page }) => {
+  await page.goto('/');
+  const links = page.locator('.link--site');
+  await expect(links).toHaveCount(3);
+  for (const a of await links.all()) {
+    await expect(a).toHaveAttribute('target', '_blank');
+    await expect(a).toHaveAttribute('rel', 'noopener');
+    expect(await a.evaluate(e => e.textContent.replace(/\s+/g, ' '))).toMatch(/Voir le site .* de .+ \(nouvel onglet\)/);
+  }
+});
+
 test('chaque lien de navigation mène à sa section', async ({ page }) => {
   await page.goto('/');
   await introDone(page);
