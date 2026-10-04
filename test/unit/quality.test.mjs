@@ -42,6 +42,18 @@ test('remonte une marche à la fois quand la marge revient', () => {
   assert.equal(q.level, 0);
   assert.ok(q.dpr > 1 && q.dpr <= 1.75);
 });
+test('scène du téléphone portrait : Saturne cadrée en haut-droite', async () => {
+  const { layoutFor } = await import('../../src/js/hero/scene.js');
+  const l = layoutFor(360, 800);
+  // haut-droite : au-dessus du milieu vertical, à droite du milieu horizontal
+  assert.ok(l.cx > 360 * 0.60);
+  assert.ok(l.cy < 800 * 0.35);
+  // le corps de Saturne (R, pas l'anneau) reste contenu : la silhouette tient à l'écran
+  assert.ok(l.cx + l.R < 360);
+  // mais la scène est bien cadrée (l'anneau ellipse peut dépasser pour l'effet focal)
+  assert.ok(l.cx + l.R * 2.22 > 360);
+});
+
 test('profil téléphone (30 i/s visées) : 33 ms entre images n’est pas une lenteur', async () => {
   const { MOBILE_STEPS } = await import('../../src/js/hero/quality.js');
   const q = createQuality({ dpr: 3, dprCap: 1.5, steps: MOBILE_STEPS, frameMs: 1000 / 30 });

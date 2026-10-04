@@ -19,7 +19,12 @@ export const PLANETS = [
 
 // Mise en page (identique à l'origine) : centre de Saturne et rayon de référence selon le cadre
 export function layoutFor(W, H) {
-  const wide = W / H > 1.05;
+  const ratio = W / H;
+  const wide = ratio > 1.05;
+  // téléphone portrait étroit : Saturne cadrée haut-droite, le texte occupe le vide négatif (bas-gauche)
+  // mesuré : à ratio ≤ 0,65, le texte à 56 % de hauteur se poserait sinon sous les planètes
+  const narrow = ratio <= 0.65;
+  if (narrow) return { cx: W * 0.78, cy: H * 0.26, R: Math.min(W * 0.18, H * 0.11) };
   return {
     cx: W * (wide ? 0.70 : 0.68),
     cy: H * (wide ? 0.40 : 0.50),
@@ -181,7 +186,7 @@ export function createScene({ W, H, particles = 2800 }) {
       ctx.restore();
       // liseré de lumière violette
       ctx.save();
-      ctx.beginPath(); ctx.arc(cx, cy, Rs - 0.5, 0, TAU);
+      ctx.beginPath(); ctx.arc(cx, cy, Math.max(0, Rs - 0.5), 0, TAU);
       const rim = ctx.createLinearGradient(cx - Rs, cy - Rs, cx + Rs, cy + Rs);
       rim.addColorStop(0, 'rgba(167,139,250,0)');
       rim.addColorStop(0.7, `rgba(167,139,250,${0.35 + 0.3 * pulse})`);

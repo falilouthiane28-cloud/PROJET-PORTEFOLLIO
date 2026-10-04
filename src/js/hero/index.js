@@ -197,7 +197,8 @@ export function initHero() {
       if (!worker) return;
       st.vel *= Math.pow(0.9, Math.min(100, deltaMs) / 16.667);
       if (Math.abs(st.vel) < 1) st.vel = 0;
-      if (!sent || sent.vel !== st.vel) { sent = { p: 1, vel: st.vel, ox: 0, oy: 0 }; worker.postMessage({ type: 'input', ...sent }); }
+      // p = 0 : les planètes tournent librement autour de Saturne (sans alignement, qui vient du scroll épinglé)
+      if (!sent || sent.vel !== st.vel) { sent = { p: 0, vel: st.vel, ox: 0, oy: 0 }; worker.postMessage({ type: 'input', ...sent }); }
       return;
     }
     const dt = Math.min(100, deltaMs);

@@ -50,28 +50,35 @@ html.lenis,html.lenis body{height:auto}
 /* ---------- hero statique (mêmes 5 conditions que le JS) : pas de poster, la scène est dessinée ---------- */
 @media (max-width: 720px), (orientation: portrait) and (max-width: 1024px), (orientation: portrait) and (pointer: coarse), (orientation: landscape) and (pointer: coarse) and (max-height: 560px), (prefers-reduced-motion: reduce){
   .hero__poster{display:none}
-  .hero__scene{bottom:auto;height:62%}          /* même boîte que le canvas d'origine */
-  .hero__canvas{height:100%}
 }
-/* téléphone et tablette en portrait : la scène prend sa place dans le flux, entre la nav et le texte.
-   En position absolue (62 % du haut), elle chevauchait la ligne « Studio de design et web » dès que le texte
-   dépassait 38 % de l'écran (mesuré : 360×800, 360×640). Le paysage et l'ordinateur gardent la composition d'origine. */
+
+/* téléphone et tablette en portrait : la scène passe EN FOND, derrière le texte.
+   Saturne est cadrée haut-droite (layoutFor narrow), le texte occupe le vide négatif en bas-gauche.
+   Un dégradé assombrit le bas-gauche pour garder le contraste 4,5:1 sans toucher au titre. */
 @media (max-width: 720px), (orientation: portrait) and (max-width: 1024px){
-  .hero__stage{padding-top:76px}
-  .hero__scene{position:relative;inset:auto;height:clamp(190px,30svh,300px);flex:none;margin:0 calc(var(--gutter) * -1) 4px}
+  .hero__stage{display:block;padding:84px var(--gutter) 36px;min-height:100svh}
+  .hero__scene{position:absolute;inset:0;height:100%;pointer-events:none}
+  .hero__canvas{position:absolute;inset:0;width:100%;height:100%}
+  .chips{display:none}                          /* les étiquettes se posaient sur les boutons */
+  .hero__static{position:relative;z-index:3;max-width:none;margin-top:clamp(36svh,42svh,46svh)}
+  .hero__static::before{
+    content:"";position:absolute;inset:-24px -24px -24px -24px;z-index:-1;pointer-events:none;
+    background:linear-gradient(180deg,rgba(11,10,18,0) 0%,rgba(11,10,18,.5) 24%,rgba(11,10,18,.82) 100%);
+  }
+  .hero__static .eyebrow,.hero__static .lead{text-shadow:0 1px 2px rgba(5,5,10,.95),0 3px 10px rgba(5,5,10,.75)}
+  .hero__static .display{text-shadow:var(--tshadow)}
+  .hero__meta{opacity:.6}
 }
 /* sous 600 px, la ligne de coordonnées est masquée : le bas n'a plus besoin de ses 90 px */
 @media (max-width: 600px){.hero__stage{padding-bottom:40px}}
-/* téléphone en paysage (390 px de haut) : le titre à 72 px prenait toute la largeur et passait sur les mondes.
-   Texte à gauche, scène à droite, titre calé sur la hauteur. */
+/* téléphone en paysage (390 px de haut) : texte à gauche, scène à droite, titre calé sur la hauteur. */
 @media (orientation: landscape) and (pointer: coarse) and (max-height: 560px){
-  .hero__stage{padding-top:96px;padding-bottom:40px}
-  .hero__scene{left:46%;right:0;top:0;height:100%}
-  .hero__static{max-width:50%}
+  .hero__stage{display:block;padding:76px var(--gutter) 32px;min-height:100svh}
+  .hero__scene{position:absolute;inset:0 0 0 40%}
+  .hero__static{position:relative;z-index:3;max-width:52%;margin-top:0}
+  .hero__static::before{display:none}
   .hero__static .display{font-size:clamp(28px,4.4vw,46px)}
 }
-/* 320 px : les étiquettes chevauchaient la ligne « Studio de design et web » (audit H4) */
-@media (max-width:360px){.chips{display:none}}
 
 @media (prefers-reduced-motion: reduce){
   .hero__veil,.hero__orbit{display:none}
