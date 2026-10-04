@@ -1,5 +1,15 @@
 # Journal des changements
 
+## `hero-mobile-v2` (04/10/2026)
+
+- **Recherche :** `reports/Hero mobile v2 et WhatsApp.md`.
+- **Hero mobile v2 :** la scène passe en plein cadre, Saturne cadrée haut-droite, texte dans le vide négatif bas-gauche avec dégradé de lisibilité. Les planètes tournent librement (`p=0`), elles ne sont plus alignées comme pendant le scrub.
+- **Messages WhatsApp personnalisés :** 12 liens migrés de `wa.me/message/CODE` vers `wa.me/221763312469?text=…`. 9 messages contextuels (hero, nav, 6 projets, services, modale film). Chacun pose une question d'ouverture.
+- **Projets :**
+  - Saturn Agents : `sslip.io` → `saturn-studio.onrender.com` ;
+  - iStore Tech : nouveau lien `PROJET-APPLE`.
+- **Fix scene.js :** protection `arc(..., Math.max(0, Rs - 0.5))` contre un rayon négatif au premier dessin quand R=0.
+
 ## `responsive-mobile-v1` (03/10/2026)
 
 - `6bc0b77` **Recherche :** `reports/Hero mobile et responsive.md`.
