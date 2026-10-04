@@ -71,7 +71,7 @@ test('hero du téléphone : la scène s’anime (worker, 30 i/s), sans erreur, e
 test('projets : liens vers les sites en ligne, nouvel onglet annoncé', async ({ page }) => {
   await page.goto('/');
   const links = page.locator('.link--site');
-  await expect(links).toHaveCount(3);
+  await expect(links).toHaveCount(4);
   for (const a of await links.all()) {
     await expect(a).toHaveAttribute('target', '_blank');
     await expect(a).toHaveAttribute('rel', 'noopener');
@@ -108,10 +108,15 @@ test('menu mobile : s’ouvre, mène à la section, se ferme avec Échap', async
 
 test('contact : WhatsApp et e-mail (pas de formulaire sur ce site)', async ({ page }) => {
   await page.goto('/');
-  const wa = page.locator('a[href^="https://wa.me/"]');
-  expect(await wa.count()).toBeGreaterThanOrEqual(4);
+  const wa = page.locator('a[href^="https://wa.me/221763312469"]');
+  expect(await wa.count()).toBeGreaterThanOrEqual(10);
+  // chaque lien pointe vers le même numéro, avec un texte personnalisé (?text=…)
+  const hrefs = await wa.evaluateAll(as => as.map(a => a.href));
+  for (const h of hrefs) {
+    expect(h).toMatch(/^https:\/\/wa\.me\/221763312469\?text=.+/);
+    expect(decodeURIComponent(h)).toMatch(/Bonjour Saturn/);
+  }
   for (const a of await wa.all()) {
-    await expect(a).toHaveAttribute('href', 'https://wa.me/message/YXCZMZCCFQKDF1');
     await expect(a).toHaveAttribute('target', '_blank');
     await expect(a).toHaveAttribute('rel', /noopener/);
   }
