@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Orbite inconnue · Page non trouvée · Saturn Design Studio</title>
+  <meta name="description" content="Cette page n'existe pas. Revenez au studio ou passez-nous un mot sur WhatsApp.">
+  <meta name="theme-color" content="#0b0a12">
+  <meta name="robots" content="noindex,follow">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='14' fill='%2315131f' stroke='%23f2f0f7' stroke-width='2'/%3E%3Cellipse cx='32' cy='32' rx='28' ry='8' fill='none' stroke='%238b5cf6' stroke-width='4' transform='rotate(-18 32 32)'/%3E%3C/svg%3E">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    :root{
+      --canvas:#0b0a12;--text:#f2f0f7;--muted:#a9a4b8;--accent:#7c3aed;--accent-hover:#8b5cf6;--accent-soft:#a78bfa;
+      --f-body:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+      --f-serif:Georgia,"Times New Roman",serif;
+      --ease:cubic-bezier(.16,1,.3,1);
+    }
+    html,body{margin:0;height:100%;background:var(--canvas);color:var(--text);font-family:var(--f-body);line-height:1.55}
+    body{display:flex;flex-direction:column;min-height:100svh;padding:clamp(20px,4vw,48px);overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    a:focus-visible,button:focus-visible{outline:2px solid var(--accent-hover);outline-offset:3px;border-radius:6px}
+    .skip{position:fixed;left:16px;top:-60px;z-index:100;background:var(--accent);color:#fff;padding:10px 16px;border-radius:10px;transition:top .3s var(--ease)}
+    .skip:focus{top:16px}
+
+    /* ---------- nébuleuse de fond, décorative ---------- */
+    .env{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+    .env::before{content:"";position:absolute;inset:-20%;background:
+      radial-gradient(35% 30% at 70% 40%,rgba(91,33,182,.22),transparent 70%),
+      radial-gradient(30% 25% at 25% 70%,rgba(157,23,77,.10),transparent 70%),
+      radial-gradient(40% 35% at 50% 10%,rgba(49,46,129,.18),transparent 70%);
+      animation:drift 90s var(--ease) infinite alternate}
+    @keyframes drift{to{transform:translate3d(-6%,4%,0) rotate(8deg) scale(1.08)}}
+
+    /* ---------- en-tête : nom du studio ---------- */
+    .top{display:flex;align-items:center;justify-content:space-between;gap:16px;max-width:1320px;margin:0 auto;width:100%}
+    .brand{display:inline-flex;align-items:center;gap:10px;font-weight:800;letter-spacing:-.02em;font-size:17px}
+    .brand svg{width:30px;height:30px;flex:none}
+    .brand span{opacity:.9}
+
+    /* ---------- contenu principal ---------- */
+    main{flex:1;display:grid;grid-template-columns:1fr;align-items:center;justify-items:center;max-width:1320px;margin:0 auto;width:100%;padding:clamp(32px,6vw,80px) 0;gap:48px;text-align:center}
+    @media (min-width:920px){
+      main{grid-template-columns:1.2fr 1fr;text-align:left;gap:64px}
+      .visual{order:2;justify-self:end}
+    }
+    .code{font:600 11px/1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 18px;display:inline-flex;align-items:center;gap:10px}
+    .code .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-hover);box-shadow:0 0 10px var(--accent-hover)}
+    h1{font:800 clamp(44px,8vw,96px)/.95 var(--f-body);letter-spacing:-.045em;margin:0;max-width:14ch;text-wrap:balance}
+    h1 em{font-family:var(--f-serif);font-style:italic;font-weight:400;letter-spacing:-.01em;color:var(--accent-soft)}
+    .lead{font-size:clamp(16px,1.4vw,19px);line-height:1.6;color:#cfcadb;max-width:46ch;margin:20px 0 0}
+
+    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px;justify-content:center}
+    @media (min-width:920px){.actions{justify-content:flex-start}}
+    .btn{display:inline-flex;align-items:center;gap:10px;font:600 15px/1 var(--f-body);padding:16px 26px;border-radius:999px;transition:transform .4s var(--ease),background-color .3s,border-color .3s,box-shadow .4s var(--ease);min-height:44px}
+    .btn--accent{background:var(--accent);color:#fff;box-shadow:0 10px 30px -10px rgba(124,58,237,.8)}
+    .btn--accent:hover{background:var(--accent-hover);transform:translateY(-2px);box-shadow:0 16px 44px -12px rgba(139,92,246,.95)}
+    .btn--ghost{color:var(--text);border:1px solid rgba(242,240,247,.32);background:rgba(242,240,247,.04)}
+    .btn--ghost:hover{border-color:rgba(242,240,247,.6);transform:translateY(-2px)}
+
+    .links{display:grid;grid-template-columns:1fr 1fr;gap:4px 20px;max-width:420px;margin:40px auto 0;padding-top:28px;border-top:1px solid rgba(242,240,247,.12)}
+    @media (min-width:920px){.links{margin-left:0;margin-right:auto}}
+    .links a{display:inline-flex;align-items:center;gap:8px;padding:10px 0;color:var(--muted);font-size:14px;transition:color .25s,transform .3s var(--ease);min-height:44px}
+    .links a::after{content:"→";transition:transform .3s var(--ease);opacity:.6}
+    .links a:hover{color:var(--text)}
+    .links a:hover::after{transform:translateX(4px);opacity:1}
+
+    /* ---------- visuel : Saturne solitaire qui dérive ---------- */
+    .visual{position:relative;width:min(80vw,320px);aspect-ratio:1;flex:none}
+    .visual svg{width:100%;height:100%;overflow:visible}
+    .visual .body{fill:#15131f;stroke:rgba(242,240,247,.14);stroke-width:1.2}
+    .visual .shadow{fill:#000;opacity:.5}
+    .visual .ring{fill:none;stroke:var(--accent-hover);stroke-width:2;filter:drop-shadow(0 0 8px rgba(139,92,246,.6))}
+    .visual .ring--back{opacity:.4}
+    .visual .particle{fill:var(--accent-soft);opacity:.9}
+    .visual .orbit{fill:none;stroke:rgba(167,139,250,.25);stroke-width:1;stroke-dasharray:2 7}
+    .drift{animation:bob 10s var(--ease) infinite alternate;transform-origin:center;will-change:transform}
+    @keyframes bob{to{transform:translateY(-14px) rotate(-3deg)}}
+    .spin{animation:spin 60s linear infinite;transform-origin:center}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .twinkle{animation:tw 2.6s var(--ease) infinite alternate}
+    .twinkle:nth-child(2n){animation-delay:-1.2s}
+    .twinkle:nth-child(3n){animation-delay:-.7s}
+    @keyframes tw{from{opacity:.2}to{opacity:.9}}
+
+    /* ---------- pied de page ---------- */
+    .foot{max-width:1320px;margin:40px auto 0;width:100%;color:var(--muted);font:500 10px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.16em;text-transform:uppercase;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+    /* ---------- mouvement réduit ---------- */
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation:none!important;transition:none!important}
+    }
+    @media (prefers-reduced-transparency:reduce){
+      .env::before{opacity:.5}
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Aller au contenu</a>
+  <div class="env" aria-hidden="true"></div>
+
+  <header class="top">
+    <a href="/PROJET-PORTEFOLLIO/" class="brand" aria-label="Saturn Design Studio, retour en haut">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><g transform="rotate(-20 16 16)"><ellipse cx="16" cy="16" rx="14" ry="4.4" fill="none" stroke="#8b5cf6" stroke-width="2.4"/><circle cx="16" cy="16" r="7" fill="#15131f" stroke="#f2f0f7" stroke-width="1.4"/></g></svg>
+      <span>Saturn</span>
+    </a>
+    <a href="/PROJET-PORTEFOLLIO/" class="btn btn--ghost" style="padding:10px 18px;font-size:13px">Retour au studio</a>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <div>
+      <p class="code"><span class="dot"></span>404 · Orbite inconnue</p>
+      <h1>Cette page s'est perdue <em>dans l'espace.</em></h1>
+      <p class="lead">La ressource demandée n'est pas sur sa trajectoire. Revenez au studio, ou dites-nous ce que vous cherchiez — on répond dans la journée sur WhatsApp.</p>
+      <div class="actions">
+        <a href="/PROJET-PORTEFOLLIO/" class="btn btn--accent">Retour à l'accueil</a>
+        <a href="https://wa.me/221763312469?text=Bonjour%20Saturn%2C%20je%20cherchais%20une%20page%20sur%20votre%20site%20qui%20ne%20s%27ouvre%20pas.%20Pouvez-vous%20m%27aider%20%3F%20Merci." target="_blank" rel="noopener" class="btn btn--ghost">Nous écrire sur WhatsApp</a>
+      </div>
+      <nav class="links" aria-label="Sections du site">
+        <a href="/PROJET-PORTEFOLLIO/#agents">Les agents IA</a>
+        <a href="/PROJET-PORTEFOLLIO/#projets">Nos réalisations</a>
+        <a href="/PROJET-PORTEFOLLIO/#services">Nos services</a>
+        <a href="/PROJET-PORTEFOLLIO/#methode">Notre méthode</a>
+      </nav>
+    </div>
+
+    <!-- Saturne solitaire : dessin SVG inline, animé en CSS pur -->
+    <div class="visual" aria-hidden="true">
+      <svg viewBox="-100 -100 200 200">
+        <!-- une orbite vide (celle du scroll des projets) -->
+        <g class="spin"><ellipse class="orbit" cx="0" cy="0" rx="90" ry="26" transform="rotate(-18)"/></g>
+        <!-- 3 étoiles qui scintillent -->
+        <circle class="twinkle" cx="-78" cy="-62" r="1.4" fill="#e9e4ff"/>
+        <circle class="twinkle" cx="72" cy="-54" r="1.1" fill="#e9e4ff"/>
+        <circle class="twinkle" cx="-60" cy="68" r="1.2" fill="#e9e4ff"/>
+        <circle class="twinkle" cx="80" cy="42" r="1.6" fill="#e9e4ff"/>
+        <!-- Saturne qui dérive -->
+        <g class="drift">
+          <g transform="rotate(-18)">
+            <!-- anneau arrière -->
+            <path class="ring ring--back" d="M-70 0 A70 20 0 0 0 70 0"/>
+            <!-- planète -->
+            <circle class="body" cx="0" cy="0" r="38"/>
+            <!-- un peu d'ombrage pour le volume -->
+            <ellipse class="shadow" cx="10" cy="4" rx="28" ry="30"/>
+            <!-- anneau avant -->
+            <path class="ring" d="M-70 0 A70 20 0 0 1 70 0"/>
+            <!-- quelques particules dans l'anneau -->
+            <circle class="particle" cx="-55" cy="-2" r="1.3"/>
+            <circle class="particle" cx="48" cy="4" r="1.5"/>
+            <circle class="particle" cx="-30" cy="-6" r="1"/>
+            <circle class="particle" cx="30" cy="6" r="1.2"/>
+            <circle class="particle" cx="60" cy="-1" r="1.1"/>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <span>© 2026 Saturn Design Studio</span>
+    <span>Fait à Dakar</span>
+  </footer>
+</body>
+</html>
