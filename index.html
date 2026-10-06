@@ -37,11 +37,43 @@
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       h.classList.add('intro', 'title-rise');
       setTimeout(function () { if (!window.__introStarted) h.classList.add('intro-skip'); }, 1400);
+      // Chargement : un compteur italique en bas-droite monte pendant que la page se charge.
+      // Déjà-vu ? on saute. Le hero reste visible (règle LCP : jamais d'overlay opaque sur le titre).
+      try {
+        if (sessionStorage.getItem('seen')) return;
+        sessionStorage.setItem('seen', '1');
+        h.classList.add('loading');
+        var start = performance.now(), ended = false, num = null;
+        // le compteur est dans <body>, le DOM n'existe pas encore : on query au premier tick
+        function tick() {
+          if (ended) return;
+          if (!num) num = d.querySelector('.loader__n');
+          var t = Math.min(1, (performance.now() - start) / 1200);
+          var e = 1 - Math.pow(1 - t, 3);                       // ease-out cubic
+          if (num) num.textContent = Math.min(100, Math.round(e * 100)).toString().padStart(2, '0');
+          if (t < 1) requestAnimationFrame(tick); else done();
+        }
+        function done() {
+          if (ended) return;
+          ended = true;
+          h.classList.remove('loading');
+          h.classList.add('loaded');
+        }
+        requestAnimationFrame(tick);
+        setTimeout(done, 1800);                                  // filet de sécurité
+      } catch (e) {}
     })(document, window);
   </script>
 </head>
 <body>
   <a class="skip" href="#main">Aller au contenu</a>
+
+  <!-- Chargement : compteur italique en bas-droite + fine ligne qui se dessine.
+       Au-dessus du hero mais pointer-events:none, et ne couvre JAMAIS le titre (règle LCP). -->
+  <div class="loader" aria-hidden="true">
+    <span class="loader__num"><b class="loader__n">00</b><em>%</em></span>
+    <span class="loader__line"></span>
+  </div>
 
   <!-- L'environnement fixe : nébuleuse lente + grain -->
   <div class="env" aria-hidden="true"><div class="env__nebula"></div><div class="env__grain"></div></div>

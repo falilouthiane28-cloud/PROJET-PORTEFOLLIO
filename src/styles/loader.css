@@ -1,0 +1,25 @@
+/* ================= Chargement original =================
+   Un compteur italique monte de 00 à 100 en bas-droite pendant le chargement, et une fine ligne horizontale
+   se dessine du bord droit. Le hero reste visible dessous — jamais au-dessus du titre LCP (règle du projet).
+   Première visite seulement (sessionStorage). JS inline au <head> met à jour .loader__n toutes les images. */
+
+.loader{
+  position:fixed;right:clamp(16px,4vw,48px);bottom:clamp(16px,3vh,32px);z-index:70;pointer-events:none;
+  color:var(--text-primary);opacity:0;
+  display:flex;align-items:center;gap:16px;
+}
+.loader__line{display:inline-block;width:clamp(60px,22vw,180px);height:1px;background:linear-gradient(90deg,transparent,var(--accent-soft));transform-origin:right center;transform:scaleX(0)}
+.loader__num{display:inline-flex;align-items:baseline;gap:2px;font:800 clamp(42px,7vw,86px)/1 var(--f-display);font-variation-settings:"wdth" 125;letter-spacing:-.04em}
+.loader__num b{font-weight:800;font-variant-numeric:tabular-nums;min-width:2ch}
+.loader__num em{font-family:var(--f-serif);font-style:italic;font-weight:400;letter-spacing:-.02em;color:var(--accent-soft);font-size:.5em;margin-left:.08em;transform:translateY(-.18em)}
+
+/* ---------- état « en cours » ---------- */
+html.loading .loader{opacity:1;transition:opacity .3s var(--ease-out)}
+html.loading .loader__line{animation:loaderLine 1.2s cubic-bezier(.65,0,.35,1) forwards}
+@keyframes loaderLine{to{transform:scaleX(1)}}
+
+/* ---------- état « chargé » : fondu de sortie ---------- */
+html.loaded .loader{opacity:0;transform:translateX(14px);transition:opacity .55s var(--ease-out),transform .55s var(--ease-out)}
+
+/* ---------- mouvement réduit : rien ---------- */
+@media (prefers-reduced-motion:reduce){.loader{display:none!important}}

@@ -6,6 +6,7 @@ import './styles/hero.css';
 import './styles/motion.css';
 import './styles/agents.css';
 import './styles/responsive.css';
+import './styles/loader.css';
 import './js/site.js';
 import './js/nav.js';
 import { initHero } from './js/hero/index.js';
