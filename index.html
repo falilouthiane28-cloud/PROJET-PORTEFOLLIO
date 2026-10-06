@@ -25,13 +25,19 @@
   <script>
     // Prépare l'intro avant le premier rendu (sans JavaScript, tout reste visible).
     // Si l'animation ne démarre pas à temps (réseau lent), le contenu s'affiche sans attendre.
-    (function (d) {
+    (function (d, w) {
       var h = d.documentElement;
       h.classList.add('js');
+      // Le navigateur restaure sinon la dernière position (par ex. FAQ si l'utilisateur l'avait lue avant),
+      // ce qui fait « rentrer » le visiteur loin dans la page au lieu du hero. Un hash valide reste honoré.
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      if (!location.hash || location.hash === '#top') {
+        w.addEventListener('load', function () { w.scrollTo(0, 0); }, { once: true });
+      }
       if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       h.classList.add('intro', 'title-rise');
       setTimeout(function () { if (!window.__introStarted) h.classList.add('intro-skip'); }, 1400);
-    })(document);
+    })(document, window);
   </script>
 </head>
 <body>
