@@ -1,5 +1,19 @@
 # Journal des changements
 
+## `page-404-et-poids` (06/10/2026)
+
+- **Recherche :** `reports/Page 404, chargement et poids.md`.
+- **Page 404 personnalisée :** `public/404.html`, 10 Ko, standalone, SVG Saturne CSS pur, nav + 4 ancres + CTA WhatsApp personnalisé.
+- **Animation de chargement :** compteur italique 00→100 en bas-droite, 1,2 s, première visite seulement. Overlay ne couvre jamais le titre LCP.
+- **Réduction du poids :**
+  - Boucle vidéo AV1 CRF 42 → 46 : 767 → 589 Ko (−178 Ko).
+  - Boucle vidéo H.264 CRF 28 → 31 : 1070 → 752 Ko (−318 Ko).
+  - Film 4:5 AV1 CRF 38 → 42 : 6,96 → 5,45 Mo (−1,5 Mo).
+  - Film 4:5 H.264 CRF 26 → 29 : 10,8 → 7,2 Mo (−3,6 Mo).
+  - Films 9:16 : AV1 −1 Mo, H.264 −1,8 Mo.
+  - Images agents AVIF q=48 (vs 58) : −194 Ko.
+- **Mesures (Lighthouse mobile, alternance avec motion-system-v1, 5 passages, sur batterie) :** Perf 80 → 84 (+4), LCP 2598 → 2442 ms (−156 ms), FCP 1960 → 1837 ms (−123 ms), TBT équivalent. **À refaire sur secteur.**
+
 ## `hero-mobile-v2` (04/10/2026)
 
 - **Recherche :** `reports/Hero mobile v2 et WhatsApp.md`.

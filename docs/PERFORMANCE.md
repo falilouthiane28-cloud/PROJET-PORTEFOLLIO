@@ -161,3 +161,37 @@ L'ordinateur était sur batterie : les valeurs absolues sont faussées, seule la
 - Les deux versions sont équivalentes.
 - Une première version créait un ScrollTrigger dès le chargement, pour lire la vitesse du défilement. Cela forçait une mise en page et ajoutait environ 70 ms à la tâche du script. Un écouteur passif, branché seulement pendant l'animation, l'a remplacé.
 - **À refaire sur secteur :** `npm run test:perf`.
+
+## Chargement, page 404 et poids (06/10/2026, branche `page-404-et-poids`, **sur batterie**)
+
+**Comparaison alternée avec `motion-system-v1` (5 passages, médiane [plage]) :**
+
+| | Perf | LCP | TBT | FCP | Poids |
+|---|---|---|---|---|---|
+| Avant | 80 | 2 598 ms | 386 ms | 1 960 ms | 194 Ko |
+| Après | 84 | 2 442 ms | 397 ms | 1 837 ms | 191 Ko |
+
+Le loader n'ajoute aucune régression de TBT (équivalent). Le LCP s'améliore de 156 ms grâce à la boucle vidéo plus légère (589 Ko au lieu de 767). **À confirmer sur secteur.**
+
+**Poids téléchargé (Edge, mesure manuelle) :**
+
+| | Avant | Après | Gain |
+|---|---|---|---|
+| Chargement initial (desktop) | 473 Ko | 475 Ko | +2 Ko (loader) |
+| Chargement initial (mobile) | 410 Ko | 409 Ko | −1 Ko |
+| Scroll à la section Agents (desktop) | +829 Ko | +635 Ko | **−194 Ko** |
+| Scroll à la section Agents (mobile) | +811 Ko | +621 Ko | **−190 Ko** |
+| Total parcours complet (mobile) | 1 257 Ko | 1 066 Ko | **−191 Ko** |
+
+**Poids des vidéos encodées :**
+
+| Fichier | Avant | Après | Gain |
+|---|---|---|---|
+| Boucle AV1 (720×900, 8,85 s) | 785 Ko | 589 Ko | −25 % |
+| Boucle H.264 (fallback) | 1 070 Ko | 752 Ko | −30 % |
+| Film 4:5 AV1 (1080×1350, 40 s) | 6,96 Mo | 5,45 Mo | −22 % |
+| Film 4:5 H.264 | 10,82 Mo | 7,22 Mo | −33 % |
+| Film 9:16 AV1 (720×1280) | 4,74 Mo | 3,79 Mo | −20 % |
+| Film 9:16 H.264 | 6,52 Mo | 4,72 Mo | −28 % |
+
+**Images agents AVIF q=58 → q=48 : −194 Ko sur l'ensemble.**
